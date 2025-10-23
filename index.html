@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Metemi - Změňte způsob, jakým se setkáváte s lidmi v reálném světě"
+    />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Metemi" />
+    <meta
+      property="og:description"
+      content="Změňte způsob, jakým se setkáváte s lidmi v reálném světě"
+    />
+
+    <title>Metemi</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- GSAP Core -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"
+      defer
+    ></script>
+    <!-- GSAP ScrollTrigger Plugin -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"
+      defer
+    ></script>
+    <!-- Lenis Smooth Scroll -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.3/dist/lenis.min.js"
+      defer
+    ></script>
+    <!-- Main Script -->
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navigation">
+      <!-- Navigation content will be added here -->
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Hero Container Section -->
+      <div class="hero-wrapper">
+        <div class="hero-container">
+          <!-- Hero Section -->
+          <section class="hero-section section-debug">
+            <h1>Hero Section</h1>
+          </section>
+
+          <!-- Big Grid Section -->
+          <section class="big-grid-section section-debug">
+            <h2>BigGrid Section</h2>
+          </section>
+
+          <!-- Statistics Mobile Right Section -->
+          <section class="statistic-mobile-right">
+            <div class="statistic-content anim-fade-left">
+              <p class="text-gradient text-description">
+                <span
+                  class="animated-number text-description-big"
+                  data-value="85"
+                  data-duration="0.5"
+                  data-lerp="true"
+                  data-lerp-factor="0.075"
+                  data-suffix="%"
+                  data-start="top 95%"
+                  >0%</span
+                >
+                lidí nedokáže oslovit opačné pohlaví Ale napsat zprávu zvládne
+                každý.
+              </p>
+            </div>
+            <div class="statistic-phone-wrapper">
+              <img
+                src="assets/images/phone-flat.png"
+                alt="Mobile displaying Metemi App"
+                class="statistic-phone anim-fade-right"
+              />
+            </div>
+          </section>
+
+          <!-- How It Changes Section -->
+          <section class="how-it-changes section-debug">
+            <h2 class="title-big main-title text-white">
+              Jak Metemi mění <br />
+              setkávání lidí v realném světě?
+            </h2>
+            <div class="changes-grid">
+              <!-- First Card -->
+              <div class="change-item-vertical">
+                <div class="title">
+                  <h4 class="text-description-big text-gradient">
+                    Only real people <br />
+                    around you →
+                  </h4>
+                  <p class="text-description-medium text-gradient">
+                    Setkávejte se přirozeně
+                  </p>
+                </div>
+                <div class="video">
+                  <video
+                    src="assets/videos/video-4.mp4"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                  ></video>
+                  <p
+                    class="text-white text-description-big font-bold video-text"
+                  >
+                    Don't swipe. <br />
+                    Invite.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Second Card -->
+              <div class="change-item-vertical">
+                <div class="title">
+                  <h4 class="text-description-big text-gradient">
+                    No swiping, <br />
+                    just meet →
+                  </h4>
+                  <p class="text-white text-description-medium text-gradient">
+                    Bezpečně a bez stresu
+                  </p>
+                </div>
+                <div class="video">
+                  <video
+                    src="assets/videos/video-4.mp4"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                  ></video>
+                  <p
+                    class="text-white text-description-big font-bold video-text"
+                  >
+                    Less texting. <br />
+                    More walking.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Third Card -->
+            <div class="change-item-horizontal">
+              <div class="video">
+                <video
+                  src="assets/videos/video-4.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                ></video>
+                <p class="text-white text-description-big font-bold video-text">
+                  Don't text. <br />
+                  Talk.
+                </p>
+              </div>
+              <div class="title">
+                <h4 class="text-description-big text-gradient">
+                  Skip the algorithm. <br />
+                  Say hi in real life →
+                </h4>
+                <p class="text-description-medium text-gradient">
+                  Meet people, not predictions
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Talk To Section -->
+      <section class="talk-to section-debug">
+        <h2 class="main-title title-giant">Talk to</h2>
+        <div class="talk-to-images">
+          <img src="assets/images/phone.png" alt="Phone Image" class="phone" />
+          <img
+            src="assets/images/portret-1.png"
+            alt="Portrait Image 1"
+            class="portret-1 portret"
+          />
+          <img
+            src="assets/images/portret-2.png"
+            alt="Portrait Image 2"
+            class="portret-2 portret"
+          />
+          <img
+            src="assets/images/portret-3.png"
+            alt="Portrait Image 3"
+            class="portret-3 portret"
+          />
+          <img
+            src="assets/images/portret-4.png"
+            alt="Portrait Image 4"
+            class="portret-4 portret"
+          />
+          <img
+            src="assets/images/portret-5.png"
+            alt="Portrait Image 5"
+            class="portret-5 portret"
+          />
+        </div>
+        <div class="google-play">
+          <h5 class="title-small text-gradient">
+            Najdi přátelé nebo celou skupinu. Sdílej, setkej se, zůstaň v
+            kontaktu. Nebo potkej někoho nového.
+          </h5>
+          <p class="text-description-medium">
+            <span class="text-gradient font-bold">Najdi lidi kolem sebe</span> -
+            v parku, kavárně nebo na koncertě.
+            <span class="text-gradient font-bold">Přidej se ke skupině</span> ,
+            která má stejný vibe. Stačí si vybrat
+            <span class="text-gradient font-bold">místo nebo téma</span> a jít
+            ven.
+          </p>
+          <img
+            src="assets/images/google-play.png"
+            alt="Google Play Badge"
+            class="google-play-badge"
+          />
+        </div>
+      </section>
+
+      <!-- How It Works Section -->
+      <section class="how-it-works section-debug">
+        <div class="container">
+          <h2 class="main-title title-small">Jak to funguje</h2>
+          <div class="card-container">
+            <!-- First card -->
+            <div class="card">
+              <h5
+                class="text-description-big font-bold card-title text-gradient"
+              >
+                1 <br />
+                Zapni Metemi a uvidíš lidi nebo skupiny ve svém okolí. →
+              </h5>
+              <p class="text-description-medium text-gradient">
+                (Jen vzdálenost - nevíš, kde přesně jsou.)
+              </p>
+              <img
+                class="how-img-1"
+                src="assets/images/how-card-1.png"
+                alt="phone"
+              />
+            </div>
+            <!-- Second card -->
+            <div class="card">
+              <h5
+                class="text-description-big font-bold card-title text-gradient"
+              >
+                2 <br />
+                Oslov je nebo se nech oslovit. →
+              </h5>
+              <p class="text-description-medium text-gradient">
+                Rychle, přirozeně, anonymně.
+              </p>
+              <img
+                class="how-img-2"
+                src="assets/images/how-card-2.jpg"
+                alt="phone"
+              />
+            </div>
+            <!-- Third card -->
+            <div class="card">
+              <h5
+                class="text-description-big font-bold card-title text-gradient"
+              >
+                3 <br />
+                Potkejte se osobně. →
+              </h5>
+              <p class="text-description-medium text-gradient">
+                V parku. V kavárně. Nebo třeba jen na chvíli. Za každé setkání
+                vás odměníme.
+              </p>
+              <img
+                class="how-img-3"
+                src="assets/images/how-card-3.jpg"
+                alt="phone"
+              />
+            </div>
+          </div>
+          <h2 class="title-giant text-white font-bold metemi-text">METEMI</h2>
+        </div>
+        <div class="stats-block">
+          <p class="text-description-medium-big text-gradient">
+            <span>57%</span> lidí se cítí osaměle. V kavárně, v tramvaji, mezi lidmi, přesto
+            izolovaně.
+          </p>
+        </div>
+      </section>
+
+      <!-- Image Text Split Sections (4x) -->
+      <section class="image-text-split">
+        <!-- Content 1 -->
+      </section>
+
+      <section class="image-text-split">
+        <!-- Content 2 -->
+      </section>
+
+      <section class="image-text-split">
+        <!-- Content 3 -->
+      </section>
+
+      <section class="image-text-split">
+        <!-- Content 4 -->
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer section-debug">
+      <p>Footer Section</p>
+    </footer>
+  </body>
+</html>

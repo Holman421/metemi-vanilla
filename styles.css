@@ -1,0 +1,661 @@
+/* ========================================
+   CSS CUSTOM PROPERTIES (Design Tokens)
+   ======================================== */
+:root {
+  /* Spacing */
+  --spacing: 0.0625rem;
+
+  /* Typography */
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "Courier New", monospace;
+  --text-description: 2rem;
+  --text-heading-5: 2.5rem;
+
+  /* Colors */
+  --color-button-gradient: linear-gradient(
+    82deg,
+    #20304f -14%,
+    #e2373e 28%,
+    #f4861e 93%
+  );
+  --color-card-white: #ededed;
+  --color-card-white-dark: #dad9de;
+  --background: #ffffff;
+  --foreground: #000000;
+
+  /* Border Radius */
+  --radius-custom-xl: 6rem;
+
+  /* Breakpoints (for reference in media queries) */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* ========================================
+   BASE RESET & DEFAULTS
+   ======================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+}
+
+body {
+  background-color: white;
+  color: black;
+  overflow-x: hidden;
+  line-height: 1.5;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ========================================
+   TYPOGRAPHY UTILITIES
+   ======================================== */
+
+.text-description-medium {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 400;
+}
+
+.text-description-medium-big {
+  font-size: 2rem; /* 32px */
+  font-weight: 400;
+}
+
+.text-description {
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.75rem; /* 28px */
+}
+
+.text-description-small {
+  font-size: 1rem; /* 16px */
+}
+
+.title-small {
+  font-size: 4rem; /* 64px */
+  line-height: 112%;
+  font-weight: 700;
+}
+
+.title-big {
+  font-size: 5.5rem; /* 88px */
+  line-height: 1;
+  text-shadow: 0 9px 27.5px rgba(0, 0, 0, 0.41);
+  font-weight: 700;
+}
+
+.title-giant {
+  font-size: 22.5vw;
+  font-weight: 700;
+  line-height: 100%;
+}
+
+.text-white {
+  color: white;
+}
+
+/* Font Weight Utilities */
+.font-thin {
+  font-weight: 100;
+}
+
+.font-extralight {
+  font-weight: 200;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-regular {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-extrabold {
+  font-weight: 800;
+}
+
+.font-black {
+  font-weight: 900;
+}
+
+@media (min-width: 768px) {
+  .text-description {
+    font-size: var(--text-description);
+  }
+}
+
+.text-description-big {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.text-gradient {
+  background-image: var(--color-button-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  /* Fix for gradient cutoff */
+  padding: 0.1em 0;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  /* Ensure proper rendering */
+  display: inline-block;
+  line-height: 1.1;
+}
+
+/* ========================================
+   SIZING UTILITIES
+   ======================================== */
+
+.mobile-padding-x {
+  padding-left: 1.25rem; /* 20px */
+  padding-right: 1.25rem;
+}
+
+.mobile-padding-y {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.mobile-padding-left {
+  padding-left: 1.25rem;
+}
+
+.mobile-padding-right {
+  padding-right: 1.25rem;
+}
+
+/* ========================================
+   LAYOUT UTILITIES
+   ======================================== */
+.section-debug {
+  /* border: 2px dashed #ef4444; */
+}
+
+/* ========================================
+   NAVIGATION
+   ======================================== */
+.navigation {
+  /* Navigation styles will be added */
+  /* padding: 1rem; */
+}
+
+/* ========================================
+   HERO WRAPPER & CONTAINER
+   ======================================== */
+.hero-wrapper {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 1536px) {
+  .hero-wrapper {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+}
+
+.hero-container {
+  background-image: url("assets/images/hero-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  max-width: calc(1920px - 128px);
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-bottom-left-radius: var(--radius-custom-xl);
+  border-bottom-right-radius: var(--radius-custom-xl);
+}
+
+/* ========================================
+   HERO SECTION
+   ======================================== */
+.hero-section {
+  /* Hero section styles */
+  padding: 2rem;
+}
+
+/* ========================================
+   BIG GRID SECTION
+   ======================================== */
+.big-grid-section {
+  /* Big grid styles */
+  padding: 2rem;
+}
+
+/* ========================================
+   STATISTIC MOBILE RIGHT SECTION
+   ======================================== */
+.statistic-mobile-right {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.statistic-content {
+  max-width: 35%;
+  background-color: var(--color-card-white-dark);
+  padding: 1.8125rem 5.625rem; /* py-29 px-90 - adjusted proportionally */
+  border-top-right-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+}
+
+.statistic-content p {
+  line-height: 1.2;
+  font-weight: bold;
+  width: 100%;
+}
+
+.statistic-phone-wrapper {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 70vw;
+  transform: translate(10%, -50%); /* Handle positioning here */
+}
+
+.statistic-phone {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* No positioning transforms - GSAP can freely animate this element */
+}
+
+@media (max-width: 768px) {
+  .statistic-content {
+    max-width: 60%;
+    padding: 1rem 2rem;
+  }
+
+  .statistic-phone-wrapper {
+    width: 50vw;
+  }
+}
+
+/* ========================================
+   HOW IT CHANGES SECTION
+   ======================================== */
+.how-it-changes {
+  padding: 150px 120px 0 120px;
+  position: relative;
+  margin-top: -185px;
+  transform: translateY(185px);
+
+  .main-title {
+    margin-bottom: 40px;
+  }
+
+  .changes-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 33px;
+
+    .change-item-vertical {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 20px;
+      flex: 1;
+
+      .title {
+        padding: 27px 93px 25px 93px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        background: white;
+      }
+
+      .video {
+        width: 100%;
+        height: 100%;
+        display: block;
+        position: relative;
+        aspect-ratio: 1 / 1;
+
+        video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          position: absolute;
+        }
+
+        .video-text {
+          position: absolute;
+          left: 20%;
+          bottom: 20%;
+        }
+      }
+    }
+  }
+  .change-item-horizontal {
+    display: flex;
+    flex-direction: row;
+    gap: 33px;
+    margin-top: 33px;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+
+    .title {
+      padding: 100px 93px 25px 93px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      width: 50%;
+    }
+
+    .video {
+      display: block;
+      position: relative;
+      aspect-ratio: 10 / 7.5;
+      width: 50%;
+
+      video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        position: absolute;
+      }
+
+      .video-text {
+        position: absolute;
+        left: 20%;
+        bottom: 20%;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .changes-grid {
+    flex-direction: column;
+  }
+}
+
+/* ========================================
+   TALK TO SECTION
+   ======================================== */
+.talk-to {
+  padding: 450px 150px 0 150px;
+  position: relative;
+
+  .main-title {
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-width: 5px;
+    -webkit-text-stroke-color: #f4861e;
+    paint-order: stroke fill;
+  }
+
+  .talk-to-images {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 60vw;
+
+    .phone {
+      max-height: 1200px;
+      height: 60vw;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transform: rotate(-60deg);
+    }
+
+    .portret {
+      position: absolute;
+    }
+
+    .portret-1 {
+      top: 64%;
+      right: 18%;
+      width: 140px;
+    }
+
+    .portret-2 {
+      top: 60%;
+      right: 29%;
+      width: 115px;
+    }
+
+    .portret-3 {
+      top: 48%;
+      right: 15%;
+      width: 90px;
+    }
+
+    .portret-4 {
+      top: 32%;
+      right: 21%;
+      width: 90px;
+    }
+
+    .portret-5 {
+      top: 42%;
+      right: 26%;
+      width: 145px;
+    }
+  }
+
+  .google-play {
+    margin-top: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: 80%;
+
+    .google-play-badge {
+      width: 200px;
+    }
+  }
+}
+
+/* ========================================
+   HOW IT WORKS SECTION
+   ======================================== */
+.how-it-works {
+  margin-top: 164px;
+  padding-left: 64px;
+  padding-right: 64px;
+
+  .container {
+    border-radius: 64px;
+    background-image: url(/assets/images/how-bg.png);
+    background-position: top;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 100px 100px 0 100px;
+
+    .main-title {
+      color: white;
+      padding-bottom: 72px;
+    }
+
+    .card-container {
+      display: flex;
+      flex-direction: row;
+      gap: 32px;
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        border-radius: 20px;
+        padding: 36px 36px 0px 36px;
+        aspect-ratio: 6/10;
+        flex: 1;
+        overflow: hidden;
+        position: relative;
+
+        .card-title {
+          margin-bottom: 32px;
+          text-align: center;
+        }
+
+        .how-img-1 {
+          position: absolute;
+          top: 40%;
+          left: -5%;
+          width: 100%;
+          height: auto;
+          border-radius: 20px;
+          overflow: hidden;
+        }
+
+        .how-img-2 {
+          position: absolute;
+          top: 40%;
+          width: 70%;
+          height: auto;
+          border-radius: 20px;
+          overflow: hidden;
+        }
+
+        .how-img-3 {
+          position: absolute;
+          top: 45%;
+          width: 80%;
+          height: auto;
+          border-radius: 20px;
+          overflow: hidden;
+        }
+      }
+    }
+
+    .metemi-text {
+      margin-bottom: -6vw;
+    }
+
+    .stats-block {
+
+    }
+  }
+}
+
+/* ========================================
+   IMAGE TEXT SPLIT SECTIONS
+   ======================================== */
+.image-text-split {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+@media (min-width: 768px) {
+  .image-text-split {
+    flex-direction: row;
+  }
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.footer {
+  padding: 2rem;
+  text-align: center;
+}
+
+/* ========================================
+   ANIMATION CLASSES (for GSAP)
+   ======================================== */
+.anim-logo {
+  transform: translateY(100%);
+}
+
+.anim-pop-in {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.anim-fade-in {
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+.anim-fade-left {
+  opacity: 0;
+  transform: translateX(-100px);
+}
+
+.anim-fade-right {
+  opacity: 0;
+  transform: translateX(100px);
+}
+
+.anim-text-lines,
+.anim-text-lines-gradient {
+  overflow: hidden;
+}
+
+.text-outline-krakov {
+  color: transparent;
+  -webkit-text-stroke: 2px white;
+  text-stroke: 2px white;
+}
+
+/* Parallax elements - initial setup */
+.parallax {
+  will-change: transform;
+}
+
+.parallax-object {
+  object-fit: cover;
+}
+
+/* ========================================
+   ANIMATED NUMBER STYLING
+   ======================================== */
+.animated-number {
+  display: inline-block;
+  font-weight: bold;
+}
