@@ -33,16 +33,18 @@
       src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"
       defer
     ></script>
+    <!-- GSAP SplitText Plugin -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"
+      defer
+    ></script>
     <!-- GSAP ScrollTrigger Plugin -->
     <script
       src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"
       defer
     ></script>
     <!-- Lenis Smooth Scroll -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.3/dist/lenis.min.js"
-      defer
-    ></script>
+    <script src="https://unpkg.com/lenis@1.3.13/dist/lenis.min.js"></script>
     <!-- Main Script -->
     <script src="script.js" defer></script>
   </head>
@@ -58,12 +60,12 @@
       <div class="hero-wrapper">
         <div class="hero-container">
           <!-- Hero Section -->
-          <section class="hero-section section-debug">
+          <section class="hero-section">
             <h1>Hero Section</h1>
           </section>
 
           <!-- Big Grid Section -->
-          <section class="big-grid-section section-debug">
+          <section class="big-grid-section">
             <h2 class="title-big text-white big-grid-title">Who loves it?</h2>
             <div class="big-grid-container">
               <!-- Card 1 - Spans 1 column, 2 rows -->
@@ -81,9 +83,7 @@
                 <h3 class="text-description-big font-bold">
                   Noví přátelé, ne nové appky →
                 </h3>
-                <p class="text-description-small">
-                  Jedna stačí, když spojí.
-                </p>
+                <p class="text-description-small">Jedna stačí, když spojí.</p>
               </div>
 
               <!-- Card 3 - Spans 1 column, 1 row -->
@@ -130,7 +130,7 @@
 
           <!-- Statistics Mobile Right Section -->
           <section class="statistic-mobile-right">
-            <div class="statistic-content anim-fade-left">
+            <div class="statistic-content" anim-fade-left>
               <p class="text-gradient text-description">
                 <span
                   class="animated-number text-description-big"
@@ -150,14 +150,15 @@
               <img
                 src="assets/images/phone-flat.png"
                 alt="Mobile displaying Metemi App"
-                class="statistic-phone anim-fade-right"
+                class="statistic-phone"
+                anim-fade-right
               />
             </div>
           </section>
 
           <!-- How It Changes Section -->
-          <section class="how-it-changes section-debug">
-            <h2 class="title-big main-title text-white">
+          <section class="how-it-changes">
+            <h2 text-appear class="title-big main-title text-white">
               Jak Metemi mění <br />
               setkávání lidí v realném světě?
             </h2>
@@ -165,11 +166,11 @@
               <!-- First Card -->
               <div class="change-item-vertical">
                 <div class="title">
-                  <h4 class="text-description-big text-gradient">
+                  <h4 text-appear class="text-description-big text-gradient">
                     Only real people <br />
                     around you →
                   </h4>
-                  <p class="text-description-medium text-gradient">
+                  <p text-appear class="text-description-medium text-gradient">
                     Setkávejte se přirozeně
                   </p>
                 </div>
@@ -183,6 +184,9 @@
                   ></video>
                   <p
                     class="text-white text-description-big font-bold video-text"
+                    parallax
+                    data-flipdirection="true"
+                    data-speed="2.5"
                   >
                     Don't swipe. <br />
                     Invite.
@@ -193,11 +197,14 @@
               <!-- Second Card -->
               <div class="change-item-vertical">
                 <div class="title">
-                  <h4 class="text-description-big text-gradient">
+                  <h4 text-appear class="text-description-big text-gradient">
                     No swiping, <br />
                     just meet →
                   </h4>
-                  <p class="text-white text-description-medium text-gradient">
+                  <p
+                    text-appear
+                    class="text-white text-description-medium text-gradient"
+                  >
                     Bezpečně a bez stresu
                   </p>
                 </div>
@@ -211,6 +218,8 @@
                   ></video>
                   <p
                     class="text-white text-description-big font-bold video-text"
+                    parallax
+                    data-flipdirection="true"
                   >
                     Less texting. <br />
                     More walking.
@@ -229,17 +238,21 @@
                   muted
                   playsinline
                 ></video>
-                <p class="text-white text-description-big font-bold video-text">
+                <p
+                  class="text-white text-description-big font-bold video-text"
+                  parallax
+                  data-flipdirection="true"
+                >
                   Don't text. <br />
                   Talk.
                 </p>
               </div>
               <div class="title">
-                <h4 class="text-description-big text-gradient">
-                  Skip the algorithm. <br />
+                <h4 text-appear class="text-description-big text-gradient">
+                  No vague algorithm. <br />
                   Say hi in real life →
                 </h4>
-                <p class="text-description-medium text-gradient">
+                <p text-appear class="text-description-medium text-gradient">
                   Meet people, not predictions
                 </p>
               </div>
@@ -249,42 +262,53 @@
       </div>
 
       <!-- Talk To Section -->
-      <section class="talk-to section-debug">
-        <h2 class="main-title title-giant">Talk to</h2>
+      <section class="talk-to">
+        <h2 class="main-title title-giant" anim-fade-left>Talk to</h2>
         <div class="talk-to-images">
-          <img src="assets/images/phone.png" alt="Phone Image" class="phone" />
+          <img
+            src="assets/images/phone.png"
+            alt="Phone Image"
+            class="phone"
+            anim-fade-right
+            data-start="top 55%"
+          />
           <img
             src="assets/images/portret-1.png"
             alt="Portrait Image 1"
             class="portret-1 portret"
+            anim-pop-in
           />
           <img
             src="assets/images/portret-2.png"
             alt="Portrait Image 2"
             class="portret-2 portret"
+            anim-pop-in
           />
           <img
             src="assets/images/portret-3.png"
             alt="Portrait Image 3"
             class="portret-3 portret"
+            anim-pop-in
           />
           <img
             src="assets/images/portret-4.png"
             alt="Portrait Image 4"
             class="portret-4 portret"
+            anim-pop-in
           />
           <img
             src="assets/images/portret-5.png"
             alt="Portrait Image 5"
             class="portret-5 portret"
+            anim-pop-in
           />
         </div>
         <div class="google-play">
-          <h5 class="title-small text-gradient">
+          <h5 text-appear class="title-small text-gradient">
             Najdi přátelé nebo celou skupinu. Sdílej, setkej se, zůstaň v
             kontaktu. Nebo potkej někoho nového.
           </h5>
-          <p class="text-description-medium">
+          <p text-appear class="text-description-medium">
             <span class="text-gradient font-bold">Najdi lidi kolem sebe</span> -
             v parku, kavárně nebo na koncertě.
             <span class="text-gradient font-bold">Přidej se ke skupině</span> ,
@@ -296,24 +320,26 @@
             src="assets/images/google-play.png"
             alt="Google Play Badge"
             class="google-play-badge"
+            anim-fade
           />
         </div>
       </section>
 
       <!-- How It Works Section -->
-      <section class="how-it-works section-debug">
+      <section class="how-it-works">
         <div class="container">
-          <h2 class="main-title title-small">Jak to funguje</h2>
+          <h2 text-appear class="main-title title-small">Jak to funguje</h2>
           <div class="card-container">
             <!-- First card -->
             <div class="card">
               <h5
+                text-appear
                 class="text-description-big font-bold card-title text-gradient"
               >
                 1 <br />
                 Zapni Metemi a uvidíš lidi nebo skupiny ve svém okolí. →
               </h5>
-              <p class="text-description-medium text-gradient">
+              <p text-appear class="text-description-medium text-gradient">
                 (Jen vzdálenost - nevíš, kde přesně jsou.)
               </p>
               <img
@@ -325,12 +351,13 @@
             <!-- Second card -->
             <div class="card">
               <h5
+                text-appear
                 class="text-description-big font-bold card-title text-gradient"
               >
                 2 <br />
                 Oslov je nebo se nech oslovit. →
               </h5>
-              <p class="text-description-medium text-gradient">
+              <p text-appear class="text-description-medium text-gradient">
                 Rychle, přirozeně, anonymně.
               </p>
               <img
@@ -342,12 +369,13 @@
             <!-- Third card -->
             <div class="card">
               <h5
+                text-appear
                 class="text-description-big font-bold card-title text-gradient"
               >
                 3 <br />
                 Potkejte se osobně. →
               </h5>
-              <p class="text-description-medium text-gradient">
+              <p text-appear class="text-description-medium text-gradient">
                 V parku. V kavárně. Nebo třeba jen na chvíli. Za každé setkání
                 vás odměníme.
               </p>
@@ -360,7 +388,7 @@
           </div>
           <h2 class="title-giant text-white font-bold metemi-text">METEMI</h2>
         </div>
-        <div class="stats-block">
+        <div class="stats-block" anim-fade-in>
           <p class="text-description-medium-big text-gradient font-bold">
             <span class="title-big">57%</span> lidí se cítí osaměle. V kavárně,
             v tramvaji, mezi lidmi, přesto izolovaně.
@@ -379,41 +407,48 @@
             playsinline
             class="image-video"
           ></video>
-          <p class="video-text text-description-big">
+          <p
+            class="video-text text-description-big"
+            parallax
+            data-flipdirection="true"
+            data-speed="2.5"
+          >
             Don't tweet. <br />
             Meet.
           </p>
-          <div class="dm-red">
-            <p class="description">
-              Tak jo, potkáme se v 7 před tou vietnamskou restaurací? Vezmeme to
-              s sebou.
-            </p>
-            <p class="time">12:02</p>
-          </div>
-          <div class="dm-gray">
-            <p class="description">OK, agree, see U later.</p>
-            <p class="time">12:05</p>
+          <div class="dm-container">
+            <div class="dm-red" anim-pop-in>
+              <p class="description">
+                Tak jo, potkáme se v 7 před tou vietnamskou restaurací? Vezmeme
+                to s sebou.
+              </p>
+              <p class="time">12:02</p>
+            </div>
+            <div class="dm-gray" anim-pop-in>
+              <p class="description">OK, agree, see U later.</p>
+              <p class="time">12:05</p>
+            </div>
           </div>
         </div>
         <div class="text-container">
-          <h3 class="text-gradient title-small title">
+          <h3 text-appear class="text-gradient title-small title">
             Bezpečný prostor, kde máš všechno pod kontrolou.
           </h3>
-          <p class="text-description-medium">
+          <p text-appear class="text-description-medium">
             Nikdo
             <span class="text-gradient font-bold">nevidí tvou</span> přesnou
             <span class="text-gradient font-bold">polohu,</span> pouze vzálenost
           </p>
-          <p class="text-description-medium">
+          <p text-appear class="text-description-medium">
             <span class="text-gradient font-bold">Aplikace tě</span> sama
             <span class="text-gradient font-bold">chrání</span> můžeš nahlásit,
             skrýt nebo zablokovat kohokoli chceš
           </p>
-          <p class="text-description-medium">
+          <p text-appear class="text-description-medium">
             <span class="text-gradient font-bold">Navržené pro pohodlí</span>
             všech bez ohledu na věk, zkušenosti nebo povahu
           </p>
-          <p class="text-gradient text-description-medium">
+          <p text-appear class="text-gradient text-description-medium">
             (Aplikace je určena pro uživatele od 18 let)
           </p>
         </div>
@@ -430,26 +465,33 @@
             playsinline
             class="image-video"
           ></video>
-          <p class="video-text text-description-big">
+          <p
+            class="video-text text-description-big"
+            parallax
+            data-flipdirection="true"
+            data-speed="2.5"
+          >
             Don't swipe. <br />
             Invite.
           </p>
-          <div class="dm-red">
-            <p class="description">
-              Okej, v 15:00 na náměstí u La Bohème? Sedneme si ven.
-            </p>
-            <p class="time">12:02</p>
-          </div>
-          <div class="dm-gray">
-            <p class="description">OK, agree, see U later</p>
-            <p class="time">12:05</p>
+          <div class="dm-container">
+            <div class="dm-red" anim-pop-in>
+              <p class="description">
+                Okej, v 15:00 na náměstí u La Bohème? Sedneme si ven.
+              </p>
+              <p class="time">12:02</p>
+            </div>
+            <div class="dm-gray" anim-pop-in>
+              <p class="description">OK, agree, see U later</p>
+              <p class="time">12:05</p>
+            </div>
           </div>
         </div>
         <div class="text-container">
-          <h3 class="text-gradient title-small title">
+          <h3 text-appear class="text-gradient title-small title">
             Za každé setkání dárek pro tebe
           </h3>
-          <p class="text-description-medium">
+          <p text-appear class="text-description-medium">
             Pokaždé, když se s někým ve svém okolí setkáš, najdeš hned v
             aplikaci odměnu.
           </p>
@@ -467,27 +509,34 @@
             playsinline
             class="image-video"
           ></video>
-          <p class="video-text text-description-big">
+          <p
+            class="video-text text-description-big"
+            parallax
+            data-flipdirection="true"
+            data-speed="2.5"
+          >
             Don't push. <br />
             Blush.
           </p>
-          <div class="dm-red">
-            <p class="description">
-              Okej, v 15:00 na náměstí u La Bohème? Sedneme si ven.
-            </p>
-            <p class="time">12:02</p>
-          </div>
-          <div class="dm-gray">
-            <p class="description">OK, agree, see U later</p>
-            <p class="time">12:05</p>
+          <div class="dm-container">
+            <div class="dm-red" anim-pop-in>
+              <p class="description">
+                Okej, v 15:00 na náměstí u La Bohème? Sedneme si ven.
+              </p>
+              <p class="time">12:02</p>
+            </div>
+            <div class="dm-gray" anim-pop-in>
+              <p class="description">OK, agree, see U later</p>
+              <p class="time">12:05</p>
+            </div>
           </div>
         </div>
         <div class="text-container">
-          <h3 class="text-gradient title-small title">
+          <h3 text-appear class="text-gradient title-small title">
             Každý někdy hledá někoho blízkého. Možná jste si blíž, než si
             myslíte.
           </h3>
-          <p class="text-description-medium">
+          <p text-appear class="text-description-medium">
             <span class="text-gradient font-bold">Metemi oživuje</span> městský
             životní styl.V kavárnách, parcích, tramvajích, coworku - stačí se
             zapojit.
@@ -499,11 +548,44 @@
             src="assets/images/google-play.png"
             alt="Map Image"
             class="google-play-badge"
+            anim-fade
           />
         </div>
       </section>
 
       <!-- 4 Text Left Image Right Section BACKGROUND -->
+
+      <div class="image-container-mobile">
+        <video
+          src="assets/videos/video-2.mp4"
+          autoplay
+          loop
+          muted
+          playsinline
+          class="image-video"
+        ></video>
+        <p
+          class="video-text text-description-big"
+          parallax
+          data-flipdirection="true"
+          data-speed="2.5"
+        >
+          Meet real people. <br />
+          around you.
+        </p>
+        <div class="dm-container">
+          <div class="dm-red" anim-pop-in>
+            <p class="description">
+              Okej, v 15:00 na náměstí u La Bohème? Sedneme si ven.
+            </p>
+            <p class="time">12:02</p>
+          </div>
+          <div class="dm-gray" anim-pop-in>
+            <p class="description">OK, agree, see U later</p>
+            <p class="time">12:05</p>
+          </div>
+        </div>
+      </div>
       <section class="image-right-text-split-4">
         <div class="bg"></div>
         <div class="image-container">
@@ -515,26 +597,33 @@
             playsinline
             class="image-video"
           ></video>
-          <p class="video-text text-description-big">
+          <p
+            class="video-text text-description-big"
+            parallax
+            data-flipdirection="true"
+            data-speed="2"
+          >
             Meet real people. <br />
-            aruond you.
+            around you.
           </p>
-          <div class="dm-red">
-            <p class="description">
-              Okej, v 15:00 na náměstí u La Bohème? Sedneme si ven.
-            </p>
-            <p class="time">12:02</p>
-          </div>
-          <div class="dm-gray">
-            <p class="description">OK, agree, see U later</p>
-            <p class="time">12:05</p>
+          <div class="dm-container">
+            <div class="dm-red" anim-pop-in>
+              <p class="description">
+                Okej, v 15:00 na náměstí u La Bohème? Sedneme si ven.
+              </p>
+              <p class="time">12:02</p>
+            </div>
+            <div class="dm-gray" anim-pop-in>
+              <p class="description">OK, agree, see U later</p>
+              <p class="time">12:05</p>
+            </div>
           </div>
         </div>
         <div class="text-container">
-          <h3 class="text-white title-small">
+          <h3 text-appear class="text-white title-small">
             Přestaň lidi míjet. Začni je potkávat.
           </h3>
-          <p class="text-description-medium text-white">
+          <p text-appear class="text-description-medium text-white">
             Život se děje offline. <span class="font-bold">Metemi tě</span> k
             němu <span class="font-bold">přiblíží.</span>
           </p>
@@ -543,6 +632,7 @@
             src="assets/images/google-play.png"
             alt="Map Image"
             class="google-play-badge"
+            anim-fade
           />
         </div>
       </section>
@@ -551,7 +641,7 @@
     <!-- Footer -->
     <footer class="footer">
       <div class="google-play-container">
-        <p class="text-description-medium">
+        <p text-appear class="text-description-medium">
           <span class="text-gradient font-bold">Začněte</span> reálně
           <span class="text-gradient font-bold">potkávat</span>
           lidi.
@@ -563,9 +653,10 @@
           src="assets/images/google-play.png"
           alt="Map Image"
           class="google-play-badge"
+          anim-fade
         />
       </div>
-      <h2 class="main-title footer-title">Metemi</h2>
+      <h2 letter-spacing class="main-title footer-title">Metemi</h2>
       <div class="links-container text-description-medium">
         <p>
           <a href="#">O nás</a> • <a href="#">Podmínky použití</a> •

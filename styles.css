@@ -80,12 +80,20 @@ img {
    ======================================== */
 
 .text-description-medium {
-  font-size: 1.5rem; /* 24px */
+  font-size: clamp(
+    1rem,
+    calc(0.868rem + 0.526vw),
+    1.5rem
+  ); /* min: 16px, max: 24px */
   font-weight: 400;
 }
 
 .text-description-medium-big {
-  font-size: 2rem; /* 32px */
+  font-size: clamp(
+    1.5rem,
+    calc(1.368rem + 0.526vw),
+    2rem
+  ); /* min: 24px, max: 32px */
   font-weight: 400;
 }
 
@@ -98,20 +106,41 @@ img {
   font-size: 1rem; /* 16px */
 }
 
+.text-description-big {
+  font-size: clamp(
+    1.5rem,
+    calc(1.237rem + 1.053vw),
+    2.5rem
+  ); /* min: 24px, max: 40px */
+  line-height: 1;
+}
+
 .title-small-small {
-  font-size: 3rem; /* 48px */
+  font-size: clamp(
+    2.5rem,
+    calc(2.368rem + 0.526vw),
+    3rem
+  ); /* min: 40px, max: 48px */
   line-height: 112%;
   font-weight: 700;
 }
 
 .title-small {
-  font-size: 4rem; /* 64px */
+  font-size: clamp(
+    2rem,
+    calc(1.474rem + 2.105vw),
+    4rem
+  ); /* min: 32px, max: 64px */
   line-height: 112%;
   font-weight: 700;
 }
 
 .title-big {
-  font-size: 5.5rem; /* 88px */
+  font-size: clamp(
+    2.5rem,
+    calc(1.711rem + 3.158vw),
+    5.5rem
+  ); /* min: 40px, max: 88px */
   line-height: 1;
   font-weight: 700;
 }
@@ -169,11 +198,6 @@ img {
   }
 }
 
-.text-description-big {
-  font-size: 2.5rem;
-  line-height: 1;
-}
-
 .text-gradient {
   background-image: var(--color-button-gradient);
   -webkit-background-clip: text;
@@ -187,6 +211,17 @@ img {
   /* Ensure proper rendering */
   display: inline-block;
   line-height: 1.1;
+}
+
+/* Fix for SplitText with gradient */
+.text-gradient .split-line {
+  display: inline-block;
+  background-image: var(--color-button-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 /* ========================================
@@ -368,7 +403,7 @@ img {
   flex-direction: row;
   position: relative;
   margin-bottom: 2rem;
-  margin-top: 200px
+  margin-top: 200px;
 }
 
 .statistic-content {
@@ -518,7 +553,7 @@ img {
    TALK TO SECTION
    ======================================== */
 .talk-to {
-  padding: 450px 150px 0 150px;
+  padding: 450px 10% 0 10%;
   position: relative;
 
   .main-title {
@@ -534,12 +569,20 @@ img {
     right: 0;
     width: 100%;
     height: 60vw;
+    min-height: 500px;
 
     .phone {
-      max-height: 1200px;
       height: 60vw;
+      min-height: 900px;
+      max-height: 1200px;
+      width: auto;
+      min-width: 450px;
       position: absolute;
-      right: 0;
+      right: clamp(
+        -17.187rem,
+        calc(-21.711rem + 18.092vw),
+        0rem
+      ); /* min: -275px, max: 0px */
       top: 0;
       transform: rotate(-60deg);
     }
@@ -551,7 +594,11 @@ img {
     .portret-1 {
       top: 64%;
       right: 18%;
-      width: 140px;
+      width: clamp(
+        7.5rem,
+        calc(7.171rem + 1.316vw),
+        8.75rem
+      ); /* min: 120px, max: 140px */
     }
 
     .portret-2 {
@@ -563,13 +610,21 @@ img {
     .portret-3 {
       top: 48%;
       right: 15%;
-      width: 90px;
+      width: clamp(
+        3.75rem,
+        calc(3.257rem + 1.974vw),
+        5.625rem
+      ); /* min: 60px, max: 90px */
     }
 
     .portret-4 {
       top: 32%;
       right: 21%;
-      width: 90px;
+      width: clamp(
+        4.063rem,
+        calc(3.651rem + 1.645vw),
+        5.625rem
+      ); /* min: 65px, max: 90px */
     }
 
     .portret-5 {
@@ -580,11 +635,25 @@ img {
   }
 
   .google-play {
-    margin-top: 150px;
+    margin-top: clamp(
+      4.688rem,
+      calc(3.454rem + 4.934vw),
+      9.375rem
+    ); /* min: 75px, max: 150px */
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: clamp(
+      1.5rem,
+      calc(1.237rem + 1.053vw),
+      2.5rem
+    ); /* min: 24px, max: 40px */
     max-width: 80%;
+
+    @media (max-width: 768px) {
+      align-items: center;
+      text-align: center;
+      max-width: 100%;
+    }
 
     .google-play-badge {
       width: 200px;
@@ -596,9 +665,13 @@ img {
    HOW IT WORKS SECTION
    ======================================== */
 .how-it-works {
-  margin-top: 164px;
-  padding-left: 64px;
-  padding-right: 64px;
+  margin-top: clamp(
+    3.75rem,
+    calc(2.039rem + 6.842vw),
+    10.25rem
+  ); /* min: 60px, max: 164px */
+  padding-left: 5vw;
+  padding-right: 5vw;
 
   .container {
     border-radius: 64px;
@@ -607,7 +680,9 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 100px 100px 0 100px;
+    padding-top: 5vw;
+    padding-left: 5vw;
+    padding-right: 5vw;
     overflow: hidden;
 
     .main-title {
@@ -618,7 +693,11 @@ img {
     .card-container {
       display: flex;
       flex-direction: row;
-      gap: 32px;
+      gap: clamp(
+        1rem,
+        calc(0.737rem + 1.053vw),
+        2rem
+      ); /* min: 16px, max: 32px */
 
       .card {
         display: flex;
@@ -626,7 +705,21 @@ img {
         align-items: center;
         background-color: white;
         border-radius: 20px;
-        padding: 36px 36px 0px 36px;
+        padding-top: clamp(
+          1.625rem,
+          calc(1.461rem + 0.658vw),
+          2.25rem
+        ); /* min: 26px, max: 36px */
+        padding-left: clamp(
+          1.625rem,
+          calc(1.461rem + 0.658vw),
+          2.25rem
+        ); /* min: 26px, max: 36px */
+        padding-right: clamp(
+          1.625rem,
+          calc(1.461rem + 0.658vw),
+          2.25rem
+        ); /* min: 26px, max: 36px */
         aspect-ratio: 6/10;
         flex: 1;
         overflow: hidden;
@@ -639,7 +732,7 @@ img {
 
         .how-img-1 {
           position: absolute;
-          top: 40%;
+          top: 350px;
           left: -5%;
           width: 100%;
           height: auto;
@@ -649,7 +742,7 @@ img {
 
         .how-img-2 {
           position: absolute;
-          top: 40%;
+          top: 300px;
           width: 70%;
           height: auto;
           border-radius: 20px;
@@ -658,7 +751,8 @@ img {
 
         .how-img-3 {
           position: absolute;
-          top: 45%;
+          top: 375px;
+
           width: 80%;
           height: auto;
           border-radius: 20px;
@@ -691,9 +785,21 @@ img {
   gap: 100px;
   margin-top: 80px;
 
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
+
   .image-container {
     width: 45%;
     position: relative;
+
+    @media (max-width: 1024px) and (min-width: 769px) {
+      width: 75%;
+    }
+
+    @media (max-width: 768px) {
+      width: 90%;
+    }
 
     video {
       height: 100%;
@@ -705,22 +811,31 @@ img {
     .video-text {
       position: absolute;
       left: 20%;
-      bottom: 50%;
+      bottom: 30%;
       font-weight: bold;
       color: white;
       line-height: 160%;
     }
 
-    .dm-red {
+    .dm-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: clamp(
+        0.75rem,
+        calc(0.158rem + 2.368vw),
+        3rem
+      ); /* min: 12px, max: 48px */
       position: absolute;
-      bottom: 100px;
-      right: -88px;
-    }
+      bottom: -5%;
+      right: -10%;
 
-    .dm-gray {
-      position: absolute;
-      bottom: -30px;
-      right: 50px;
+      .dm-red {
+        margin-left: 10vw;
+      }
+
+      .dm-gray {
+      }
     }
   }
 
@@ -731,6 +846,13 @@ img {
     gap: 40px;
     justify-content: center;
     align-items: start;
+
+    @media (max-width: 1024px) {
+      width: 100%;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+    }
 
     .title {
       max-width: 70%;
@@ -754,9 +876,22 @@ img {
   gap: 100px;
   margin-top: 80px;
 
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
   .image-container {
     width: 45%;
     position: relative;
+
+    @media (max-width: 1024px) and (min-width: 769px) {
+      width: 75%;
+    }
+
+    @media (max-width: 768px) {
+      width: 90%;
+    }
 
     video {
       height: 100%;
@@ -768,22 +903,46 @@ img {
     .video-text {
       position: absolute;
       left: 20%;
-      bottom: 50%;
+      bottom: 30%;
       font-weight: bold;
       color: white;
       line-height: 160%;
     }
 
-    .dm-red {
+    .dm-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: clamp(
+        0.75rem,
+        calc(0.158rem + 2.368vw),
+        3rem
+      ); /* min: 12px, max: 48px */
       position: absolute;
-      bottom: 200px;
-      left: -400px;
-    }
+      bottom: 5%;
+      left: -20%;
 
-    .dm-gray {
-      position: absolute;
-      bottom: 75px;
-      left: -300px;
+      @media (max-width: 768px) {
+        left: -5%;
+      }
+
+      .dm-red {
+        margin-right: 50px;
+
+        @media (max-width: 1024px) {
+          left: -10%;
+          bottom: 17.5%;
+        }
+      }
+
+      .dm-gray {
+        align-self: flex-end;
+
+        @media (max-width: 1024px) {
+          left: 10%;
+          bottom: 0;
+        }
+      }
     }
   }
 
@@ -795,6 +954,13 @@ img {
     gap: 40px;
     justify-content: center;
     align-items: start;
+
+    @media (max-width: 1024px) {
+      width: 100%;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+    }
 
     .title {
       max-width: 70%;
@@ -818,9 +984,21 @@ img {
   gap: 100px;
   margin-top: 80px;
 
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
+
   .image-container {
     width: 45%;
     position: relative;
+
+    @media (max-width: 1024px) and (min-width: 769px) {
+      width: 75%;
+    }
+
+    @media (max-width: 768px) {
+      width: 90%;
+    }
 
     video {
       height: 100%;
@@ -832,22 +1010,36 @@ img {
     .video-text {
       position: absolute;
       left: 20%;
-      bottom: 50%;
+      bottom: 40%;
       font-weight: bold;
       color: white;
       line-height: 160%;
     }
 
-    .dm-red {
+    .dm-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: clamp(
+        0.75rem,
+        calc(0.158rem + 2.368vw),
+        3rem
+      ); /* min: 12px, max: 48px */
       position: absolute;
-      bottom: 240px;
-      right: 65px;
-    }
+      bottom: 5%;
+      right: -20%;
 
-    .dm-gray {
-      position: absolute;
-      bottom: 88px;
-      right: -120px;
+      @media (max-width: 768px) {
+        right: -5%;
+        bottom: -5%;
+      }
+
+      .dm-red {
+      }
+
+      .dm-gray {
+        margin-left: 10vw;
+      }
     }
   }
 
@@ -858,6 +1050,13 @@ img {
     gap: 40px;
     justify-content: center;
     align-items: start;
+
+    @media (max-width: 1024px) {
+      width: 100%;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+    }
 
     .title {
       max-width: 70%;
@@ -870,6 +1069,55 @@ img {
     .google-play-badge {
       max-width: 200px;
       cursor: pointer;
+    }
+  }
+}
+
+.image-container-mobile {
+  display: none;
+  width: 100%;
+  padding-left: 10%;
+  padding-top: 40px;
+  position: relative;
+
+  @media (max-width: 1024px) {
+    display: block;
+  }
+
+  video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 60px 0px 0px 60px;
+  }
+
+  .video-text {
+    position: absolute;
+    left: 20%;
+    bottom: 30%;
+    font-weight: bold;
+    color: white;
+    line-height: 160%;
+  }
+
+  .dm-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: clamp(
+      0.75rem,
+      calc(0.158rem + 2.368vw),
+      3rem
+    ); /* min: 12px, max: 48px */
+    position: absolute;
+    bottom: -2.5%;
+    left: 15%;
+
+    .dm-red {
+      margin-left: 10vw;
+    }
+
+    .dm-gray {
     }
   }
 }
@@ -882,6 +1130,13 @@ img {
   margin-top: 80px;
   position: relative;
 
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    align-items: flex-end;
+    padding-top: 65px;
+    padding-bottom: 50px;
+  }
+
   .bg {
     background-image: url(/assets//images//how-bg.png);
     position: absolute;
@@ -891,38 +1146,66 @@ img {
     transform: translateY(-50%);
     left: 0;
     z-index: -1;
+
+    @media (max-width: 1024px) {
+      height: 100%;
+    }
   }
 
   .image-container {
     width: 45%;
     position: relative;
 
+    @media (max-width: 1024px) {
+      display: none;
+    }
+
     video {
       height: 100%;
       width: 100%;
       object-fit: cover;
       border-radius: 60px 0px 0px 60px;
+
+      @media (max-width: 1024px) {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
     }
 
     .video-text {
       position: absolute;
       left: 20%;
-      bottom: 50%;
+      bottom: 40%;
       font-weight: bold;
       color: white;
       line-height: 160%;
     }
 
-    .dm-red {
+    .dm-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: clamp(
+        0.75rem,
+        calc(0.158rem + 2.368vw),
+        3rem
+      ); /* min: 12px, max: 48px */
       position: absolute;
-      bottom: 230px;
-      left: 100px;
-    }
+      bottom: 5%;
+      left: -20%;
 
-    .dm-gray {
-      position: absolute;
-      bottom: 70px;
-      left: -80px;
+      @media (max-width: 768px) {
+        left: -5%;
+        bottom: -5%;
+      }
+
+      .dm-red {
+        margin-left: 10vw;
+      }
+
+      .dm-gray {
+      }
     }
   }
 
@@ -935,6 +1218,13 @@ img {
     justify-content: center;
     align-items: start;
 
+    @media (max-width: 1024px) {
+      width: 100%;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+    }
+
     .title {
       max-width: 70%;
     }
@@ -946,6 +1236,10 @@ img {
     .google-play-badge {
       max-width: 200px;
       cursor: pointer;
+
+      @media (max-width: 768px) {
+        margin-top: 70px;
+      }
     }
   }
 }
@@ -954,7 +1248,11 @@ img {
    FOOTER
    ======================================== */
 .footer {
-  margin-top: 250px;
+  margin-top: clamp(
+    4.375rem,
+    calc(1.414rem + 11.842vw),
+    15.625rem
+  ); /* min: 70px, max: 250px */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -965,7 +1263,7 @@ img {
     -webkit-text-stroke-color: #f4861e;
     paint-order: stroke fill;
     text-transform: uppercase;
-    font-size: 27.5vw;
+    font-size: 25vw;
     font-weight: 700;
     line-height: 100%;
   }
@@ -976,11 +1274,20 @@ img {
     width: 100%;
     padding: 0 10%;
 
+    @media (max-width: 768px) {
+      justify-content: center;
+      text-align: center;
+    }
+
     .google-play-badge {
       width: 200px;
       height: auto;
       object-fit: contain;
       cursor: pointer;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
     }
   }
 
@@ -1074,21 +1381,38 @@ img {
 .dm-gray {
   border-radius: 13px 0 13px 13px;
   backdrop-filter: blur(13px);
-  padding: 20px;
+  padding: clamp(
+    0.625rem,
+    calc(0.461rem + 0.658vw),
+    1.25rem
+  ); /* min: 10px, max: 20px */
   display: flex;
   flex-direction: column;
   gap: 2px;
-  width: 450px;
+  width: clamp(
+    14.375rem,
+    calc(10.757rem + 14.474vw),
+    28.125rem
+  ); /* min: 230px, max: 450px */
   line-height: normal;
 
   .description {
-    font-size: 1.5rem;
+    font-size: clamp(
+      1rem,
+      calc(0.868rem + 0.526vw),
+      1.5rem
+    ); /* min: 16px, max: 24px */
+    color: white;
     color: white;
     align-self: flex-start;
   }
 
   .time {
-    font-size: 1.5rem;
+    font-size: clamp(
+      1rem,
+      calc(0.868rem + 0.526vw),
+      1.5rem
+    ); /* min: 16px, max: 24px */
     color: white;
     opacity: 0.6;
     align-self: flex-end;
@@ -1098,9 +1422,17 @@ img {
 .dm-red {
   background: rgba(217, 54, 68, 0.6);
   border-radius: 10px 0px 10px 10px;
+
+  @media (max-width: 768px) {
+    border-radius: 0px 6px 6px 6px;
+  }
 }
 
 .dm-gray {
   background: rgba(54, 56, 89, 0.6);
   border-radius: 0px 10px 10px 10px;
+
+  @media (max-width: 768px) {
+    border-radius: 0px 6px 6px 6px;
+  }
 }
