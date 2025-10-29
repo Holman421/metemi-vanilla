@@ -47,6 +47,77 @@ function initLenis() {
    GSAP ANIMATION FUNCTIONS
    ======================================== */
 
+function wordSwitcherAnimation() {
+  const wordElement = document.querySelector('.word-switcher');
+  if (!wordElement || typeof SplitText === 'undefined') {
+    console.error('SplitText plugin not loaded or element not found');
+    return;
+  }
+
+  const words = ['people', 'groups'];
+  let currentIndex = 0;
+  let currentSplit = null;
+
+  // Initialize with first word
+  wordElement.textContent = words[currentIndex];
+  currentSplit = new SplitText(wordElement, { type: 'chars' });
+
+  // Function to animate word transition
+  function animateWordSwitch() {
+    const nextIndex = (currentIndex + 1) % words.length;
+    
+    // Animate out current letters with stagger
+    gsap.to(currentSplit.chars, {
+      duration: 0.4,
+      y: -30,
+      opacity: 0,
+      rotation: () => gsap.utils.random(-15, 15),
+      scale: 0.5,
+      ease: 'back.in(2)',
+      stagger: {
+        each: 0.03,
+        from: 'random'
+      },
+      onComplete: () => {
+        // Revert split and update text
+        currentSplit.revert();
+        wordElement.textContent = words[nextIndex];
+        currentSplit = new SplitText(wordElement, { type: 'chars' });
+        
+        // Set initial state for new chars
+        gsap.set(currentSplit.chars, {
+          y: 30,
+          opacity: 0,
+          rotation: () => gsap.utils.random(-15, 15),
+          scale: 0.5
+        });
+        
+        // Animate in new letters with stagger
+        gsap.to(currentSplit.chars, {
+          duration: 0.5,
+          y: 0,
+          opacity: 1,
+          rotation: 0,
+          scale: 1,
+          ease: 'back.out(2)',
+          stagger: {
+            each: 0.04,
+            from: 'start'
+          },
+          onComplete: () => {
+            currentIndex = nextIndex;
+            // Wait before next transition
+            gsap.delayedCall(2.5, animateWordSwitch);
+          }
+        });
+      }
+    });
+  }
+
+  // Start the animation cycle after initial delay
+  gsap.delayedCall(2.5, animateWordSwitch);
+}
+
 function logoSplitAnimation() {
   const logo = document.querySelector('.anim-logo');
   if (!logo) return;
@@ -390,8 +461,13 @@ function initAnimations() {
   if (typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
   }
+  
+  if (typeof SplitText !== 'undefined') {
+    gsap.registerPlugin(SplitText);
+  }
 
   // Initialize all animations
+  wordSwitcherAnimation();
   logoSplitAnimation();
   outlineTextReveal();
   popInAnimation();
