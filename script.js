@@ -120,8 +120,6 @@ function wordSwitcherAnimation() {
 function popInAnimation() {
   const elements = document.querySelectorAll("[anim-pop-in]");
 
-  console.log("Pop-in elements:", elements);
-
   elements.forEach((element) => {
     gsap.set(element, {
       scale: 0,
@@ -276,8 +274,6 @@ function fadeRightAnimation() {
 function animateTextsAppear() {
   const elements = document.querySelectorAll("[text-appear]");
 
-  console.log("Animating texts:", elements);
-
   elements.forEach((element) => {
     const startTrigger = element.dataset.start || "top 85%";
 
@@ -324,6 +320,30 @@ function animateTextsLetterSpacing() {
       }
     );
   });
+}
+
+function animateTitleXScrub() {
+  const element = document.querySelector("[title-x-scrub]");
+
+  gsap.fromTo(
+    element,
+    {
+      x: "0%",
+    },
+    {
+      x: "-250%",
+      duration: 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: element,
+        start: "top 75%",
+        end: "bottom 25%",
+        scrub: true,
+        markers: false,
+        scrub: 1.5,
+      },
+    }
+  );
 }
 
 function animateTextsLetterSpacingScrub() {
@@ -385,7 +405,7 @@ function animateHowCardsImages() {
           start: start,
           end: "top 70%",
           scrub: true,
-          markers: true,
+          markers: false,
         },
       }
     );
@@ -599,6 +619,153 @@ function initAnimatedNumbers() {
 }
 
 /* ========================================
+   MOBILE CARD CAROUSEL (CONTAINER-MOBILE)
+   ======================================== */
+function animateHowMobileCards() {
+  const pinContainer = document.getElementById("how-mobile-pin-container");
+
+  const pinTarget = pinContainer.querySelector(".container-mobile-inner");
+  const columnPercentageOffset = 250;
+
+  const buttons = Array.from(document.querySelectorAll("#how-mobile-btn"));
+
+  const cards = [
+    document.getElementById("how-mobile-card-1"),
+    document.getElementById("how-mobile-card-2"),
+    document.getElementById("how-mobile-card-3"),
+  ];
+
+  // Initialize card positions
+  cards.forEach((card, idx) => {
+    if (card) {
+      gsap.set(card, {
+        xPercent: idx * columnPercentageOffset - 50,
+      });
+    }
+  });
+
+  const getCurrentStateIndex = (progress) => {
+    if (progress >= 0.75) return 2;
+    if (progress >= 0.4) return 1;
+    return 0;
+  };
+
+  const updateButtonStates = (activeIndex) => {
+    buttons.forEach((btn, i) => {
+      if (i === activeIndex) {
+        btn.classList.add("carousel-btn-active");
+      } else {
+        btn.classList.remove("carousel-btn-active");
+      }
+    });
+  };
+
+  const animateCardsToState = (stateIndex) => {
+    cards.forEach((card, idx) => {
+      if (card) {
+        const offset = idx - stateIndex;
+        gsap.to(card, {
+          xPercent: offset * columnPercentageOffset - 50,
+          duration: 0.5,
+          ease: "power2.inOut",
+        });
+      }
+    });
+  };
+
+  let lastIdx = 0;
+  ScrollTrigger.create({
+    trigger: pinContainer,
+    start: "top top",
+    end: "bottom bottom",
+    pin: pinTarget,
+    scrub: 1,
+    pinType: pinTarget.style.willChange === "transform" ? "transform" : "fixed",
+    onUpdate: (self) => {
+      const currentStateIndex = getCurrentStateIndex(self.progress);
+
+      if (currentStateIndex !== lastIdx) {
+        updateButtonStates(currentStateIndex);
+        animateCardsToState(currentStateIndex);
+        lastIdx = currentStateIndex;
+      }
+    },
+  });
+}
+
+function animateChangesMobileCards() {
+  const pinContainer = document.getElementById("changes-mobile-pin-container");
+
+  const pinTarget = pinContainer.querySelector(".mobile-change-inner");
+  const columnPercentageOffset = 250;
+
+  const buttons = Array.from(
+    pinContainer.querySelectorAll("[data-changes-mobile-btn]")
+  );
+
+  const cards = [
+    document.getElementById("changes-mobile-card-1"),
+    document.getElementById("changes-mobile-card-2"),
+    document.getElementById("changes-mobile-card-3"),
+  ].filter(Boolean);
+
+  cards.forEach((card, idx) => {
+    gsap.set(card, {
+      xPercent: idx * columnPercentageOffset - 50,
+    });
+  });
+
+  const getCurrentStateIndex = (progress) => {
+    if (progress >= 0.75) return 2;
+    if (progress >= 0.4) return 1;
+    return 0;
+  };
+
+  const updateButtonStates = (activeIndex) => {
+    buttons.forEach((btn, idx) => {
+      if (idx === activeIndex) {
+        btn.classList.add("carousel-btn-active");
+      } else {
+        btn.classList.remove("carousel-btn-active");
+      }
+    });
+  };
+
+  const animateCardsToState = (stateIndex) => {
+    cards.forEach((card, idx) => {
+      const offset = idx - stateIndex;
+      gsap.to(card, {
+        xPercent: offset * columnPercentageOffset - 50,
+        duration: 0.5,
+        ease: "power2.inOut",
+      });
+    });
+  };
+
+  let lastIdx = 0;
+  updateButtonStates(lastIdx);
+
+  ScrollTrigger.create({
+    trigger: pinContainer,
+    start: "top top",
+    end: "bottom bottom",
+    pin: pinTarget,
+    scrub: 1,
+    markers: true,
+    pinType: "transform",
+    onUpdate: (self) => {
+      const currentStateIndex = getCurrentStateIndex(self.progress);
+
+      if (currentStateIndex !== lastIdx) {
+        updateButtonStates(currentStateIndex);
+        animateCardsToState(currentStateIndex);
+        lastIdx = currentStateIndex;
+      }
+    },
+  });
+}
+
+/* ========================================
    MASTER INITIALIZATION
    ======================================== */
 function initAnimations() {
@@ -627,8 +794,11 @@ function initAnimations() {
   animateHowCardsImages();
   animateTextsAppear();
   animateTextsLetterSpacing();
+  animateTitleXScrub();
   animateTextsLetterSpacingScrub();
   initAnimatedNumbers();
+  animateHowMobileCards();
+  animateChangesMobileCards();
 
   // Ensure ScrollTrigger accounts for video sizing
   const videos = Array.from(document.querySelectorAll("video"));
