@@ -299,18 +299,32 @@ img {
    HERO SECTION
    ======================================== */
 .hero-section {
-  margin-bottom: 30vw;
+  min-height: 100vh;
 
-  .main-title {
+  .main-title-visible {
+    font-size: 24vw;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+    color: white;
+    line-height: 74%;
+    margin-top: -15px;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50.5%);
+  }
+
+  .main-title-insisible {
     font-size: 24vw;
     text-transform: uppercase;
     font-weight: 700;
     position: relative;
-    text-align: center;
     transform: translateX(-0.5%);
     color: white;
     line-height: 74%;
     margin-top: -15px;
+    visibility: hidden;
   }
 
   .word-switcher {
@@ -828,11 +842,11 @@ img {
     calc(2.039rem + 6.842vw),
     10.25rem
   ); /* min: 60px, max: 164px */
-  padding-left: 5vw;
-  padding-right: 5vw;
-  display: flex;
+  padding-left: 2.5vw;
+  padding-right: 2.5vw;
+  /* display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; */
 
   .container {
     border-radius: 64px;
@@ -886,6 +900,7 @@ img {
         flex: 1;
         overflow: hidden;
         position: relative;
+        text-align: center;
 
         .card-title {
           margin-bottom: 32px;
@@ -893,31 +908,25 @@ img {
         }
 
         .how-img-1 {
-          position: absolute;
-          top: 350px;
-          left: -5%;
-          width: 100%;
-          height: auto;
-          border-radius: 20px;
-          overflow: hidden;
+          margin-top: 20px;
         }
 
         .how-img-2 {
-          position: absolute;
-          top: 300px;
-          width: 70%;
-          height: auto;
-          border-radius: 20px;
+          margin-top: 40px;
+
+          object-fit: cover;
+          object-position: top;
+          width: 80%;
+          border-radius: 20px 20px 0 0;
           overflow: hidden;
         }
 
         .how-img-3 {
-          position: absolute;
-          top: 375px;
-
-          width: 80%;
-          height: auto;
-          border-radius: 20px;
+          margin-top: 40px;
+          width: 85%;
+          object-fit: cover;
+          object-position: top;
+          border-radius: 20px 20px 0 0;
           overflow: hidden;
         }
       }

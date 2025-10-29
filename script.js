@@ -47,24 +47,24 @@ function initLenis() {
    ======================================== */
 
 function wordSwitcherAnimation() {
-  const wordElement = document.querySelector('.word-switcher');
-  if (!wordElement || typeof SplitText === 'undefined') {
-    console.error('SplitText plugin not loaded or element not found');
+  const wordElement = document.querySelector(".word-switcher");
+  if (!wordElement || typeof SplitText === "undefined") {
+    console.error("SplitText plugin not loaded or element not found");
     return;
   }
 
-  const words = ['people', 'groups'];
+  const words = ["people", "groups"];
   let currentIndex = 0;
   let currentSplit = null;
 
   // Initialize with first word
   wordElement.textContent = words[currentIndex];
-  currentSplit = new SplitText(wordElement, { type: 'chars' });
+  currentSplit = new SplitText(wordElement, { type: "chars" });
 
   // Function to animate word transition
   function animateWordSwitch() {
     const nextIndex = (currentIndex + 1) % words.length;
-    
+
     // Animate out current letters with stagger
     gsap.to(currentSplit.chars, {
       duration: 0.4,
@@ -72,25 +72,25 @@ function wordSwitcherAnimation() {
       opacity: 0,
       rotation: () => gsap.utils.random(-15, 15),
       scale: 0.5,
-      ease: 'back.in(2)',
+      ease: "back.in(2)",
       stagger: {
         each: 0.03,
-        from: 'random'
+        from: "random",
       },
       onComplete: () => {
         // Revert split and update text
         currentSplit.revert();
         wordElement.textContent = words[nextIndex];
-        currentSplit = new SplitText(wordElement, { type: 'chars' });
-        
+        currentSplit = new SplitText(wordElement, { type: "chars" });
+
         // Set initial state for new chars
         gsap.set(currentSplit.chars, {
           y: 30,
           opacity: 0,
           rotation: () => gsap.utils.random(-15, 15),
-          scale: 0.5
+          scale: 0.5,
         });
-        
+
         // Animate in new letters with stagger
         gsap.to(currentSplit.chars, {
           duration: 0.5,
@@ -98,39 +98,23 @@ function wordSwitcherAnimation() {
           opacity: 1,
           rotation: 0,
           scale: 1,
-          ease: 'back.out(2)',
+          ease: "back.out(2)",
           stagger: {
             each: 0.04,
-            from: 'start'
+            from: "start",
           },
           onComplete: () => {
             currentIndex = nextIndex;
             // Wait before next transition
             gsap.delayedCall(1.5, animateWordSwitch);
-          }
+          },
         });
-      }
+      },
     });
   }
 
   // Start the animation cycle after initial delay
   gsap.delayedCall(1.5, animateWordSwitch);
-}
-
-function logoSplitAnimation() {
-  const logo = document.querySelector('.anim-logo');
-  if (!logo) return;
-
-  gsap.to(logo, {
-    duration: 0.75,
-    y: '0%',
-    ease: 'power2.out',
-    delay: 0.25,
-    scrollTrigger: {
-      trigger: logo,
-      start: 'top 90%',
-    },
-  });
 }
 
 function popInAnimation() {
@@ -317,10 +301,33 @@ function animateTextsAppear() {
   });
 }
 
-
-
 function animateTextsLetterSpacing() {
   const elements = document.querySelectorAll("[letter-spacing]");
+
+  elements.forEach((element) => {
+    const split = new SplitText(element, {
+      type: "words",
+      wordsClass: "split-word",
+    });
+
+    gsap.fromTo(
+      split.words,
+      {
+        letterSpacing: "0.4em",
+        opacity: 0,
+      },
+      {
+        letterSpacing: "0em",
+        opacity: 1,
+        duration: 1.5,
+        ease: "power4.inOut",
+      }
+    );
+  });
+}
+
+function animateTextsLetterSpacingScrub() {
+  const elements = document.querySelectorAll("[letter-spacing-scrub]");
 
   elements.forEach((element) => {
     const split = new SplitText(element, {
@@ -343,6 +350,42 @@ function animateTextsLetterSpacing() {
           end: "bottom 60%",
           scrub: true,
           markers: false,
+        },
+      }
+    );
+  });
+}
+
+function animateHowCardsImages() {
+  const firstImage = document.querySelector("[why-card-image-1]");
+  const secondImage = document.querySelector("[why-card-image-2]");
+  const thirdImage = document.querySelector("[why-card-image-3]");
+
+  const mainTop = 100;
+  const offset = 5;
+
+  const imagesArray = [
+    { element: firstImage, start: `-=30% ${mainTop + offset}%` },
+    { element: secondImage, start: `-=30% ${mainTop}%` },
+    { element: thirdImage, start: `-=30% ${mainTop - offset}%` },
+  ];
+
+  imagesArray.forEach(({ element, start }) => {
+    gsap.fromTo(
+      element,
+      {
+        y: "50%",
+      },
+      {
+        y: "0%",
+        duration: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: element,
+          start: start,
+          end: "top 70%",
+          scrub: true,
+          markers: true,
         },
       }
     );
@@ -568,22 +611,23 @@ function initAnimations() {
   if (typeof ScrollTrigger !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
   }
-  
-  if (typeof SplitText !== 'undefined') {
+
+  if (typeof SplitText !== "undefined") {
     gsap.registerPlugin(SplitText);
   }
 
   // Initialize all animations
   wordSwitcherAnimation();
-  logoSplitAnimation();
   popInAnimation();
   fadeAnimation();
   fadeInAnimation();
   fadeLeftAnimation();
   fadeRightAnimation();
   parallaxAnimation();
+  animateHowCardsImages();
   animateTextsAppear();
   animateTextsLetterSpacing();
+  animateTextsLetterSpacingScrub();
   initAnimatedNumbers();
 
   // Ensure ScrollTrigger accounts for video sizing
