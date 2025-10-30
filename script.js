@@ -306,15 +306,27 @@ function animateTextsLetterSpacing() {
       wordsClass: "split-word",
     });
 
+    // Animate the whole element's opacity
+    gsap.fromTo(
+      element,
+      {
+        opacity: 0,
+      },
+      {
+        opacity: 1,
+        duration: 1.5,
+        ease: "power4.inOut",
+      }
+    );
+
+    // Animate individual words' letter-spacing
     gsap.fromTo(
       split.words,
       {
         letterSpacing: "0.4em",
-        opacity: 0,
       },
       {
         letterSpacing: "0em",
-        opacity: 1,
         duration: 1.5,
         ease: "power4.inOut",
       }
@@ -693,6 +705,103 @@ function animateHowMobileCards() {
   });
 }
 
+function animateBigGridMobileCards() {
+  const pinContainer = document.querySelector(".big-grid-mobile");
+  
+  // Check if element exists
+  if (!pinContainer) return;
+
+  const pinTarget = pinContainer.querySelector(".big-grid-container");
+  const title = pinContainer.querySelector(".big-grid-title");
+  const columnPercentageOffset = 250;
+
+  // Select the column elements (these are the cards to animate)
+  const cards = [
+    pinContainer.querySelector(".first.column"),
+    pinContainer.querySelector(".second.column"),
+    pinContainer.querySelector(".third.column"),
+  ].filter(Boolean);
+
+  // Initialize card positions
+  cards.forEach((card, idx) => {
+    gsap.set(card, {
+      xPercent: idx * columnPercentageOffset - 50,
+    });
+  });
+
+  // Create a wrapper for the pinned content (title + container + buttons)
+  const pinnedWrapper = document.createElement("div");
+  pinnedWrapper.className = "big-grid-pinned-wrapper";
+  
+  // Move the title and container into the wrapper
+  pinTarget.parentNode.insertBefore(pinnedWrapper, title);
+  pinnedWrapper.appendChild(title);
+  pinnedWrapper.appendChild(pinTarget);
+
+  // Create buttons container and add buttons to the wrapper
+  const buttonsContainer = document.createElement("div");
+  buttonsContainer.className = "carousel-controls";
+  buttonsContainer.innerHTML = `
+    <div class="carousel-btn carousel-btn-active" data-big-grid-mobile-btn></div>
+    <div class="carousel-btn" data-big-grid-mobile-btn></div>
+    <div class="carousel-btn" data-big-grid-mobile-btn></div>
+  `;
+  pinnedWrapper.appendChild(buttonsContainer);
+
+  const buttons = Array.from(
+    pinContainer.querySelectorAll("[data-big-grid-mobile-btn]")
+  );
+
+  const getCurrentStateIndex = (progress) => {
+    if (progress >= 0.75) return 2;
+    if (progress >= 0.4) return 1;
+    return 0;
+  };
+
+  const updateButtonStates = (activeIndex) => {
+    buttons.forEach((btn, idx) => {
+      if (idx === activeIndex) {
+        btn.classList.add("carousel-btn-active");
+      } else {
+        btn.classList.remove("carousel-btn-active");
+      }
+    });
+  };
+
+  const animateCardsToState = (stateIndex) => {
+    cards.forEach((card, idx) => {
+      const offset = idx - stateIndex;
+      gsap.to(card, {
+        xPercent: offset * columnPercentageOffset - 50,
+        duration: 0.5,
+        ease: "power2.inOut",
+      });
+    });
+  };
+
+  let lastIdx = 0;
+  updateButtonStates(lastIdx);
+
+  ScrollTrigger.create({
+    trigger: pinContainer,
+    start: "top top",
+    end: "bottom bottom",
+    pin: pinnedWrapper,
+    scrub: 1,
+    markers: false,
+    pinType: "transform",
+    onUpdate: (self) => {
+      const currentStateIndex = getCurrentStateIndex(self.progress);
+
+      if (currentStateIndex !== lastIdx) {
+        updateButtonStates(currentStateIndex);
+        animateCardsToState(currentStateIndex);
+        lastIdx = currentStateIndex;
+      }
+    },
+  });
+}
+
 function animateChangesMobileCards() {
   const pinContainer = document.getElementById("changes-mobile-pin-container");
 
@@ -751,7 +860,7 @@ function animateChangesMobileCards() {
     end: "bottom bottom",
     pin: pinTarget,
     scrub: 1,
-    markers: true,
+    markers: false,
     pinType: "transform",
     onUpdate: (self) => {
       const currentStateIndex = getCurrentStateIndex(self.progress);
@@ -799,6 +908,7 @@ function initAnimations() {
   initAnimatedNumbers();
   animateHowMobileCards();
   animateChangesMobileCards();
+  animateBigGridMobileCards();
 
   // Ensure ScrollTrigger accounts for video sizing
   const videos = Array.from(document.querySelectorAll("video"));
