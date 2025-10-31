@@ -61,13 +61,15 @@ function wordSwitcherAnimation() {
   wordElement.textContent = words[currentIndex];
   currentSplit = new SplitText(wordElement, { type: "chars" });
 
+  const delay = 1;
+
   // Function to animate word transition
   function animateWordSwitch() {
     const nextIndex = (currentIndex + 1) % words.length;
 
     // Animate out current letters with stagger
     gsap.to(currentSplit.chars, {
-      duration: 0.4,
+      duration: 0.35,
       y: -30,
       opacity: 0,
       rotation: () => gsap.utils.random(-15, 15),
@@ -93,7 +95,7 @@ function wordSwitcherAnimation() {
 
         // Animate in new letters with stagger
         gsap.to(currentSplit.chars, {
-          duration: 0.5,
+          duration: 0.4,
           y: 0,
           opacity: 1,
           rotation: 0,
@@ -106,7 +108,7 @@ function wordSwitcherAnimation() {
           onComplete: () => {
             currentIndex = nextIndex;
             // Wait before next transition
-            gsap.delayedCall(1.5, animateWordSwitch);
+            gsap.delayedCall(delay, animateWordSwitch);
           },
         });
       },
@@ -114,7 +116,7 @@ function wordSwitcherAnimation() {
   }
 
   // Start the animation cycle after initial delay
-  gsap.delayedCall(1.5, animateWordSwitch);
+  gsap.delayedCall(delay, animateWordSwitch);
 }
 
 function popInAnimation() {
