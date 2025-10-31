@@ -301,39 +301,52 @@ function animateTextsAppear() {
 
 function animateTextsLetterSpacing() {
   const elements = document.querySelectorAll("[letter-spacing]");
+  const heroContainer = document.querySelector(".hero-container");
 
-  elements.forEach((element) => {
-    const split = new SplitText(element, {
-      type: "words",
-      wordsClass: "split-word",
+  // Check if hero background image is loaded
+  const heroBgImage = new Image();
+  heroBgImage.src = "assets/images/hero-bg.jpg";
+
+  heroBgImage.onload = () => {
+    // Run animation after background image is loaded
+    elements.forEach((element) => {
+      const split = new SplitText(element, {
+        type: "words",
+        wordsClass: "split-word",
+      });
+
+      // Animate the whole element's opacity
+      gsap.fromTo(
+        element,
+        {
+          opacity: 0,
+        },
+        {
+          opacity: 1,
+          duration: 1.5,
+          ease: "power4.inOut",
+        }
+      );
+
+      // Animate individual words' letter-spacing
+      gsap.fromTo(
+        split.words,
+        {
+          letterSpacing: "0.4em",
+        },
+        {
+          letterSpacing: "0em",
+          duration: 1.5,
+          ease: "power4.inOut",
+        }
+      );
     });
+  };
 
-    // Animate the whole element's opacity
-    gsap.fromTo(
-      element,
-      {
-        opacity: 0,
-      },
-      {
-        opacity: 1,
-        duration: 1.5,
-        ease: "power4.inOut",
-      }
-    );
-
-    // Animate individual words' letter-spacing
-    gsap.fromTo(
-      split.words,
-      {
-        letterSpacing: "0.4em",
-      },
-      {
-        letterSpacing: "0em",
-        duration: 1.5,
-        ease: "power4.inOut",
-      }
-    );
-  });
+  // Fallback: if image is already cached and loaded
+  if (heroBgImage.complete) {
+    heroBgImage.onload();
+  }
 }
 
 function animateTitleXScrub() {
@@ -380,8 +393,8 @@ function animateTextsLetterSpacingScrub() {
         ease: "none",
         scrollTrigger: {
           trigger: element,
-          start: "top 90%",
-          end: "bottom 60%",
+          start: "top 100%",
+          end: "bottom 70%",
           scrub: true,
           markers: false,
         },
