@@ -1458,7 +1458,16 @@ img {
 
       .main-title {
         color: white;
-   
+        padding-top: clamp(
+          1.5rem,
+          calc(0.711rem + 3.158vw),
+          4.5rem
+        ); /* min: 24px, max: 72px */
+        padding-bottom: clamp(
+          1.5rem,
+          calc(0.711rem + 3.158vw),
+          4.5rem
+        ); /* min: 24px, max: 72px */
       }
 
       .card-container {

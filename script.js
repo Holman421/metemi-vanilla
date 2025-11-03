@@ -886,7 +886,7 @@ function animateHowMobileCards() {
       "#how-mobile-card-2",
       "#how-mobile-card-3",
     ],
-    pinType: "transform",
+    pinType: "fixed", // Use fixed for better Safari compatibility
   });
 }
 
@@ -906,7 +906,7 @@ function animateChangesMobileCards() {
     pinTargetSelector: ".mobile-change-inner",
     buttonSelector: "[data-changes-mobile-btn]",
     cardElements: cards,
-    pinType: "transform",
+    pinType: "fixed", // Use fixed for better Safari compatibility
   });
 }
 
@@ -931,7 +931,7 @@ function animateBigGridMobileCards() {
       wrapperClass: "big-grid-pinned-wrapper",
       buttonAttribute: "data-big-grid-mobile-btn",
     },
-    pinType: "transform",
+    pinType: "fixed", // Use fixed for better Safari compatibility
   });
 }
 
