@@ -303,52 +303,39 @@ function animateTextsAppear() {
 
 function animateTextsLetterSpacing() {
   const elements = document.querySelectorAll("[letter-spacing]");
-  const heroContainer = document.querySelector(".hero-container");
 
-  // Check if hero background image is loaded
-  const heroBgImage = new Image();
-  heroBgImage.src = "assets/images/hero-bg.jpg";
-
-  heroBgImage.onload = () => {
-    // Run animation after background image is loaded
-    elements.forEach((element) => {
-      const split = new SplitText(element, {
-        type: "words",
-        wordsClass: "split-word",
-      });
-
-      // Animate the whole element's opacity
-      gsap.fromTo(
-        element,
-        {
-          opacity: 0,
-        },
-        {
-          opacity: 1,
-          duration: 1.5,
-          ease: "power4.inOut",
-        }
-      );
-
-      // Animate individual words' letter-spacing
-      gsap.fromTo(
-        split.words,
-        {
-          letterSpacing: "0.4em",
-        },
-        {
-          letterSpacing: "0em",
-          duration: 1.5,
-          ease: "power4.inOut",
-        }
-      );
+  elements.forEach((element) => {
+    const split = new SplitText(element, {
+      type: "words",
+      wordsClass: "split-word",
     });
-  };
 
-  // Fallback: if image is already cached and loaded
-  if (heroBgImage.complete) {
-    heroBgImage.onload();
-  }
+    // Animate the whole element's opacity
+    gsap.fromTo(
+      element,
+      {
+        opacity: 0,
+      },
+      {
+        opacity: 1,
+        duration: 1.5,
+        ease: "power4.inOut",
+      }
+    );
+
+    // Animate individual words' letter-spacing
+    gsap.fromTo(
+      split.words,
+      {
+        letterSpacing: "0.4em",
+      },
+      {
+        letterSpacing: "0em",
+        duration: 1.5,
+        ease: "power4.inOut",
+      }
+    );
+  });
 }
 
 function animateTitleXScrub() {
@@ -926,7 +913,7 @@ function initAnimations() {
   fadeRightAnimation();
   parallaxAnimation();
   animateHowCardsImages();
-  // animateTextsAppear();
+  animateTextsAppear();
   animateTextsLetterSpacing();
   animateTitleXScrub();
   animateTextsLetterSpacingScrub();
@@ -941,6 +928,11 @@ function initAnimations() {
    ======================================== */
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Metemi initialized");
+
+  // Initialize video lazy loading
+  if (typeof initVideoOptimization === "function") {
+    initVideoOptimization();
+  }
 
   initLenis();
 

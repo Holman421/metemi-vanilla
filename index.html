@@ -45,6 +45,8 @@
     ></script>
     <!-- Lenis Smooth Scroll -->
     <script src="https://unpkg.com/lenis@1.3.11/dist/lenis.min.js"></script>
+    <!-- Video Manager -->
+    <script src="videoManager.js"></script>
     <!-- Main Script -->
     <script src="script.js" defer></script>
   </head>
@@ -77,6 +79,7 @@
                   <img
                     src="assets/images/google-play.png"
                     alt="Google Play Badge"
+                    loading="lazy"
                   />
                 </button>
               </div>
@@ -97,7 +100,7 @@
             </h2>
             <div class="video-container" anim-fade>
               <video
-                src="assets/videos/what-differently.mp4"
+                data-src="assets/videos/what-differently.mp4"
                 playsinline
                 controls
                 class="what-differently-video"
@@ -110,6 +113,7 @@
                   src="assets/images/google-play.png"
                   alt="Google Play Badge"
                   class="google-play-badge"
+                  loading="lazy"
                   anim-fade
                 />
               </button>
@@ -327,6 +331,7 @@
                 src="assets/images/phone-flat.png"
                 alt="Mobile displaying Metemi App"
                 class="statistic-phone"
+                loading="lazy"
                 anim-fade-right
               />
             </div>
@@ -339,6 +344,7 @@
                 src="assets/images/phone-flat.png"
                 alt="Mobile displaying Metemi App"
                 class="statistic-phone"
+                loading="lazy"
                 anim-fade-right
               />
             </div>
@@ -360,7 +366,7 @@
                 </div>
                 <div class="video">
                   <video
-                    src="assets/videos/video-4.mp4"
+                    data-src="assets/videos/video-4.mp4"
                     autoplay
                     loop
                     muted
@@ -394,7 +400,7 @@
                 </div>
                 <div class="video">
                   <video
-                    src="assets/videos/video-4.mp4"
+                    data-src="assets/videos/video-4.mp4"
                     autoplay
                     loop
                     muted
@@ -416,7 +422,7 @@
             <div class="change-item-horizontal">
               <div class="video">
                 <video
-                  src="assets/videos/video-4.mp4"
+                  data-src="assets/videos/video-4.mp4"
                   autoplay
                   loop
                   muted
@@ -466,7 +472,7 @@
                     </div>
                     <div class="video">
                       <video
-                        src="assets/videos/video-4.mp4"
+                        data-src="assets/videos/video-4.mp4"
                         autoplay
                         loop
                         muted
@@ -498,7 +504,7 @@
                     </div>
                     <div class="video">
                       <video
-                        src="assets/videos/video-4.mp4"
+                        data-src="assets/videos/video-4.mp4"
                         autoplay
                         loop
                         muted
@@ -530,7 +536,7 @@
                     </div>
                     <div class="video">
                       <video
-                        src="assets/videos/video-4.mp4"
+                        data-src="assets/videos/video-4.mp4"
                         autoplay
                         loop
                         muted
@@ -569,6 +575,7 @@
             src="assets/images/phone.png"
             alt="Phone Image"
             class="phone"
+            loading="lazy"
             anim-fade-right
             data-start="top 55%"
           />
@@ -577,30 +584,35 @@
               src="assets/images/portret-1.png"
               alt="Portrait Image 1"
               class="portret-1 portret"
+              loading="lazy"
               anim-pop-in
             />
             <img
               src="assets/images/portret-2.png"
               alt="Portrait Image 2"
               class="portret-2 portret"
+              loading="lazy"
               anim-pop-in
             />
             <img
               src="assets/images/portret-3.png"
               alt="Portrait Image 3"
               class="portret-3 portret"
+              loading="lazy"
               anim-pop-in
             />
             <img
               src="assets/images/portret-4.png"
               alt="Portrait Image 4"
               class="portret-4 portret"
+              loading="lazy"
               anim-pop-in
             />
             <img
               src="assets/images/portret-5.png"
               alt="Portrait Image 5"
               class="portret-5 portret"
+              loading="lazy"
               anim-pop-in
             />
           </div>
@@ -622,6 +634,7 @@
             src="assets/images/google-play.png"
             alt="Google Play Badge"
             class="google-play-badge"
+            loading="lazy"
             anim-fade
           />
         </div>
@@ -648,6 +661,7 @@
                 class="how-img-1"
                 src="assets/images/how-card-1.png"
                 alt="phone"
+                loading="lazy"
                 why-card-image-1
               />
             </div>
@@ -667,6 +681,7 @@
                 class="how-img-2"
                 src="assets/images/how-card-2.jpg"
                 alt="phone"
+                loading="lazy"
                 why-card-image-2
               />
             </div>
@@ -687,6 +702,7 @@
                 class="how-img-3"
                 src="assets/images/how-card-3.jpg"
                 alt="phone"
+                loading="lazy"
                 why-card-image-3
               />
             </div>
@@ -720,6 +736,7 @@
                     class="how-img-1"
                     src="assets/images/how-card-1.png"
                     alt="phone"
+                    loading="lazy"
                     why-card-image-1
                   />
                 </div>
@@ -739,6 +756,7 @@
                     class="how-img-2"
                     src="assets/images/how-card-2.jpg"
                     alt="phone"
+                    loading="lazy"
                     why-card-image-2
                   />
                 </div>
@@ -759,6 +777,7 @@
                     class="how-img-3"
                     src="assets/images/how-card-3.jpg"
                     alt="phone"
+                    loading="lazy"
                     why-card-image-3
                   />
                 </div>
@@ -794,7 +813,7 @@
       <section class="image-left-text-split-1">
         <div class="image-container">
           <video
-            src="assets/videos/video-2.mp4"
+            data-src="assets/videos/video-2.mp4"
             autoplay
             loop
             muted
@@ -852,7 +871,7 @@
       <section class="image-right-text-split-2">
         <div class="image-container">
           <video
-            src="assets/videos/video-2.mp4"
+            data-src="assets/videos/video-2.mp4"
             autoplay
             loop
             muted
@@ -896,7 +915,7 @@
       <section class="image-left-text-split-3">
         <div class="image-container">
           <video
-            src="assets/videos/video-2.mp4"
+            data-src="assets/videos/video-2.mp4"
             autoplay
             loop
             muted
@@ -943,6 +962,7 @@
               src="assets/images/google-play.png"
               alt="Map Image"
               class=""
+              loading="lazy"
               anim-fade
             />
           </button>
@@ -953,7 +973,7 @@
 
       <div class="image-container-mobile">
         <video
-          src="assets/videos/video-2.mp4"
+          data-src="assets/videos/video-2.mp4"
           autoplay
           loop
           muted
@@ -986,7 +1006,7 @@
         <div class="bg"></div>
         <div class="image-container">
           <video
-            src="assets/videos/video-2.mp4"
+            data-src="assets/videos/video-2.mp4"
             autoplay
             loop
             muted
@@ -1029,6 +1049,7 @@
               src="assets/images/google-play.png"
               alt="Map Image"
               class=""
+              loading="lazy"
               anim-fade
             />
           </button>
@@ -1052,6 +1073,7 @@
             src="assets/images/google-play.png"
             alt="Map Image"
             class=""
+            loading="lazy"
             anim-fade
           />
         </button>
@@ -1109,12 +1131,13 @@
           src="assets/images/google-play.png"
           alt="Map Image"
           class=""
+          loading="lazy"
           anim-fade
         />
       </button>
 
-      <img src="assets/images/logo.png" alt="Metemi Logo" class="logo" />
-      <img src="assets/images/how-bg.png" alt="Metemi Logo" class="bottom-bg" />
+      <img src="assets/images/logo.png" alt="Metemi Logo" class="logo" loading="lazy" />
+      <img src="assets/images/how-bg.png" alt="Metemi Logo" class="bottom-bg" loading="lazy" />
     </footer>
   </body>
 </html>
