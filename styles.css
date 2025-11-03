@@ -383,6 +383,7 @@ img {
     .title-big {
       color: white;
       text-shadow: 0 8.456px 24.098px rgba(0, 0, 0, 0.41);
+      opacity: 0; /* Prevent flash of content before animation */
     }
 
     .button-container {
@@ -393,6 +394,7 @@ img {
         calc(0.618rem + 0.526vw),
         1.25rem
       ); /* min: 12px, max: 20px */
+      opacity: 0; /* Prevent flash of content before animation */
 
       .hero-cta {
         background-color: transparent;

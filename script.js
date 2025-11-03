@@ -301,41 +301,86 @@ function animateTextsAppear() {
   });
 }
 
-function animateTextsLetterSpacing() {
-  const elements = document.querySelectorAll("[letter-spacing]");
+function heroAnimation() {
+  const heroLogo = document.querySelector("[hero-logo]");
+  const heroTitle = document.querySelector(".hero-content .title-big");
+  const buttonContainer = document.querySelector(".hero-content .button-container");
 
-  elements.forEach((element) => {
-    const split = new SplitText(element, {
-      type: "words",
-      wordsClass: "split-word",
-    });
+  if (!heroLogo || !heroTitle) return;
 
-    // Animate the whole element's opacity
-    gsap.fromTo(
-      element,
+  // Split text for animations
+  const logoSplit = new SplitText(heroLogo, {
+    type: "words",
+    wordsClass: "split-word",
+  });
+
+  const titleSplit = new SplitText(heroTitle, {
+    type: "lines",
+    linesClass: "split-line",
+  });
+
+  // Create master timeline
+  const tl = gsap.timeline();
+
+  // Logo animations (run simultaneously at position 0)
+  tl.fromTo(
+    heroLogo,
+    { opacity: 0 },
+    {
+      opacity: 1,
+      duration: 1.5,
+      ease: "power4.inOut",
+    },
+    0
+  ).fromTo(
+    logoSplit.words,
+    { letterSpacing: "0.4em" },
+    {
+      letterSpacing: "0em",
+      duration: 1.5,
+      ease: "power4.inOut",
+    },
+    0
+  );
+
+  // Title animations (start after logo completes)
+  tl.to(
+    heroTitle,
+    {
+      opacity: 1,
+      duration: 0.75,
+      ease: "power2.out",
+    },
+    "-=0.5"
+  ).from(
+    titleSplit.lines,
+    {
+      duration: 0.75,
+      y: "75%",
+      opacity: 0,
+      ease: "back.out",
+      stagger: 0.1,
+    },
+    "<" // Start at the same time as the previous animation
+  );
+
+  // Button container animation (slight overlap with title)
+  if (buttonContainer) {
+    tl.fromTo(
+      buttonContainer,
       {
         opacity: 0,
+        y: 20,
       },
       {
         opacity: 1,
-        duration: 1.5,
-        ease: "power4.inOut",
-      }
-    );
-
-    // Animate individual words' letter-spacing
-    gsap.fromTo(
-      split.words,
-      {
-        letterSpacing: "0.4em",
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out",
       },
-      {
-        letterSpacing: "0em",
-        duration: 1.5,
-        ease: "power4.inOut",
-      }
+      "-=0.3" // Start 0.3s before the previous animation completes
     );
-  });
+  }
 }
 
 function animateTitleXScrub() {
@@ -914,8 +959,8 @@ function initAnimations() {
   parallaxAnimation();
   animateHowCardsImages();
   animateTextsAppear();
-  animateTextsLetterSpacing();
   animateTitleXScrub();
+  heroAnimation();
   animateTextsLetterSpacingScrub();
   // initAnimatedNumbers();
   animateHowMobileCards();
