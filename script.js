@@ -873,8 +873,12 @@ function animateMobileCardCarousel(config) {
 
 // Specific implementations using the generic function
 function animateHowMobileCards() {
+  const pinContainer = document.getElementById("how-mobile-pin-container");
+  if (!pinContainer) return;
+
   animateMobileCardCarousel({
-    containerSelector: "#how-mobile-pin-container",
+    containerElement: pinContainer,
+    // Pin the container-mobile-inner which has the content
     pinTargetSelector: ".container-mobile-inner",
     buttonSelector: "#how-mobile-btn",
     cardSelectors: [
