@@ -738,7 +738,7 @@ function animateHowMobileCards() {
 
 function animateBigGridMobileCards() {
   const pinContainer = document.querySelector(".big-grid-mobile");
-  
+
   // Check if element exists
   if (!pinContainer) return;
 
@@ -763,13 +763,13 @@ function animateBigGridMobileCards() {
   // Create a wrapper for the pinned content (title + container + buttons)
   const pinnedWrapper = document.createElement("div");
   pinnedWrapper.className = "big-grid-pinned-wrapper";
-  
+
   // Get the parent that contains both title and container
   const parent = title.parentNode;
-  
+
   // Insert wrapper before the title in the parent
   parent.insertBefore(pinnedWrapper, title);
-  
+
   // Move the title and container into the wrapper
   pinnedWrapper.appendChild(title);
   pinnedWrapper.appendChild(pinTarget);
@@ -914,19 +914,8 @@ function animateChangesMobileCards() {
    MASTER INITIALIZATION
    ======================================== */
 function initAnimations() {
-  if (typeof gsap === "undefined") {
-    console.error("GSAP is not loaded");
-    return;
-  }
-
-  // Register GSAP plugins
-  if (typeof ScrollTrigger !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-  }
-
-  if (typeof SplitText !== "undefined") {
-    gsap.registerPlugin(SplitText);
-  }
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(SplitText);
 
   // Initialize all animations
   wordSwitcherAnimation();
@@ -937,7 +926,7 @@ function initAnimations() {
   fadeRightAnimation();
   parallaxAnimation();
   animateHowCardsImages();
-  animateTextsAppear();
+  // animateTextsAppear();
   animateTextsLetterSpacing();
   animateTitleXScrub();
   animateTextsLetterSpacingScrub();
@@ -945,37 +934,6 @@ function initAnimations() {
   animateHowMobileCards();
   animateChangesMobileCards();
   animateBigGridMobileCards();
-
-  // Ensure ScrollTrigger accounts for video sizing
-  const videos = Array.from(document.querySelectorAll("video"));
-  const needsRefresh = videos.some((v) => v.readyState < 2);
-
-  if (needsRefresh) {
-    videos.forEach((v) => {
-      if (v.readyState < 2) {
-        const onReady = () => {
-          requestAnimationFrame(() => ScrollTrigger.refresh());
-        };
-        v.addEventListener("loadedmetadata", onReady, { once: true });
-        v.addEventListener("loadeddata", onReady, { once: true });
-      }
-    });
-  }
-
-  // Safari fix: Multiple refresh attempts
-  // Safari needs extra time to calculate layout properly
-  setTimeout(() => ScrollTrigger.refresh(), 100);
-  setTimeout(() => ScrollTrigger.refresh(), 500);
-  setTimeout(() => ScrollTrigger.refresh(), 1000);
-
-  // Fallback refresh after page load
-  window.addEventListener("load", () => {
-    ScrollTrigger.refresh();
-    // Safari: one more refresh after load
-    setTimeout(() => ScrollTrigger.refresh(), 100);
-  }, {
-    once: true,
-  });
 }
 
 /* ========================================
@@ -984,41 +942,10 @@ function initAnimations() {
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Metemi initialized");
 
-  // Initialize Lenis smooth scroll
   initLenis();
 
-  let hasInitialized = false;
-  
-  const initializeApp = () => {
-    if (hasInitialized) return;
-    hasInitialized = true;
+  window.addEventListener("load", () => {
     console.log("Initializing animations");
     initAnimations();
-  };
-
-  // Primary initialization: Use Font Loading API
-  if (document.fonts && document.fonts.ready) {
-    Promise.all([
-      document.fonts.ready,
-      new Promise(resolve => {
-        if (document.readyState === 'complete') {
-          resolve();
-        } else {
-          window.addEventListener('load', resolve, { once: true });
-        }
-      })
-    ]).then(() => {
-      initializeApp();
-    }).catch((error) => {
-      console.warn("Font/resource loading failed:", error);
-      initializeApp(); // Initialize anyway
-    });
-  } else {
-    // Fallback for browsers without Font Loading API
-    if (document.readyState === 'complete') {
-      initializeApp();
-    } else {
-      window.addEventListener('load', initializeApp, { once: true });
-    }
-  }
+  });
 });
