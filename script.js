@@ -777,6 +777,7 @@ function animateBigGridMobileCards() {
   const pinTarget = pinContainer.querySelector(".big-grid-container");
   const title = pinContainer.querySelector(".big-grid-title");
   const columnPercentageOffset = 250;
+  const minusOffset = -50;
 
   // Select the column elements (these are the cards to animate)
   const cards = [
@@ -788,7 +789,7 @@ function animateBigGridMobileCards() {
   // Initialize card positions
   cards.forEach((card, idx) => {
     gsap.set(card, {
-      xPercent: idx * columnPercentageOffset - 50,
+      xPercent: idx * columnPercentageOffset + minusOffset,
     });
   });
 
@@ -840,7 +841,7 @@ function animateBigGridMobileCards() {
     cards.forEach((card, idx) => {
       const offset = idx - stateIndex;
       gsap.to(card, {
-        xPercent: offset * columnPercentageOffset - 50,
+        xPercent: offset * columnPercentageOffset + minusOffset,
         duration: 0.5,
         ease: "power2.inOut",
       });
@@ -875,10 +876,13 @@ function animateChangesMobileCards() {
 
   const pinTarget = pinContainer.querySelector(".mobile-change-inner");
   const columnPercentageOffset = 250;
+  const minusOffset = -0;
 
   const buttons = Array.from(
     pinContainer.querySelectorAll("[data-changes-mobile-btn]")
   );
+
+
 
   const cards = [
     document.getElementById("changes-mobile-card-1"),
@@ -888,7 +892,7 @@ function animateChangesMobileCards() {
 
   cards.forEach((card, idx) => {
     gsap.set(card, {
-      xPercent: idx * columnPercentageOffset - 50,
+      xPercent: idx * columnPercentageOffset + minusOffset, 
     });
   });
 
@@ -912,7 +916,7 @@ function animateChangesMobileCards() {
     cards.forEach((card, idx) => {
       const offset = idx - stateIndex;
       gsap.to(card, {
-        xPercent: offset * columnPercentageOffset - 50,
+        xPercent: offset * columnPercentageOffset + minusOffset,
         duration: 0.5,
         ease: "power2.inOut",
       });
@@ -958,7 +962,7 @@ function initAnimations() {
   fadeRightAnimation();
   parallaxAnimation();
   animateHowCardsImages();
-  animateTextsAppear();
+  // animateTextsAppear();
   animateTitleXScrub();
   heroAnimation();
   animateTextsLetterSpacingScrub();

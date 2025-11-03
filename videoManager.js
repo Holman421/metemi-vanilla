@@ -64,6 +64,11 @@ const initVideoOptimization = () => {
   }
 
   function playVideo(video) {
+    // Don't auto-play videos that have controls attribute - let user control them
+    if (video.hasAttribute('controls')) {
+      return;
+    }
+
     if (video.paused) {
       const playPromise = video.play();
 
