@@ -164,10 +164,10 @@ img {
 
 .title-big-big {
   font-size: clamp(
-    3.5rem,
-    calc(2.447rem + 4.211vw),
-    7.5rem
-  ); /* min: 56px, max: 120px */
+    2.5rem,
+    calc(-0.929rem + 5.357vw),
+    5.5rem
+  ); /* min: 40px, max: 88px */
   line-height: 1;
 }
 
@@ -553,7 +553,7 @@ img {
     .third-title {
       position: relative;
       text-transform: uppercase;
-      left: 7.5%;
+      left: 2.5%;
 
       @media screen and (max-width: 768px) {
         text-align: center;
@@ -1690,7 +1690,7 @@ img {
     @media (max-width: 1024px) {
       width: 100%;
       align-items: center;
-      gap: 24px;
+      gap: 32px;
       text-align: center;
     }
 
@@ -1982,7 +1982,6 @@ img {
   position: relative;
   aspect-ratio: 9 / 16;
   min-height: 500px;
-  
 
   @media (max-width: 1024px) {
     display: block;

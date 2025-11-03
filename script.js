@@ -67,69 +67,77 @@ function initLenis() {
    GSAP ANIMATION FUNCTIONS
    ======================================== */
 
-function wordSwitcherAnimation() {
-  const wordElement = document.querySelector(".word-switcher");
-  if (!wordElement || typeof SplitText === "undefined") {
-    console.error("SplitText plugin not loaded or element not found");
+// Generic word switcher animation that can be used with any element
+function createWordSwitcher(config) {
+  const {
+    selector,
+    phrases,
+    delay = 1,
+    splitType = "chars", // "chars" or "words"
+  } = config;
+
+  const element = document.querySelector(selector);
+  if (!element || typeof SplitText === "undefined") {
+    console.error(`SplitText plugin not loaded or element not found: ${selector}`);
     return;
   }
 
-  const words = ["people", "groups"];
   let currentIndex = 0;
   let currentSplit = null;
 
-  // Initialize with first word
-  wordElement.textContent = words[currentIndex];
-  currentSplit = new SplitText(wordElement, { type: "chars" });
+  // Initialize with first phrase
+  element.textContent = phrases[currentIndex];
+  currentSplit = new SplitText(element, { type: splitType });
 
-  const delay = 1;
+  // Function to animate transition
+  function animateSwitch() {
+    const nextIndex = (currentIndex + 1) % phrases.length;
+    const units = splitType === "chars" ? currentSplit.chars : currentSplit.words;
 
-  // Function to animate word transition
-  function animateWordSwitch() {
-    const nextIndex = (currentIndex + 1) % words.length;
-
-    // Animate out current letters with stagger
-    gsap.to(currentSplit.chars, {
-      duration: 0.35,
-      y: -30,
+    // Animate out current units with stagger (randomized)
+    gsap.to(units, {
+      duration: 0.2,
+      y: 30,
       opacity: 0,
       rotation: () => gsap.utils.random(-15, 15),
       scale: 0.5,
       ease: "back.in(2)",
       stagger: {
-        each: 0.03,
+        each: 0.015,
         from: "random",
       },
       onComplete: () => {
         // Revert split and update text
         currentSplit.revert();
-        wordElement.textContent = words[nextIndex];
-        currentSplit = new SplitText(wordElement, { type: "chars" });
+        element.textContent = phrases[nextIndex];
+        currentSplit = new SplitText(element, { type: splitType });
 
-        // Set initial state for new chars
-        gsap.set(currentSplit.chars, {
+        const newUnits = splitType === "chars" ? currentSplit.chars : currentSplit.words;
+
+        // Set initial state for new units (coming from below)
+        gsap.set(newUnits, {
           y: 30,
           opacity: 0,
           rotation: () => gsap.utils.random(-15, 15),
           scale: 0.5,
         });
 
-        // Animate in new letters with stagger
-        gsap.to(currentSplit.chars, {
-          duration: 0.4,
+        // Animate in new units with stagger (also randomized)
+        gsap.to(newUnits, {
+          duration: 0.2,
           y: 0,
           opacity: 1,
           rotation: 0,
           scale: 1,
           ease: "back.out(2)",
           stagger: {
-            each: 0.04,
-            from: "start",
+            each: 0.015,
+            from: "random",
           },
           onComplete: () => {
             currentIndex = nextIndex;
             // Wait before next transition
-            gsap.delayedCall(delay, animateWordSwitch);
+            gsap.delayedCall(delay, animateSwitch);
           },
         });
       },
@@ -137,7 +145,31 @@ function wordSwitcherAnimation() {
   }
 
   // Start the animation cycle after initial delay
-  gsap.delayedCall(delay, animateWordSwitch);
+  gsap.delayedCall(delay, animateSwitch);
+}
+
+function wordSwitcherAnimation() {
+  // Original hero word switcher
+  createWordSwitcher({
+    selector: ".word-switcher",
+    phrases: ["people", "groups"],
+    delay: 1,
+    splitType: "chars",
+  });
+
+  // New "Meet people at..." word switcher
+  createWordSwitcher({
+    selector: ".third-title",
+    phrases: [
+      "Meet people at your café",
+      "Meet people in your building",
+      "Meet people at your gym",
+      "Meet people at your cowork",
+      "Meet people from your class",
+    ],
+    delay: 1.25, // Longer delay since phrases are longer
+    splitType: "chars",
+  });
 }
 
 function popInAnimation() {
@@ -433,12 +465,12 @@ function animateTitleXScrub() {
       x: "0%",
     },
     {
-      x: "-250%",
+      x: "-75%",
       duration: 1,
       ease: "none",
       scrollTrigger: {
         trigger: element,
-        start: "top 75%",
+        start: "top 65%",
         end: "bottom 25%",
         scrub: true,
         markers: false,
