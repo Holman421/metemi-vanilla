@@ -420,6 +420,7 @@ img {
         object-fit: contain;
         display: block;
         padding: 15%;
+        opacity: 0;
       }
     }
 
@@ -1970,11 +1971,12 @@ img {
 .image-container-mobile {
   display: none;
   width: 100%;
-  padding-left: 10%;
-  padding-top: 40px;
+  margin-left: 10%;
+  margin-top: 40px;
   position: relative;
   aspect-ratio: 9 / 16;
   min-height: 500px;
+  
 
   @media (max-width: 1024px) {
     display: block;
