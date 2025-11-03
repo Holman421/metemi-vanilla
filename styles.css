@@ -47,7 +47,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  text-wrap: balance;
+  /* text-wrap: balance; */
 }
 
 html,
@@ -266,6 +266,19 @@ img {
   -webkit-box-decoration-break: clone;
   /* Safari fix: prevent layout calculation issues */
   position: relative;
+}
+
+/* Safari fix: Prevent SplitText from breaking short text incorrectly */
+@supports (-webkit-touch-callout: none) {
+  [text-appear] {
+    /* Safari: prevent aggressive text wrapping during split */
+    white-space: nowrap;
+  }
+  
+  /* Allow wrapping after SplitText has processed */
+  [text-appear] .split-line {
+    white-space: normal;
+  }
 }
 
 /* ========================================

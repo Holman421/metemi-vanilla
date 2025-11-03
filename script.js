@@ -286,15 +286,6 @@ function animateTextsAppear() {
       linesClass: "split-line",
     });
 
-    // Safari fix: wrap lines in overflow container
-    if (isSafari) {
-      const parent = element.parentElement;
-      const wrapper = document.createElement('div');
-      wrapper.style.overflow = 'hidden';
-      parent.insertBefore(wrapper, element);
-      wrapper.appendChild(element);
-    }
-
     gsap.from(split.lines, {
       duration: 0.75,
       y: "75%",
