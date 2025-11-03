@@ -236,7 +236,6 @@ img {
   line-height: 1.1;
   position: relative;
   z-index: 1;
-
 }
 
 /* Fix for SplitText with gradient - Safari compatible */
@@ -379,6 +378,7 @@ img {
       calc(1.372rem + 2.763vw),
       4.688rem
     ); /* min: 33px, max: 75px */
+    position: relative;
 
     .title-big {
       color: white;
@@ -436,6 +436,14 @@ img {
           object-fit: contain;
         }
       }
+    }
+
+    .video-container {
+      position: absolute;
+      top: 0;
+      right: 0;
+      border: 1px solid white;
+
     }
   }
 }

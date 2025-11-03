@@ -351,7 +351,7 @@ function heroAnimation() {
       duration: 0.75,
       ease: "power2.out",
     },
-    "-=0.5"
+    "-=0.7"
   ).from(
     titleSplit.lines,
     {
@@ -378,7 +378,7 @@ function heroAnimation() {
         duration: 0.6,
         ease: "power2.out",
       },
-      "-=0.3" // Start 0.3s before the previous animation completes
+      "-=0.6" // Start 0.3s before the previous animation completes
     );
   }
 }
