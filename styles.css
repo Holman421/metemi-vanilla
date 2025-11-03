@@ -239,15 +239,6 @@ img {
 
 }
 
-/* Safari-specific workaround for text measurement issues */
-@supports (-webkit-touch-callout: none) {
-  .text-gradient {
-    /* Safari only: add a tiny bit of padding to prevent text cutoff */
-    padding-left: 0.05em;
-    padding-right: 0.05em;
-  }
-}
-
 /* Fix for SplitText with gradient - Safari compatible */
 .text-gradient .split-line {
   display: inline;
