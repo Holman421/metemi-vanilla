@@ -362,6 +362,28 @@ function heroAnimation() {
     0
   );
 
+  // Animate Safari fallback logo images if on Safari
+  if (isSafari) {
+    const heroFallbackLogos = document.querySelectorAll(".hero-content .hero-fallback-logo");
+    
+    if (heroFallbackLogos.length > 0) {
+      heroFallbackLogos.forEach((logo) => {
+        gsap.set(logo, { opacity: 0, scale: 0.8 });
+        
+        tl.to(
+          logo,
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 1.2,
+            ease: "power2.out",
+          },
+          "-=1.2" // Start during logo text animation
+        );
+      });
+    }
+  }
+
   // Title animations (start after logo completes)
   tl.to(
     heroTitle,
@@ -713,29 +735,89 @@ function initAnimatedNumbers() {
 }
 
 /* ========================================
-   MOBILE CARD CAROUSEL (CONTAINER-MOBILE)
+   MOBILE CARD CAROUSEL - GENERIC FUNCTION
    ======================================== */
-function animateHowMobileCards() {
-  const pinContainer = document.getElementById("how-mobile-pin-container");
+function animateMobileCardCarousel(config) {
+  const {
+    containerSelector,
+    containerElement,
+    pinTargetSelector,
+    buttonSelector,
+    cardSelectors,
+    cardElements,
+    columnPercentageOffset = 250,
+    pinType = "transform",
+    shouldCreateWrapper = false,
+    wrapperConfig = null,
+  } = config;
 
-  const pinTarget = pinContainer.querySelector(".container-mobile-inner");
-  const columnPercentageOffset = 250;
+  // Get container element
+  const pinContainer = containerElement || 
+    (containerSelector.startsWith("#") 
+      ? document.getElementById(containerSelector.slice(1))
+      : document.querySelector(containerSelector));
 
-  const buttons = Array.from(document.querySelectorAll("#how-mobile-btn"));
+  if (!pinContainer) return;
 
-  const cards = [
-    document.getElementById("how-mobile-card-1"),
-    document.getElementById("how-mobile-card-2"),
-    document.getElementById("how-mobile-card-3"),
-  ];
+  // Get pin target
+  const pinTarget = pinContainer.querySelector(pinTargetSelector);
+  if (!pinTarget) return;
+
+  let buttons = [];
+  let cards = [];
+  let finalPinTarget = pinTarget;
+
+  // Handle wrapper creation for big-grid-mobile
+  if (shouldCreateWrapper && wrapperConfig) {
+    const title = pinContainer.querySelector(wrapperConfig.titleSelector);
+    if (title) {
+      const pinnedWrapper = document.createElement("div");
+      pinnedWrapper.className = wrapperConfig.wrapperClass;
+
+      const parent = title.parentNode;
+      parent.insertBefore(pinnedWrapper, title);
+
+      pinnedWrapper.appendChild(title);
+      pinnedWrapper.appendChild(pinTarget);
+
+      // Create buttons dynamically
+      const buttonsContainer = document.createElement("div");
+      buttonsContainer.className = "carousel-controls";
+      buttonsContainer.innerHTML = `
+        <div class="carousel-btn carousel-btn-active" ${wrapperConfig.buttonAttribute}></div>
+        <div class="carousel-btn" ${wrapperConfig.buttonAttribute}></div>
+        <div class="carousel-btn" ${wrapperConfig.buttonAttribute}></div>
+      `;
+      pinnedWrapper.appendChild(buttonsContainer);
+
+      finalPinTarget = pinnedWrapper;
+    }
+  }
+
+  // Get buttons
+  if (buttonSelector) {
+    buttons = Array.from(pinContainer.querySelectorAll(buttonSelector));
+  }
+
+  // Get cards
+  if (cardElements) {
+    cards = cardElements.filter(Boolean);
+  } else if (cardSelectors) {
+    cards = cardSelectors
+      .map((selector) =>
+        selector.startsWith("#")
+          ? document.getElementById(selector.slice(1))
+          : pinContainer.querySelector(selector)
+      )
+      .filter(Boolean);
+  }
 
   // Initialize card positions
   cards.forEach((card, idx) => {
-    if (card) {
-      gsap.set(card, {
-        xPercent: idx * columnPercentageOffset - 50,
-      });
-    }
+    gsap.set(card, {
+      x: 0, // Clear any existing x transforms
+      xPercent: idx * columnPercentageOffset - 50,
+    });
   });
 
   const getCurrentStateIndex = (progress) => {
@@ -745,8 +827,8 @@ function animateHowMobileCards() {
   };
 
   const updateButtonStates = (activeIndex) => {
-    buttons.forEach((btn, i) => {
-      if (i === activeIndex) {
+    buttons.forEach((btn, idx) => {
+      if (idx === activeIndex) {
         btn.classList.add("carousel-btn-active");
       } else {
         btn.classList.remove("carousel-btn-active");
@@ -756,25 +838,27 @@ function animateHowMobileCards() {
 
   const animateCardsToState = (stateIndex) => {
     cards.forEach((card, idx) => {
-      if (card) {
-        const offset = idx - stateIndex;
-        gsap.to(card, {
-          xPercent: offset * columnPercentageOffset - 50,
-          duration: 0.5,
-          ease: "power2.inOut",
-        });
-      }
+      const offset = idx - stateIndex;
+      gsap.to(card, {
+        x: 0, // Keep x at 0
+        xPercent: offset * columnPercentageOffset - 50,
+        duration: 0.5,
+        ease: "power2.inOut",
+      });
     });
   };
 
   let lastIdx = 0;
+  updateButtonStates(lastIdx);
+
   ScrollTrigger.create({
     trigger: pinContainer,
     start: "top top",
     end: "bottom bottom",
-    pin: pinTarget,
+    pin: finalPinTarget,
     scrub: 1,
-    pinType: pinTarget.style.willChange === "transform" ? "transform" : "fixed",
+    markers: false,
+    pinType: pinType,
     onUpdate: (self) => {
       const currentStateIndex = getCurrentStateIndex(self.progress);
 
@@ -787,177 +871,63 @@ function animateHowMobileCards() {
   });
 }
 
-function animateBigGridMobileCards() {
-  const pinContainer = document.querySelector(".big-grid-mobile");
+// Specific implementations using the generic function
+function animateHowMobileCards() {
+  animateMobileCardCarousel({
+    containerSelector: "#how-mobile-pin-container",
+    pinTargetSelector: ".container-mobile-inner",
+    buttonSelector: "#how-mobile-btn",
+    cardSelectors: [
+      "#how-mobile-card-1",
+      "#how-mobile-card-2",
+      "#how-mobile-card-3",
+    ],
+    pinType: "transform",
+  });
+}
 
-  // Check if element exists
+function animateChangesMobileCards() {
+  const pinContainer = document.getElementById("changes-mobile-pin-container");
   if (!pinContainer) return;
 
-  const pinTarget = pinContainer.querySelector(".big-grid-container");
-  const title = pinContainer.querySelector(".big-grid-title");
-  const columnPercentageOffset = 250;
+  // Cards are inside the card-container, not at the root level
+  const cards = [
+    pinContainer.querySelector("#changes-mobile-card-1"),
+    pinContainer.querySelector("#changes-mobile-card-2"),
+    pinContainer.querySelector("#changes-mobile-card-3"),
+  ].filter(Boolean);
 
-  // Select the column elements (these are the cards to animate)
+  animateMobileCardCarousel({
+    containerElement: pinContainer,
+    pinTargetSelector: ".mobile-change-inner",
+    buttonSelector: "[data-changes-mobile-btn]",
+    cardElements: cards,
+    pinType: "transform",
+  });
+}
+
+function animateBigGridMobileCards() {
+  const pinContainer = document.querySelector(".big-grid-mobile");
+  if (!pinContainer) return;
+
   const cards = [
     pinContainer.querySelector(".first.column"),
     pinContainer.querySelector(".second.column"),
     pinContainer.querySelector(".third.column"),
   ].filter(Boolean);
 
-  // Initialize card positions
-  cards.forEach((card, idx) => {
-    gsap.set(card, {
-      xPercent: idx * columnPercentageOffset - 50,
-    });
-  });
-
-  // Create a wrapper for the pinned content (title + container + buttons)
-  const pinnedWrapper = document.createElement("div");
-  pinnedWrapper.className = "big-grid-pinned-wrapper";
-
-  // Get the parent that contains both title and container
-  const parent = title.parentNode;
-
-  // Insert wrapper before the title in the parent
-  parent.insertBefore(pinnedWrapper, title);
-
-  // Move the title and container into the wrapper
-  pinnedWrapper.appendChild(title);
-  pinnedWrapper.appendChild(pinTarget);
-
-  // Create buttons container and add buttons to the wrapper
-  const buttonsContainer = document.createElement("div");
-  buttonsContainer.className = "carousel-controls";
-  buttonsContainer.innerHTML = `
-    <div class="carousel-btn carousel-btn-active" data-big-grid-mobile-btn></div>
-    <div class="carousel-btn" data-big-grid-mobile-btn></div>
-    <div class="carousel-btn" data-big-grid-mobile-btn></div>
-  `;
-  pinnedWrapper.appendChild(buttonsContainer);
-
-  const buttons = Array.from(
-    pinContainer.querySelectorAll("[data-big-grid-mobile-btn]")
-  );
-
-  const getCurrentStateIndex = (progress) => {
-    if (progress >= 0.75) return 2;
-    if (progress >= 0.4) return 1;
-    return 0;
-  };
-
-  const updateButtonStates = (activeIndex) => {
-    buttons.forEach((btn, idx) => {
-      if (idx === activeIndex) {
-        btn.classList.add("carousel-btn-active");
-      } else {
-        btn.classList.remove("carousel-btn-active");
-      }
-    });
-  };
-
-  const animateCardsToState = (stateIndex) => {
-    cards.forEach((card, idx) => {
-      const offset = idx - stateIndex;
-      gsap.to(card, {
-        xPercent: offset * columnPercentageOffset - 50,
-        duration: 0.5,
-        ease: "power2.inOut",
-      });
-    });
-  };
-
-  let lastIdx = 0;
-  updateButtonStates(lastIdx);
-
-  ScrollTrigger.create({
-    trigger: pinContainer,
-    start: "top top",
-    end: "bottom bottom",
-    pin: pinnedWrapper,
-    scrub: 1,
-    markers: false,
-    pinType: "transform",
-    onUpdate: (self) => {
-      const currentStateIndex = getCurrentStateIndex(self.progress);
-
-      if (currentStateIndex !== lastIdx) {
-        updateButtonStates(currentStateIndex);
-        animateCardsToState(currentStateIndex);
-        lastIdx = currentStateIndex;
-      }
+  animateMobileCardCarousel({
+    containerElement: pinContainer,
+    pinTargetSelector: ".big-grid-container",
+    buttonSelector: "[data-big-grid-mobile-btn]",
+    cardElements: cards,
+    shouldCreateWrapper: true,
+    wrapperConfig: {
+      titleSelector: ".big-grid-title",
+      wrapperClass: "big-grid-pinned-wrapper",
+      buttonAttribute: "data-big-grid-mobile-btn",
     },
-  });
-}
-
-function animateChangesMobileCards() {
-  const pinContainer = document.getElementById("changes-mobile-pin-container");
-
-  const pinTarget = pinContainer.querySelector(".mobile-change-inner");
-  const columnPercentageOffset = 250;
-
-  const buttons = Array.from(
-    pinContainer.querySelectorAll("[data-changes-mobile-btn]")
-  );
-
-  const cards = [
-    document.getElementById("changes-mobile-card-1"),
-    document.getElementById("changes-mobile-card-2"),
-    document.getElementById("changes-mobile-card-3"),
-  ].filter(Boolean);
-
-  cards.forEach((card, idx) => {
-    gsap.set(card, {
-      xPercent: idx * columnPercentageOffset - 50,
-    });
-  });
-
-  const getCurrentStateIndex = (progress) => {
-    if (progress >= 0.75) return 2;
-    if (progress >= 0.4) return 1;
-    return 0;
-  };
-
-  const updateButtonStates = (activeIndex) => {
-    buttons.forEach((btn, idx) => {
-      if (idx === activeIndex) {
-        btn.classList.add("carousel-btn-active");
-      } else {
-        btn.classList.remove("carousel-btn-active");
-      }
-    });
-  };
-
-  const animateCardsToState = (stateIndex) => {
-    cards.forEach((card, idx) => {
-      const offset = idx - stateIndex;
-      gsap.to(card, {
-        xPercent: offset * columnPercentageOffset - 50,
-        duration: 0.5,
-        ease: "power2.inOut",
-      });
-    });
-  };
-
-  let lastIdx = 0;
-  updateButtonStates(lastIdx);
-
-  ScrollTrigger.create({
-    trigger: pinContainer,
-    start: "top top",
-    end: "bottom bottom",
-    pin: pinTarget,
-    scrub: 1,
-    markers: false,
     pinType: "transform",
-    onUpdate: (self) => {
-      const currentStateIndex = getCurrentStateIndex(self.progress);
-
-      if (currentStateIndex !== lastIdx) {
-        updateButtonStates(currentStateIndex);
-        animateCardsToState(currentStateIndex);
-        lastIdx = currentStateIndex;
-      }
-    },
   });
 }
 
