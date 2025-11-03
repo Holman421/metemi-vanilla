@@ -237,20 +237,37 @@ img {
   padding: 0.1em 0;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-  /* Ensure proper rendering */
-  display: inline-block;
+  /* Safari fix: use inline instead of inline-block for proper text wrapping */
+  display: inline;
   line-height: 1.1;
+  /* Safari fix: prevent layout shift */
+  position: relative;
+  z-index: 1;
+  /* Safari fix: force hardware acceleration */
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Fix for SplitText with gradient */
+/* Safari-specific workaround for text measurement issues */
+@supports (-webkit-touch-callout: none) {
+  .text-gradient {
+    /* Safari only: add a tiny bit of padding to prevent text cutoff */
+    padding-left: 0.05em;
+    padding-right: 0.05em;
+  }
+}
+
+/* Fix for SplitText with gradient - Safari compatible */
 .text-gradient .split-line {
-  display: inline-block;
+  display: inline;
   background-image: var(--color-button-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
+  /* Safari fix: prevent layout calculation issues */
+  position: relative;
 }
 
 /* ========================================
@@ -428,8 +445,11 @@ img {
 
         img {
           display: block;
-          width: 100%;
+          /* Safari fix: auto width maintains aspect ratio */
+          width: auto;
           height: 45px;
+          /* Safari fix: prevent distortion */
+          object-fit: contain;
         }
       }
     }
@@ -452,6 +472,8 @@ img {
     .first-title {
       position: relative;
       left: -2.5%;
+      white-space: nowrap;
+
       @media screen and (max-width: 768px) {
         text-align: center;
         left: 0;
@@ -467,6 +489,8 @@ img {
         calc(-2.072rem + 3.289vw),
         1.875rem
       ); /* min: -20px, max: 30px */
+      white-space: nowrap;
+
       @media screen and (max-width: 768px) {
         text-align: center;
       }
@@ -476,6 +500,7 @@ img {
       position: relative;
       text-transform: uppercase;
       left: 7.5%;
+      white-space: nowrap;
 
       @media screen and (max-width: 768px) {
         text-align: center;
@@ -535,8 +560,11 @@ img {
 
       img {
         display: block;
-        width: 100%;
+        /* Safari fix: auto width maintains aspect ratio */
+        width: auto;
         height: 45px;
+        /* Safari fix: prevent distortion */
+        object-fit: contain;
       }
     }
   }
@@ -1204,6 +1232,12 @@ img {
 
     .google-play-badge {
       width: 200px;
+      /* Safari fix: ensure proper image rendering */
+      img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
     }
   }
 }
@@ -1600,6 +1634,12 @@ img {
     .google-play-badge {
       max-width: 200px;
       cursor: pointer;
+      /* Safari fix: ensure proper image rendering */
+      img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
     }
   }
 }
@@ -1712,6 +1752,12 @@ img {
     .google-play-badge {
       max-width: 200px;
       cursor: pointer;
+      /* Safari fix: ensure proper image rendering */
+      img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
     }
   }
 }
@@ -1823,8 +1869,11 @@ img {
 
       img {
         display: block;
-        width: 100%;
+        /* Safari fix: auto width maintains aspect ratio */
+        width: auto;
         height: 45px;
+        /* Safari fix: prevent distortion */
+        object-fit: contain;
       }
     }
   }
@@ -2013,8 +2062,11 @@ img {
 
       img {
         display: block;
-        width: 100%;
+        /* Safari fix: auto width maintains aspect ratio */
+        width: auto;
         height: 45px;
+        /* Safari fix: prevent distortion */
+        object-fit: contain;
       }
 
       @media (max-width: 768px) {
@@ -2056,8 +2108,11 @@ img {
 
     img {
       display: block;
-      width: 100%;
+      /* Safari fix: auto width maintains aspect ratio */
+      width: auto;
       height: 45px;
+      /* Safari fix: prevent distortion */
+      object-fit: contain;
     }
 
     @media (min-width: 768px) {
@@ -2101,8 +2156,11 @@ img {
 
       img {
         display: block;
-        width: 100%;
+        /* Safari fix: auto width maintains aspect ratio */
+        width: auto;
         height: 45px;
+        /* Safari fix: prevent distortion */
+        object-fit: contain;
       }
 
       @media (max-width: 768px) {

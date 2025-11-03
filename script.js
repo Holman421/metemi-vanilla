@@ -5,6 +5,7 @@
 
 // Global state
 let lenis = null;
+let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
 /* ========================================
    LENIS SMOOTH SCROLL INITIALIZATION
@@ -22,7 +23,8 @@ function initLenis() {
     gestureOrientation: "vertical",
     smoothWheel: true,
     wheelMultiplier: 1,
-    smoothTouch: false,
+    // Safari optimization: disable smooth touch as it can cause issues
+    smoothTouch: isSafari ? false : false,
     touchMultiplier: 2,
     infinite: false,
   });
@@ -284,6 +286,15 @@ function animateTextsAppear() {
       linesClass: "split-line",
     });
 
+    // Safari fix: wrap lines in overflow container
+    if (isSafari) {
+      const parent = element.parentElement;
+      const wrapper = document.createElement('div');
+      wrapper.style.overflow = 'hidden';
+      parent.insertBefore(wrapper, element);
+      wrapper.appendChild(element);
+    }
+
     gsap.from(split.lines, {
       duration: 0.75,
       y: "75%",
@@ -443,7 +454,8 @@ function parallaxAnimation() {
   const parallaxElements = document.querySelectorAll("[parallax]");
 
   parallaxElements.forEach((element) => {
-    element.style.willChange = "transform";
+    // Safari optimization: only set will-change when actively animating
+    // element.style.willChange = "transform";
 
     const offset = parseFloat(element.dataset.offset || "0");
     const offsetMobile = parseFloat(
@@ -478,6 +490,19 @@ function parallaxAnimation() {
         trigger: element,
         start: "top bottom",
         scrub: true,
+        // Safari optimization
+        onEnter: () => {
+          element.style.willChange = "transform";
+        },
+        onLeave: () => {
+          element.style.willChange = "auto";
+        },
+        onEnterBack: () => {
+          element.style.willChange = "transform";
+        },
+        onLeaveBack: () => {
+          element.style.willChange = "auto";
+        },
       },
     });
   });
@@ -941,8 +966,18 @@ function initAnimations() {
     });
   }
 
+  // Safari fix: Multiple refresh attempts
+  // Safari needs extra time to calculate layout properly
+  setTimeout(() => ScrollTrigger.refresh(), 100);
+  setTimeout(() => ScrollTrigger.refresh(), 500);
+  setTimeout(() => ScrollTrigger.refresh(), 1000);
+
   // Fallback refresh after page load
-  window.addEventListener("load", () => ScrollTrigger.refresh(), {
+  window.addEventListener("load", () => {
+    ScrollTrigger.refresh();
+    // Safari: one more refresh after load
+    setTimeout(() => ScrollTrigger.refresh(), 100);
+  }, {
     once: true,
   });
 }
@@ -956,16 +991,39 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize Lenis smooth scroll
   initLenis();
 
-  // Wait for fonts to load before initializing animations
+  // Safari-compatible initialization with timeout fallback
+  let hasInitialized = false;
+  
+  const initializeApp = () => {
+    if (hasInitialized) return;
+    hasInitialized = true;
+    console.log("Initializing animations");
+    initAnimations();
+  };
+
+  // Method 1: Try Font Loading API (modern browsers including Safari 16.4+)
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(() => {
-      // Initialize GSAP animations after fonts are loaded
-      initAnimations();
+      initializeApp();
+    }).catch((error) => {
+      console.warn("Font loading API failed:", error);
+      // Fallback to timeout
+      setTimeout(initializeApp, 100);
     });
   } else {
-    // Fallback for browsers that don't support Font Loading API
-    window.addEventListener("load", () => {
-      initAnimations();
-    });
+    // Method 2: Fallback for older Safari versions
+    if (document.readyState === 'complete') {
+      initializeApp();
+    } else {
+      window.addEventListener("load", initializeApp);
+    }
   }
+
+  // Method 3: Safety timeout (Safari sometimes doesn't fire load events properly)
+  setTimeout(() => {
+    if (!hasInitialized) {
+      console.warn("Forcing initialization due to timeout");
+      initializeApp();
+    }
+  }, 2000);
 });
