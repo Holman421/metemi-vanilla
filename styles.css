@@ -231,19 +231,12 @@ img {
   background-image: var(--color-button-gradient);
   background-clip: text;
   color: transparent;
-  /* Fix for gradient cutoff */
   padding: 0.1em 0;
   box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-  /* Safari fix: use inline instead of inline-block for proper text wrapping */
-  display: inline;
   line-height: 1.1;
-  /* Safari fix: prevent layout shift */
   position: relative;
   z-index: 1;
-  /* Safari fix: force hardware acceleration */
-  transform: translateZ(0);
-  -webkit-font-smoothing: antialiased;
+
 }
 
 /* Safari-specific workaround for text measurement issues */
@@ -266,19 +259,6 @@ img {
   -webkit-box-decoration-break: clone;
   /* Safari fix: prevent layout calculation issues */
   position: relative;
-}
-
-/* Safari fix: Prevent SplitText from breaking short text incorrectly */
-@supports (-webkit-touch-callout: none) {
-  [text-appear] {
-    /* Safari: prevent aggressive text wrapping during split */
-    white-space: nowrap;
-  }
-  
-  /* Allow wrapping after SplitText has processed */
-  [text-appear] .split-line {
-    white-space: normal;
-  }
 }
 
 /* ========================================

@@ -764,8 +764,13 @@ function animateBigGridMobileCards() {
   const pinnedWrapper = document.createElement("div");
   pinnedWrapper.className = "big-grid-pinned-wrapper";
   
+  // Get the parent that contains both title and container
+  const parent = title.parentNode;
+  
+  // Insert wrapper before the title in the parent
+  parent.insertBefore(pinnedWrapper, title);
+  
   // Move the title and container into the wrapper
-  pinTarget.parentNode.insertBefore(pinnedWrapper, title);
   pinnedWrapper.appendChild(title);
   pinnedWrapper.appendChild(pinTarget);
 
@@ -936,7 +941,7 @@ function initAnimations() {
   animateTextsLetterSpacing();
   animateTitleXScrub();
   animateTextsLetterSpacingScrub();
-  initAnimatedNumbers();
+  // initAnimatedNumbers();
   animateHowMobileCards();
   animateChangesMobileCards();
   animateBigGridMobileCards();
@@ -982,7 +987,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize Lenis smooth scroll
   initLenis();
 
-  // Safari-compatible initialization with timeout fallback
   let hasInitialized = false;
   
   const initializeApp = () => {
@@ -992,29 +996,29 @@ document.addEventListener("DOMContentLoaded", () => {
     initAnimations();
   };
 
-  // Method 1: Try Font Loading API (modern browsers including Safari 16.4+)
+  // Primary initialization: Use Font Loading API
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(() => {
+    Promise.all([
+      document.fonts.ready,
+      new Promise(resolve => {
+        if (document.readyState === 'complete') {
+          resolve();
+        } else {
+          window.addEventListener('load', resolve, { once: true });
+        }
+      })
+    ]).then(() => {
       initializeApp();
     }).catch((error) => {
-      console.warn("Font loading API failed:", error);
-      // Fallback to timeout
-      setTimeout(initializeApp, 100);
+      console.warn("Font/resource loading failed:", error);
+      initializeApp(); // Initialize anyway
     });
   } else {
-    // Method 2: Fallback for older Safari versions
+    // Fallback for browsers without Font Loading API
     if (document.readyState === 'complete') {
       initializeApp();
     } else {
-      window.addEventListener("load", initializeApp);
+      window.addEventListener('load', initializeApp, { once: true });
     }
   }
-
-  // Method 3: Safety timeout (Safari sometimes doesn't fire load events properly)
-  setTimeout(() => {
-    if (!hasInitialized) {
-      console.warn("Forcing initialization due to timeout");
-      initializeApp();
-    }
-  }, 2000);
 });
