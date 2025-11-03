@@ -962,7 +962,7 @@ function initAnimations() {
   fadeRightAnimation();
   parallaxAnimation();
   animateHowCardsImages();
-  // animateTextsAppear();
+  animateTextsAppear();
   animateTitleXScrub();
   heroAnimation();
   animateTextsLetterSpacingScrub();
