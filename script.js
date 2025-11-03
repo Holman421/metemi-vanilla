@@ -8,6 +8,25 @@ let lenis = null;
 let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
 /* ========================================
+   SAFARI HERO FALLBACK
+   ======================================== */
+function initSafariHeroFallback() {
+  if (isSafari) {
+    // Hide videos and show logo images in hero section
+    const heroVideos = document.querySelectorAll('.hero-video');
+    const heroLogos = document.querySelectorAll('.hero-fallback-logo');
+    
+    heroVideos.forEach(video => {
+      video.style.display = 'none';
+    });
+    
+    heroLogos.forEach(logo => {
+      logo.style.display = 'block';
+    });
+  }
+}
+
+/* ========================================
    LENIS SMOOTH SCROLL INITIALIZATION
    ======================================== */
 function initLenis() {
@@ -777,7 +796,6 @@ function animateBigGridMobileCards() {
   const pinTarget = pinContainer.querySelector(".big-grid-container");
   const title = pinContainer.querySelector(".big-grid-title");
   const columnPercentageOffset = 250;
-  const minusOffset = -50;
 
   // Select the column elements (these are the cards to animate)
   const cards = [
@@ -789,7 +807,7 @@ function animateBigGridMobileCards() {
   // Initialize card positions
   cards.forEach((card, idx) => {
     gsap.set(card, {
-      xPercent: idx * columnPercentageOffset + minusOffset,
+      xPercent: idx * columnPercentageOffset - 50,
     });
   });
 
@@ -841,7 +859,7 @@ function animateBigGridMobileCards() {
     cards.forEach((card, idx) => {
       const offset = idx - stateIndex;
       gsap.to(card, {
-        xPercent: offset * columnPercentageOffset + minusOffset,
+        xPercent: offset * columnPercentageOffset - 50,
         duration: 0.5,
         ease: "power2.inOut",
       });
@@ -876,13 +894,10 @@ function animateChangesMobileCards() {
 
   const pinTarget = pinContainer.querySelector(".mobile-change-inner");
   const columnPercentageOffset = 250;
-  const minusOffset = -0;
 
   const buttons = Array.from(
     pinContainer.querySelectorAll("[data-changes-mobile-btn]")
   );
-
-
 
   const cards = [
     document.getElementById("changes-mobile-card-1"),
@@ -892,7 +907,7 @@ function animateChangesMobileCards() {
 
   cards.forEach((card, idx) => {
     gsap.set(card, {
-      xPercent: idx * columnPercentageOffset + minusOffset, 
+      xPercent: idx * columnPercentageOffset - 50,
     });
   });
 
@@ -916,7 +931,7 @@ function animateChangesMobileCards() {
     cards.forEach((card, idx) => {
       const offset = idx - stateIndex;
       gsap.to(card, {
-        xPercent: offset * columnPercentageOffset + minusOffset,
+        xPercent: offset * columnPercentageOffset - 50,
         duration: 0.5,
         ease: "power2.inOut",
       });
@@ -977,6 +992,9 @@ function initAnimations() {
    ======================================== */
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Metemi initialized");
+
+  // Initialize Safari hero fallback immediately
+  initSafariHeroFallback();
 
   // Initialize video lazy loading
   if (typeof initVideoOptimization === "function") {

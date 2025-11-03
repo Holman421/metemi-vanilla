@@ -412,6 +412,15 @@ img {
         object-fit: cover;
         display: block;
       }
+
+      /* Safari fallback logo styling for mobile */
+      .hero-fallback-logo {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        padding: 15%;
+      }
     }
 
     .button-container {
@@ -487,6 +496,15 @@ img {
         object-fit: cover;
         display: block;
       }
+    }
+
+    /* Safari fallback logo styling */
+    .hero-fallback-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      padding: 20%;
     }
   }
 }
