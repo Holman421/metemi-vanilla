@@ -538,7 +538,7 @@ img {
     .second-title {
       text-transform: uppercase;
       color: rgba(255, 255, 255, 0.26);
-      margin-top: 20px;
+      margin-top: 3px;
 
       margin-bottom: clamp(
         -1.25rem,
@@ -853,9 +853,9 @@ img {
 .statistic-phone-wrapper {
   position: absolute;
   right: 0;
-  top: 50%;
-  width: 70vw;
-  max-width: 1250px;
+  top: 45%;
+  width: 75vw;
+  max-width: 1450px;
   transform: translate(10%, -50%);
 
   @media (max-width: 768px) {
@@ -885,8 +885,8 @@ img {
     calc(2.664rem + 5.592vw),
     9.375rem
   ); /* min: 65px, max: 150px */
-  padding-right: 5%;
-  padding-left: 5%;
+  padding-right: 7.5%;
+  padding-left: 7.5%;
   position: relative;
 
   .mobile-phone {
@@ -963,6 +963,15 @@ img {
         display: block;
         position: relative;
         aspect-ratio: 1 / 1;
+
+        .first-card-video {
+          object-position: top center;
+
+        }
+
+        .second-card-video {
+          object-position: center center;
+        }
 
         video {
           width: 100%;
@@ -1284,7 +1293,7 @@ img {
       calc(1.237rem + 1.053vw),
       2.5rem
     ); /* min: 24px, max: 40px */
-    max-width: 80%;
+    max-width: 60%;
 
     @media (max-width: 768px) {
       align-items: center;

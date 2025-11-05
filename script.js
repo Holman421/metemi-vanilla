@@ -13,15 +13,15 @@ let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 function initSafariHeroFallback() {
   if (isSafari) {
     // Hide videos and show logo images in hero section
-    const heroVideos = document.querySelectorAll('.hero-video');
-    const heroLogos = document.querySelectorAll('.hero-fallback-logo');
-    
-    heroVideos.forEach(video => {
-      video.style.display = 'none';
+    const heroVideos = document.querySelectorAll(".hero-video");
+    const heroLogos = document.querySelectorAll(".hero-fallback-logo");
+
+    heroVideos.forEach((video) => {
+      video.style.display = "none";
     });
-    
-    heroLogos.forEach(logo => {
-      logo.style.display = 'block';
+
+    heroLogos.forEach((logo) => {
+      logo.style.display = "block";
     });
   }
 }
@@ -78,7 +78,9 @@ function createWordSwitcher(config) {
 
   const element = document.querySelector(selector);
   if (!element || typeof SplitText === "undefined") {
-    console.error(`SplitText plugin not loaded or element not found: ${selector}`);
+    console.error(
+      `SplitText plugin not loaded or element not found: ${selector}`
+    );
     return;
   }
 
@@ -89,38 +91,39 @@ function createWordSwitcher(config) {
   const formatTextForMobile = (text) => {
     const isMobile = window.innerWidth <= 768;
     if (!isMobile) return text;
-    
+
     // Split "Meet people at/in/from your [location]" into two lines
     // Pattern: "Meet people [at/in/from] your [location]"
     const patterns = [
-      { find: /^(Meet people from )(.+)$/i, replace: '$1<br>$2' },
-      { find: /^(Meet people )(at|in) (your .+)$/i, replace: '$1$2<br>$3' }
+      { find: /^(Meet people from )(.+)$/i, replace: "$1<br>$2" },
+      { find: /^(Meet people )(at|in) (your .+)$/i, replace: "$1$2<br>$3" },
     ];
-    
+
     for (const pattern of patterns) {
       const match = text.match(pattern.find);
       if (match) {
         return text.replace(pattern.find, pattern.replace);
       }
     }
-    
+
     return text;
   };
 
   // Initialize with first phrase
   const initialText = formatTextForMobile(phrases[currentIndex]);
   element.innerHTML = initialText;
-  
+
   // Store initial dimensions to prevent layout shift
   const initialHeight = element.offsetHeight;
   element.style.minHeight = `${initialHeight}px`;
-  
+
   currentSplit = new SplitText(element, { type: splitType });
 
   // Function to animate transition
   function animateSwitch() {
     const nextIndex = (currentIndex + 1) % phrases.length;
-    const units = splitType === "chars" ? currentSplit.chars : currentSplit.words;
+    const units =
+      splitType === "chars" ? currentSplit.chars : currentSplit.words;
 
     // Animate out current units with stagger (randomized)
     gsap.to(units, {
@@ -141,7 +144,8 @@ function createWordSwitcher(config) {
         element.innerHTML = nextText;
         currentSplit = new SplitText(element, { type: splitType });
 
-        const newUnits = splitType === "chars" ? currentSplit.chars : currentSplit.words;
+        const newUnits =
+          splitType === "chars" ? currentSplit.chars : currentSplit.words;
 
         // Set initial state for new units (coming from below)
         gsap.set(newUnits, {
@@ -214,7 +218,7 @@ function popInAnimation() {
       duration: 1.5,
       scale: 1,
       opacity: 1,
-      ease: "elastic.out(1,0.4)",
+      ease: "elastic.out(1.3,0.4)",
       paused: true,
     });
 
@@ -228,7 +232,7 @@ function popInAnimation() {
 
     ScrollTrigger.create({
       trigger: element,
-      start: "top 90%",
+      start: "top 85%",
       end: "top 40%",
       markers: false,
       onEnter: () => {
@@ -384,7 +388,9 @@ function animateTextsAppear() {
 function heroAnimation() {
   const heroLogo = document.querySelector("[hero-logo]");
   const heroTitle = document.querySelector(".hero-content .title-big");
-  const buttonContainer = document.querySelector(".hero-content .button-container");
+  const buttonContainer = document.querySelector(
+    ".hero-content .button-container"
+  );
 
   if (!heroLogo || !heroTitle) return;
 
@@ -425,12 +431,14 @@ function heroAnimation() {
 
   // Animate Safari fallback logo images if on Safari
   if (isSafari) {
-    const heroFallbackLogos = document.querySelectorAll(".hero-content .hero-fallback-logo");
-    
+    const heroFallbackLogos = document.querySelectorAll(
+      ".hero-content .hero-fallback-logo"
+    );
+
     if (heroFallbackLogos.length > 0) {
       heroFallbackLogos.forEach((logo) => {
         gsap.set(logo, { opacity: 0, scale: 0.8 });
-        
+
         tl.to(
           logo,
           {
@@ -544,20 +552,20 @@ function animateHowCardsImages() {
   const secondImage = document.querySelector("[why-card-image-2]");
   const thirdImage = document.querySelector("[why-card-image-3]");
 
-  const mainTop = 100;
-  const offset = 5;
+  const mainTop = 80;
+  const offset = 0;
 
   const imagesArray = [
-    { element: firstImage, start: `-=30% ${mainTop + offset}%` },
-    { element: secondImage, start: `-=30% ${mainTop}%` },
-    { element: thirdImage, start: `-=30% ${mainTop - offset}%` },
+    { element: firstImage, start: `-=100px 100%`, end: "top 80%" },
+    { element: secondImage, start: `-=100px 70%`, end: "top 55%" },
+    { element: thirdImage, start: `-=100px 50%`, end: "top 40%" },
   ];
 
-  imagesArray.forEach(({ element, start }) => {
+  imagesArray.forEach(({ element, start, end }) => {
     gsap.fromTo(
       element,
       {
-        y: "50%",
+        y: "75%",
       },
       {
         y: "0%",
@@ -566,8 +574,8 @@ function animateHowCardsImages() {
         scrollTrigger: {
           trigger: element,
           start: start,
-          end: "top 70%",
-          scrub: true,
+          end: end,
+          scrub: 1.5,
           markers: false,
         },
       }
@@ -813,8 +821,9 @@ function animateMobileCardCarousel(config) {
   } = config;
 
   // Get container element
-  const pinContainer = containerElement || 
-    (containerSelector.startsWith("#") 
+  const pinContainer =
+    containerElement ||
+    (containerSelector.startsWith("#")
       ? document.getElementById(containerSelector.slice(1))
       : document.querySelector(containerSelector));
 
