@@ -585,6 +585,7 @@ img {
       4.375rem
     ); /* min: 30px, max: 70px */
     overflow: hidden;
+    position: relative;
 
     @media screen and (max-width: 768px) {
       aspect-ratio: 3 / 4;
@@ -596,6 +597,34 @@ img {
       object-fit: cover;
       object-position: center;
       display: block;
+    }
+
+    .video-play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      z-index: 10;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      opacity: 1;
+      pointer-events: all;
+
+      &:hover {
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+
+      &.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      svg {
+        display: block;
+        width: clamp(80px, 12vw, 159px);
+        height: auto;
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+      }
     }
   }
 

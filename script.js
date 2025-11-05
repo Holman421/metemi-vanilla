@@ -1006,6 +1006,57 @@ function animateBigGridMobileCards() {
 }
 
 /* ========================================
+   VIDEO PLAY BUTTON HANDLER
+   ======================================== */
+function initVideoPlayButtons() {
+  // Find all video containers with play buttons
+  const videoContainers = document.querySelectorAll('.video-container');
+  
+  videoContainers.forEach((container) => {
+    const playButton = container.querySelector('.video-play-button');
+    const video = container.querySelector('video');
+    
+    if (playButton && video) {
+      // Add click handler to play button - play the video
+      playButton.addEventListener('click', () => {
+        // Hide the play button with animation
+        playButton.classList.add('hidden');
+        
+        // Play the video
+        video.play().catch((error) => {
+          console.log('Video play failed:', error);
+          // Show button again if play fails
+          playButton.classList.remove('hidden');
+        });
+      });
+      
+      // Add click handler to video - pause and show button
+      video.addEventListener('click', () => {
+        if (!video.paused) {
+          video.pause();
+          playButton.classList.remove('hidden');
+        }
+      });
+      
+      // Show button again if video is paused
+      video.addEventListener('pause', () => {
+        playButton.classList.remove('hidden');
+      });
+      
+      // Hide button when video starts playing
+      video.addEventListener('play', () => {
+        playButton.classList.add('hidden');
+      });
+      
+      // Show button when video ends
+      video.addEventListener('ended', () => {
+        playButton.classList.remove('hidden');
+      });
+    }
+  });
+}
+
+/* ========================================
    MASTER INITIALIZATION
    ======================================== */
 function initAnimations() {
@@ -1029,6 +1080,7 @@ function initAnimations() {
   animateHowMobileCards();
   animateChangesMobileCards();
   animateBigGridMobileCards();
+  initVideoPlayButtons();
 }
 
 /* ========================================
