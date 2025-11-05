@@ -539,6 +539,7 @@ img {
       text-transform: uppercase;
       color: rgba(255, 255, 255, 0.26);
       margin-top: 20px;
+
       margin-bottom: clamp(
         -1.25rem,
         calc(-2.072rem + 3.289vw),
@@ -547,6 +548,7 @@ img {
 
       @media screen and (max-width: 768px) {
         text-align: center;
+        margin-bottom: 20px;
       }
     }
 
@@ -554,10 +556,17 @@ img {
       position: relative;
       text-transform: uppercase;
       left: 2.5%;
+      display: inline-block !important;
+      overflow: visible;
 
       @media screen and (max-width: 768px) {
         text-align: center;
         left: 0;
+        white-space: normal;
+      }
+
+      @media screen and (min-width: 769px) {
+        white-space: nowrap !important;
       }
     }
   }

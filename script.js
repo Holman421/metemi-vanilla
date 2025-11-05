@@ -85,8 +85,36 @@ function createWordSwitcher(config) {
   let currentIndex = 0;
   let currentSplit = null;
 
+  // Function to format text with line breaks for mobile
+  const formatTextForMobile = (text) => {
+    const isMobile = window.innerWidth <= 768;
+    if (!isMobile) return text;
+    
+    // Split "Meet people at/in/from your [location]" into two lines
+    // Pattern: "Meet people [at/in/from] your [location]"
+    const patterns = [
+      { find: /^(Meet people from )(.+)$/i, replace: '$1<br>$2' },
+      { find: /^(Meet people )(at|in) (your .+)$/i, replace: '$1$2<br>$3' }
+    ];
+    
+    for (const pattern of patterns) {
+      const match = text.match(pattern.find);
+      if (match) {
+        return text.replace(pattern.find, pattern.replace);
+      }
+    }
+    
+    return text;
+  };
+
   // Initialize with first phrase
-  element.textContent = phrases[currentIndex];
+  const initialText = formatTextForMobile(phrases[currentIndex]);
+  element.innerHTML = initialText;
+  
+  // Store initial dimensions to prevent layout shift
+  const initialHeight = element.offsetHeight;
+  element.style.minHeight = `${initialHeight}px`;
+  
   currentSplit = new SplitText(element, { type: splitType });
 
   // Function to animate transition
@@ -109,7 +137,8 @@ function createWordSwitcher(config) {
       onComplete: () => {
         // Revert split and update text
         currentSplit.revert();
-        element.textContent = phrases[nextIndex];
+        const nextText = formatTextForMobile(phrases[nextIndex]);
+        element.innerHTML = nextText;
         currentSplit = new SplitText(element, { type: splitType });
 
         const newUnits = splitType === "chars" ? currentSplit.chars : currentSplit.words;
