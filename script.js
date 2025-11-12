@@ -1090,7 +1090,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Metemi initialized");
 
   // Initialize Safari hero fallback immediately
-  // DISABLED: initSafariHeroFallback();
+  initSafariHeroFallback();
 
   // Initialize video lazy loading
   if (typeof initVideoOptimization === "function") {
