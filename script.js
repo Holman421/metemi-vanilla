@@ -5,26 +5,6 @@
 
 // Global state
 let lenis = null;
-let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
-/* ========================================
-   SAFARI HERO FALLBACK
-   ======================================== */
-function initSafariHeroFallback() {
-  if (isSafari) {
-    // Hide videos and show logo images in hero section
-    const heroVideos = document.querySelectorAll(".hero-video");
-    const heroLogos = document.querySelectorAll(".hero-fallback-logo");
-
-    heroVideos.forEach((video) => {
-      video.style.display = "none";
-    });
-
-    heroLogos.forEach((logo) => {
-      logo.style.display = "block";
-    });
-  }
-}
 
 /* ========================================
    LENIS SMOOTH SCROLL INITIALIZATION
@@ -42,8 +22,7 @@ function initLenis() {
     gestureOrientation: "vertical",
     smoothWheel: true,
     wheelMultiplier: 1,
-    // Safari optimization: disable smooth touch as it can cause issues
-    smoothTouch: isSafari ? false : false,
+    smoothTouch: false,
     touchMultiplier: 2,
     infinite: false,
   });
@@ -429,30 +408,6 @@ function heroAnimation() {
     0
   );
 
-  // Animate Safari fallback logo images if on Safari
-  if (isSafari) {
-    const heroFallbackLogos = document.querySelectorAll(
-      ".hero-content .hero-fallback-logo"
-    );
-
-    if (heroFallbackLogos.length > 0) {
-      heroFallbackLogos.forEach((logo) => {
-        gsap.set(logo, { opacity: 0, scale: 0.8 });
-
-        tl.to(
-          logo,
-          {
-            opacity: 1,
-            scale: 1,
-            duration: 1.2,
-            ease: "power2.out",
-          },
-          "-=1.2" // Start during logo text animation
-        );
-      });
-    }
-  }
-
   // Title animations (start after logo completes)
   tl.to(
     heroTitle,
@@ -587,9 +542,6 @@ function parallaxAnimation() {
   const parallaxElements = document.querySelectorAll("[parallax]");
 
   parallaxElements.forEach((element) => {
-    // Safari optimization: only set will-change when actively animating
-    // element.style.willChange = "transform";
-
     const offset = parseFloat(element.dataset.offset || "0");
     const offsetMobile = parseFloat(
       element.dataset.offsetMobile || element.dataset.offset || "0"
@@ -623,7 +575,6 @@ function parallaxAnimation() {
         trigger: element,
         start: "top bottom",
         scrub: true,
-        // Safari optimization
         onEnter: () => {
           element.style.willChange = "transform";
         },
@@ -1088,9 +1039,6 @@ function initAnimations() {
    ======================================== */
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Metemi initialized");
-
-  // Initialize Safari hero fallback immediately
-  initSafariHeroFallback();
 
   // Initialize video lazy loading
   if (typeof initVideoOptimization === "function") {
