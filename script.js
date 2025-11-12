@@ -1047,8 +1047,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initLenis();
 
-  window.addEventListener("load", () => {
-    console.log("Initializing animations");
-    initAnimations();
-  });
+  // Wait only for the hero background image to load before starting hero animation
+  const heroContainer = document.querySelector('.hero-container');
+  if (heroContainer) {
+    const bgImageUrl = 'assets/images/hero-bg.jpg';
+    const img = new Image();
+    
+    img.onload = () => {
+      console.log("Hero background loaded, starting hero animation");
+      // Start hero animation immediately after background loads
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.registerPlugin(SplitText);
+      heroAnimation();
+    };
+    
+    img.onerror = () => {
+      console.log("Hero background failed to load, starting animation anyway");
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.registerPlugin(SplitText);
+      heroAnimation();
+    };
+    
+    // Start loading the background image
+    img.src = bgImageUrl;
+  }
+
+  // Initialize all other animations once DOM is interactive (don't wait for videos)
+  // Use a small timeout to ensure GSAP plugins are loaded
+  setTimeout(() => {
+    console.log("Initializing other animations");
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(SplitText);
+    
+    // Initialize all animations except hero (already done)
+    wordSwitcherAnimation();
+    popInAnimation();
+    fadeAnimation();
+    fadeInAnimation();
+    fadeLeftAnimation();
+    fadeRightAnimation();
+    parallaxAnimation();
+    animateHowCardsImages();
+    animateTextsAppear();
+    animateTitleXScrub();
+    animateTextsLetterSpacingScrub();
+    animateHowMobileCards();
+    animateChangesMobileCards();
+    animateBigGridMobileCards();
+    initVideoPlayButtons();
+  }, 100);
 });
