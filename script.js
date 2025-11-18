@@ -1,14 +1,14 @@
 /* ========================================
-   METEMI - Main JavaScript
-   Plain HTML/CSS/JS Version
-   ======================================== */
+    METEMI - Main JavaScript
+    Plain HTML/CSS/JS Version
+    ======================================== */
 
 // Global state
 let lenis = null;
 
 /* ========================================
-   LENIS SMOOTH SCROLL INITIALIZATION
-   ======================================== */
+    LENIS SMOOTH SCROLL INITIALIZATION
+    ======================================== */
 function initLenis() {
   if (typeof Lenis === "undefined") {
     console.error("Lenis is not loaded");
@@ -43,8 +43,8 @@ function initLenis() {
 }
 
 /* ========================================
-   GSAP ANIMATION FUNCTIONS
-   ======================================== */
+    GSAP ANIMATION FUNCTIONS
+    ======================================== */
 
 // Generic word switcher animation that can be used with any element
 function createWordSwitcher(config) {
@@ -173,13 +173,21 @@ function wordSwitcherAnimation() {
   createWordSwitcher({
     selector: ".third-title",
     phrases: [
-      "Meet people at your café",
-      "Meet people in your building",
-      "Meet people at your gym",
-      "Meet people at your cowork",
-      "Meet people from your class",
+      "at your café",
+      "in your building",
+      "at your gym",
+      "at your cowork",
+      "from your class",
     ],
     delay: 1.25, // Longer delay since phrases are longer
+    splitType: "chars",
+  });
+
+  // Czech "lidí/skupin" word switcher
+  createWordSwitcher({
+    selector: ".word-switcher-people-groups",
+    phrases: ["people", "groups", "neighbours"],
+    delay: 1,
     splitType: "chars",
   });
 }
@@ -188,155 +196,189 @@ function popInAnimation() {
   const elements = document.querySelectorAll("[anim-pop-in]");
 
   elements.forEach((element) => {
+    // Check if this is a dm-wrapper with a dm-gray or dm-red child
+    const dmElement = element.querySelector(".dm-gray, .dm-red");
+    
+    // Set initial state
     gsap.set(element, {
       scale: 0,
       opacity: 0,
     });
 
-    const enterAnim = gsap.to(element, {
+    // If it's a DM element, set initial blur to 0
+    if (dmElement) {
+      gsap.set(dmElement, {
+        "--blur-amount": "0px",
+      });
+    }
+
+    // Create the pop-in animation
+    gsap.to(element, {
       duration: 1.5,
       scale: 1,
       opacity: 1,
       ease: "elastic.out(1.3,0.4)",
-      paused: true,
+      scrollTrigger: {
+        trigger: element,
+        start: "top 85%",
+        end: "top 40%",
+        toggleActions: "play none none reverse",
+        markers: false,
+        onEnter: () => {
+          // Reset blur when entering
+          if (dmElement) {
+            gsap.set(dmElement, { "--blur-amount": "0px" });
+          }
+        },
+        onLeaveBack: () => {
+          // Reset blur when scrolling back up
+          if (dmElement) {
+            gsap.set(dmElement, { "--blur-amount": "0px" });
+          }
+        },
+      },
+      onComplete: () => {
+        // After pop-in completes, animate the blur in
+        if (dmElement) {
+          gsap.to(dmElement, {
+            "--blur-amount": "13px",
+            duration: 0.6,
+            ease: "power2.inOut",
+          });
+        }
+      },
+      onReverseComplete: () => {
+        // Reset blur when animation reverses
+        if (dmElement) {
+          gsap.set(dmElement, { "--blur-amount": "0px" });
+        }
+      },
     });
+  });
+}
 
-    const exitAnim = gsap.to(element, {
-      duration: 0.1,
-      scale: 0,
-      opacity: 0,
-      ease: "power2.in",
-      paused: true,
-    });
+// --- NEW LOGIC ADDED HERE ---
 
-    ScrollTrigger.create({
-      trigger: element,
-      start: "top 85%",
-      end: "top 40%",
-      markers: false,
-      onEnter: () => {
-        enterAnim.restart();
-        enterAnim.play();
+/**
+ * Generic function to handle fade animations with optional group-based staggering.
+ * It groups elements by data-group-name and creates a ScrollTriggered Timeline for each group.
+ * If no groupName is found, it falls back to animating the element individually.
+ * @param {string} selectorAttribute - The attribute to select elements (e.g., "[anim-fade]").
+ * @param {object} initialProps - The initial GSAP properties (e.g., {opacity: 0, y: "100%"}).
+ * @param {object} animationProps - The final GSAP properties (e.g., {opacity: 1, y: "0%"}).
+ */
+function groupFadeAnimation(selectorAttribute, initialProps, animationProps) {
+  const allElements = document.querySelectorAll(selectorAttribute);
+
+  if (allElements.length === 0) return;
+
+  // 1. Group elements by data-group-name
+  const groups = new Map();
+  const individualElements = [];
+
+  allElements.forEach((element) => {
+    const groupName = element.dataset.groupName;
+
+    if (groupName) {
+      if (!groups.has(groupName)) {
+        groups.set(groupName, {
+          elements: [],
+          // Take trigger and start from the first element in the group
+          trigger: element,
+          start: element.dataset.start || "top 90%",
+        });
+      }
+      groups.get(groupName).elements.push(element);
+    } else {
+      individualElements.push(element);
+    }
+  });
+
+  // 2. Animate Groups with Stagger
+  groups.forEach((groupData, groupName) => {
+    const { elements, trigger, start } = groupData;
+
+    // Use a set to define initial properties for all elements in the group
+    gsap.set(elements, initialProps);
+
+    // Create a single Timeline for the group to control stagger
+    const groupTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: trigger,
+        start: start,
+        toggleActions: "play none none reverse",
+        markers: false,
       },
     });
 
-    ScrollTrigger.create({
-      trigger: element,
-      start: "top 100%",
-      end: "top 100%",
-      markers: false,
-      onLeaveBack: () => {
-        exitAnim.restart();
-        exitAnim.play();
+    // Calculate stagger value (defaults to 0.1s if not set on the first element)
+    const staggerValue = parseFloat(trigger.dataset.stagger || "0.2");
+
+    // Animate all elements in the group with stagger
+    groupTimeline.to(
+      elements,
+      {
+        ...animationProps,
+        stagger: staggerValue,
+        // Ensure duration is applied to each individual item in the stagger
+        duration: animationProps.duration || 0.8,
+      },
+      0
+    ); // Start at time 0 of the timeline
+  });
+
+  // 3. Animate Individual Elements (Fallback to original logic)
+  individualElements.forEach((element) => {
+    const startTrigger = element.dataset.start || "top 90%";
+
+    // Set initial state
+    gsap.set(element, initialProps);
+
+    gsap.to(element, {
+      ...animationProps,
+      scrollTrigger: {
+        trigger: element,
+        start: startTrigger,
+        toggleActions: "play none none reverse",
+        markers: false,
       },
     });
   });
 }
 
 function fadeAnimation() {
-  const elements = document.querySelectorAll("[anim-fade]");
-
-  elements.forEach((element) => {
-    const startTrigger = element.dataset.start || "top 90%";
-
-    gsap.set(element, {
-      opacity: 0,
-    });
-
-    gsap.to(element, {
-      duration: 0.8,
-      opacity: 1,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: element,
-        start: startTrigger,
-        toggleActions: "play none none reverse",
-        markers: false,
-      },
-    });
-  });
+  groupFadeAnimation(
+    "[anim-fade]",
+    { opacity: 0 },
+    { duration: 0.8, opacity: 1, ease: "power2.out" }
+  );
 }
 
 function fadeInAnimation() {
-  const elements = document.querySelectorAll("[anim-fade-in]");
-
-  elements.forEach((element) => {
-    const startTrigger = element.dataset.start || "top 90%";
-
-    gsap.set(element, {
-      opacity: 0,
-      y: "100%",
-    });
-
-    gsap.to(element, {
-      duration: 0.8,
-      opacity: 1,
-      y: "0%",
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: element,
-        start: startTrigger,
-        toggleActions: "play none none reverse",
-        markers: false,
-      },
-    });
-  });
+  groupFadeAnimation(
+    "[anim-fade-in]",
+    { opacity: 0, y: "100%" },
+    { duration: 0.8, opacity: 1, y: "0%", ease: "power2.out" }
+  );
 }
 
 function fadeLeftAnimation() {
-  const elements = document.querySelectorAll("[anim-fade-left]");
-
-  elements.forEach((element) => {
-    const startTrigger = element.dataset.start || "top 90%";
-
-    gsap.fromTo(
-      element,
-      {
-        opacity: 0,
-        x: "-100px",
-      },
-      {
-        duration: 0.8,
-        opacity: 1,
-        x: "0",
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: element,
-          start: startTrigger,
-          toggleActions: "play none none reverse",
-        },
-      }
-    );
-  });
+  groupFadeAnimation(
+    "[anim-fade-left]",
+    { opacity: 0, x: "-100px" },
+    { duration: 0.8, opacity: 1, x: "0", ease: "power2.out" }
+  );
 }
 
 function fadeRightAnimation() {
-  const elements = document.querySelectorAll("[anim-fade-right]");
-
-  elements.forEach((element) => {
-    const startTrigger = element.dataset.start || "top 90%";
-
-    gsap.fromTo(
-      element,
-      {
-        opacity: 0,
-        x: "100px",
-      },
-      {
-        duration: 0.8,
-        opacity: 1,
-        x: "0",
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: element,
-          start: startTrigger,
-          markers: false,
-          toggleActions: "play none none reverse",
-        },
-      }
-    );
-  });
+  groupFadeAnimation(
+    "[anim-fade-right]",
+    { opacity: 0, x: "100px" },
+    { duration: 0.8, opacity: 1, x: "0", ease: "power2.out" }
+  );
 }
+
+// --- END OF NEW LOGIC ---
 
 function animateTextsAppear() {
   const elements = document.querySelectorAll("[text-appear]");
@@ -370,6 +412,7 @@ function heroAnimation() {
   const buttonContainer = document.querySelector(
     ".hero-content .button-container"
   );
+  const heroVideos = document.querySelectorAll(".hero-video");
 
   if (!heroLogo || !heroTitle) return;
 
@@ -392,7 +435,7 @@ function heroAnimation() {
     heroLogo,
     { opacity: 0 },
     {
-      opacity: 1,
+      opacity: 0.5,
       duration: 1.5,
       ease: "power4.inOut",
     },
@@ -413,14 +456,14 @@ function heroAnimation() {
     heroTitle,
     {
       opacity: 1,
-      duration: 0.75,
+      duration: 0.9,
       ease: "power2.out",
     },
-    "-=0.7"
+    "-=0.4"
   ).from(
     titleSplit.lines,
     {
-      duration: 0.75,
+      duration: 0.9,
       y: "75%",
       opacity: 0,
       ease: "back.out",
@@ -440,10 +483,26 @@ function heroAnimation() {
       {
         opacity: 1,
         y: 0,
-        duration: 0.6,
+        duration: 0.8,
         ease: "power2.out",
       },
-      "-=0.6" // Start 0.3s before the previous animation completes
+      "-=0.3" // Start 0.3s before the previous animation completes
+    );
+  }
+
+  // Hero video animation (both mobile and desktop)
+  if (heroVideos.length > 0) {
+    tl.fromTo(
+      heroVideos,
+      {
+        opacity: 0,
+      },
+      {
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.out",
+      },
+      "-=0.3"
     );
   }
 }
@@ -511,7 +570,7 @@ function animateHowCardsImages() {
   const offset = 0;
 
   const imagesArray = [
-    { element: firstImage, start: `-=100px 100%`, end: "top 80%" },
+    { element: firstImage, start: `-=0px 110%`, end: "top 80%" },
     { element: secondImage, start: `-=100px 70%`, end: "top 55%" },
     { element: thirdImage, start: `-=100px 50%`, end: "top 40%" },
   ];
@@ -639,8 +698,8 @@ function parallaxAnimation() {
 }
 
 /* ========================================
-   ANIMATED NUMBER IMPLEMENTATION
-   ======================================== */
+    ANIMATED NUMBER IMPLEMENTATION
+    ======================================== */
 function initAnimatedNumbers() {
   const numbers = document.querySelectorAll(".animated-number");
 
@@ -755,8 +814,8 @@ function initAnimatedNumbers() {
 }
 
 /* ========================================
-   MOBILE CARD CAROUSEL - GENERIC FUNCTION
-   ======================================== */
+    MOBILE CARD CAROUSEL - GENERIC FUNCTION
+    ======================================== */
 function animateMobileCardCarousel(config) {
   const {
     containerSelector,
@@ -805,10 +864,10 @@ function animateMobileCardCarousel(config) {
       const buttonsContainer = document.createElement("div");
       buttonsContainer.className = "carousel-controls";
       buttonsContainer.innerHTML = `
-        <div class="carousel-btn carousel-btn-active" ${wrapperConfig.buttonAttribute}></div>
-        <div class="carousel-btn" ${wrapperConfig.buttonAttribute}></div>
-        <div class="carousel-btn" ${wrapperConfig.buttonAttribute}></div>
-      `;
+                <div class="carousel-btn carousel-btn-active" ${wrapperConfig.buttonAttribute}></div>
+                <div class="carousel-btn" ${wrapperConfig.buttonAttribute}></div>
+                <div class="carousel-btn" ${wrapperConfig.buttonAttribute}></div>
+            `;
       pinnedWrapper.appendChild(buttonsContainer);
 
       finalPinTarget = pinnedWrapper;
@@ -892,6 +951,20 @@ function animateMobileCardCarousel(config) {
   });
 }
 
+function scaleInAnimation() {
+  // Calling the generic utility with properties for the scale-in effect.
+  // The groupFadeAnimation function will now:
+  // 1. Collect all elements with the class ".anim-scale-in".
+  // 2. Automatically group elements sharing the same 'data-group-name'.
+  // 3. Apply a default stagger of 0.1s to any group found (if 'data-stagger' isn't set).
+  // 4. Animate individual elements (no group name) as before.
+  groupFadeAnimation(
+    ".anim-scale-in",
+    { scale: 0.5, opacity: 0 }, // Initial GSAP properties (from scale 0.5 and fully transparent)
+    { duration: 0.8, scale: 1, opacity: 1, ease: "power2.out" } // Final GSAP properties
+  );
+}
+
 // Specific implementations using the generic function
 function animateHowMobileCards() {
   const pinContainer = document.getElementById("how-mobile-pin-container");
@@ -957,59 +1030,373 @@ function animateBigGridMobileCards() {
 }
 
 /* ========================================
-   VIDEO PLAY BUTTON HANDLER
-   ======================================== */
+    VIDEO PLAY BUTTON HANDLER
+    ======================================== */
 function initVideoPlayButtons() {
   // Find all video containers with play buttons
-  const videoContainers = document.querySelectorAll('.video-container');
-  
+  const videoContainers = document.querySelectorAll(".video-container");
+
   videoContainers.forEach((container) => {
-    const playButton = container.querySelector('.video-play-button');
-    const video = container.querySelector('video');
-    
+    const playButton = container.querySelector(".video-play-button");
+    const video = container.querySelector("video");
+
     if (playButton && video) {
       // Add click handler to play button - play the video
-      playButton.addEventListener('click', () => {
+      playButton.addEventListener("click", () => {
         // Hide the play button with animation
-        playButton.classList.add('hidden');
-        
+        playButton.classList.add("hidden");
+
         // Play the video
         video.play().catch((error) => {
-          console.log('Video play failed:', error);
+          console.log("Video play failed:", error);
           // Show button again if play fails
-          playButton.classList.remove('hidden');
+          playButton.classList.remove("hidden");
         });
       });
-      
+
       // Add click handler to video - pause and show button
-      video.addEventListener('click', () => {
+      video.addEventListener("click", () => {
         if (!video.paused) {
           video.pause();
-          playButton.classList.remove('hidden');
+          playButton.classList.remove("hidden");
         }
       });
-      
+
       // Show button again if video is paused
-      video.addEventListener('pause', () => {
-        playButton.classList.remove('hidden');
+      video.addEventListener("pause", () => {
+        playButton.classList.remove("hidden");
       });
-      
+
       // Hide button when video starts playing
-      video.addEventListener('play', () => {
-        playButton.classList.add('hidden');
+      video.addEventListener("play", () => {
+        playButton.classList.add("hidden");
       });
-      
+
       // Show button when video ends
-      video.addEventListener('ended', () => {
-        playButton.classList.remove('hidden');
+      video.addEventListener("ended", () => {
+        playButton.classList.remove("hidden");
       });
     }
   });
 }
 
 /* ========================================
-   MASTER INITIALIZATION
-   ======================================== */
+    DM-GRAY TYPING ANIMATION
+    ======================================== */
+function initDmGrayTyping() {
+  const dmGrayElements = document.querySelectorAll(".dm-gray");
+
+  dmGrayElements.forEach((element) => {
+    const descriptionElement = element.querySelector(".description");
+    if (!descriptionElement) return;
+
+    // Store the original message text
+    const originalMessage = descriptionElement.textContent;
+
+    // Variables to track animation state
+    let typingIndicator = null;
+    let dotAnimation = null;
+    let isAnimating = false;
+
+    // Create typing indicator (three dots)
+    const createTypingIndicator = () => {
+      const indicator = document.createElement("div");
+      indicator.className = "typing-indicator";
+      indicator.innerHTML = `
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      `;
+      return indicator;
+    };
+
+    // Typewriter effect function
+    const typewriterEffect = (text, targetElement, speed = 30) => {
+      return new Promise((resolve) => {
+        targetElement.textContent = "";
+        let index = 0;
+
+        const typeChar = () => {
+          if (index < text.length) {
+            targetElement.textContent += text.charAt(index);
+            index++;
+            setTimeout(typeChar, speed);
+          } else {
+            resolve();
+          }
+        };
+
+        typeChar();
+      });
+    };
+
+    // Function to start the typing animation sequence
+    const startTypingAnimation = () => {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      // Remove existing typing indicator if present
+      if (typingIndicator) {
+        typingIndicator.remove();
+        typingIndicator = null;
+      }
+
+      // Kill any existing dot animation
+      if (dotAnimation) {
+        dotAnimation.kill();
+        dotAnimation = null;
+      }
+
+      // Hide description and show typing indicator
+      descriptionElement.style.visibility = "hidden";
+      descriptionElement.style.position = "absolute";
+      typingIndicator = createTypingIndicator();
+      element.insertBefore(typingIndicator, descriptionElement);
+
+      // Animate the typing indicator dots
+      const dots = typingIndicator.querySelectorAll(".dot");
+      dotAnimation = gsap.to(dots, {
+        opacity: 0.3,
+        duration: 0.4,
+        stagger: 0.15,
+        repeat: -1,
+        yoyo: true,
+        ease: "power1.inOut",
+      });
+
+      // Wait for pop-in animation to complete (1.5s) + 1 second of typing indicator
+      gsap.delayedCall(1.5, () => {
+        // Kill dot animation before removing
+        if (dotAnimation) {
+          dotAnimation.kill();
+          dotAnimation = null;
+        }
+
+        // Animate typing indicator out with fade and slight scale
+        gsap.to(typingIndicator, {
+          opacity: 0,
+          scale: 0.8,
+          duration: 0.2,
+          ease: "power2.in",
+          onComplete: () => {
+            if (typingIndicator) {
+              typingIndicator.remove();
+              typingIndicator = null;
+            }
+
+            // Show description element with initial state
+            descriptionElement.style.visibility = "visible";
+            descriptionElement.style.position = "relative";
+            gsap.set(descriptionElement, { opacity: 0 });
+
+            // Fade in the description
+            gsap.to(descriptionElement, {
+              opacity: 1,
+              duration: 0.2,
+              ease: "power2.out",
+              onComplete: () => {
+                isAnimating = false;
+              },
+            });
+
+            // Start typewriter effect
+            typewriterEffect(originalMessage, descriptionElement, 20);
+          },
+        });
+      });
+    };
+
+    // Function to reset to typing indicator state
+    const resetToTypingIndicator = () => {
+      // Animate the description text out first
+      if (descriptionElement.style.visibility !== "hidden") {
+        gsap.to(descriptionElement, {
+          opacity: 0,
+          duration: 0.2,
+          ease: "power2.out",
+          onComplete: () => {
+            // Kill any ongoing animations
+            if (dotAnimation) {
+              dotAnimation.kill();
+              dotAnimation = null;
+            }
+
+            // Remove typing indicator if it exists
+            if (typingIndicator) {
+              typingIndicator.remove();
+              typingIndicator = null;
+            }
+
+            // Hide description
+            descriptionElement.style.visibility = "hidden";
+            descriptionElement.style.position = "absolute";
+            descriptionElement.textContent = originalMessage;
+
+            // Create and show new typing indicator
+            typingIndicator = createTypingIndicator();
+            element.insertBefore(typingIndicator, descriptionElement);
+
+            isAnimating = false;
+          },
+        });
+      } else {
+        // If description is already hidden, just do immediate reset
+        // Kill any ongoing animations
+        if (dotAnimation) {
+          dotAnimation.kill();
+          dotAnimation = null;
+        }
+
+        // Remove typing indicator if it exists
+        if (typingIndicator) {
+          typingIndicator.remove();
+          typingIndicator = null;
+        }
+
+        // Hide description
+        descriptionElement.style.visibility = "hidden";
+        descriptionElement.style.position = "absolute";
+        descriptionElement.textContent = originalMessage;
+
+        // Create and show new typing indicator
+        typingIndicator = createTypingIndicator();
+        element.insertBefore(typingIndicator, descriptionElement);
+
+        isAnimating = false;
+      }
+    };
+
+    // Initialize with typing indicator shown
+    resetToTypingIndicator();
+
+    // Initialize the animation sequence with ScrollTrigger
+    ScrollTrigger.create({
+      trigger: element,
+      start: "top 85%",
+      end: "top 40%",
+      onEnter: () => {
+        startTypingAnimation();
+      },
+      onLeaveBack: () => {
+        resetToTypingIndicator();
+      },
+    });
+  });
+}
+
+/* ========================================
+    PORTRAIT SCROLL SCALE (GSAP + ScrollTrigger)
+    ======================================== */
+function portraitScrollScale() {
+  const container = document.querySelector(".talk-to-images");
+  if (!container) {
+    console.log("talk-to-images container not found");
+    return;
+  }
+
+  const portraitWrappers = document.querySelectorAll(".portret-wrapper");
+  if (!portraitWrappers.length) {
+    console.log("No portrait wrappers found");
+    return;
+  }
+
+  console.log("Found", portraitWrappers.length, "portrait wrappers to animate");
+
+  // Animate each portrait wrapper
+  portraitWrappers.forEach((wrapper) => {
+    gsap.fromTo(
+      wrapper,
+      {
+        scale: 1,
+      },
+      {
+        scale: 1.5,
+        ease: "none",
+        force3D: true,
+        scrollTrigger: {
+          trigger: ".talk-to",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+          markers: false,
+        },
+      }
+    );
+  });
+}
+
+/* ========================================
+    CONFETTI EFFECT FOR GOOGLE PLAY BUTTONS
+    ======================================== */
+function initConfettiButtons() {
+  // Target the specific button in image-right-text-split-2
+  const confettiButton = document.querySelector(
+    ".image-right-text-split-2 .google-play-badge"
+  );
+
+  if (confettiButton && typeof confetti !== "undefined") {
+    let hasTriggered = false;
+
+    const fireConfetti = () => {
+      // Get button position for confetti origin
+      const rect = confettiButton.getBoundingClientRect();
+      const x = (rect.left + rect.width / 2) / window.innerWidth;
+      const y = (rect.top + rect.height / 2) / window.innerHeight;
+
+      // Fire confetti with custom colors matching your gradient theme
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { x, y },
+        colors: ["#FF6B6B", "#4ECDC4", "#45B7D1", "#FFA07A", "#98D8C8"],
+        ticks: 200,
+        gravity: 1,
+        decay: 0.94,
+        startVelocity: 30,
+        scalar: 1.2,
+      });
+
+      // Add a second burst slightly delayed for a more dramatic effect
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          angle: 60,
+          spread: 55,
+          origin: { x, y },
+          colors: ["#FF6B6B", "#4ECDC4", "#45B7D1", "#FFA07A", "#98D8C8"],
+        });
+      }, 100);
+
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          angle: 120,
+          spread: 55,
+          origin: { x, y },
+          colors: ["#FF6B6B", "#4ECDC4", "#45B7D1", "#FFA07A", "#98D8C8"],
+        });
+      }, 100);
+    };
+
+    // Create ScrollTrigger for confetti animation
+    ScrollTrigger.create({
+      trigger: confettiButton,
+      start: "top 75%", // Trigger when button reaches 75% down the viewport
+      markers: false,
+      once: true, // Only trigger once
+      onEnter: () => {
+        if (!hasTriggered) {
+          hasTriggered = true;
+          fireConfetti();
+        }
+      },
+    });
+  }
+}
+
+/* ========================================
+    MASTER INITIALIZATION
+    ======================================== */
 function initAnimations() {
   gsap.registerPlugin(ScrollTrigger);
   gsap.registerPlugin(SplitText);
@@ -1021,6 +1408,7 @@ function initAnimations() {
   fadeInAnimation();
   fadeLeftAnimation();
   fadeRightAnimation();
+  scaleInAnimation();
   parallaxAnimation();
   animateHowCardsImages();
   animateTextsAppear();
@@ -1032,11 +1420,14 @@ function initAnimations() {
   animateChangesMobileCards();
   animateBigGridMobileCards();
   initVideoPlayButtons();
+  initDmGrayTyping();
+  portraitScrollScale();
+  initConfettiButtons();
 }
 
 /* ========================================
-   DOM READY - MAIN ENTRY POINT
-   ======================================== */
+    DOM READY - MAIN ENTRY POINT
+    ======================================== */
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Metemi initialized");
 
@@ -1048,11 +1439,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initLenis();
 
   // Wait only for the hero background image to load before starting hero animation
-  const heroContainer = document.querySelector('.hero-container');
+  const heroContainer = document.querySelector(".hero-container");
   if (heroContainer) {
-    const bgImageUrl = 'assets/images/hero-bg.jpg';
+    const bgImageUrl = "assets/images/hero-bg.jpg";
     const img = new Image();
-    
+
     img.onload = () => {
       console.log("Hero background loaded, starting hero animation");
       // Start hero animation immediately after background loads
@@ -1060,14 +1451,14 @@ document.addEventListener("DOMContentLoaded", () => {
       gsap.registerPlugin(SplitText);
       heroAnimation();
     };
-    
+
     img.onerror = () => {
       console.log("Hero background failed to load, starting animation anyway");
       gsap.registerPlugin(ScrollTrigger);
       gsap.registerPlugin(SplitText);
       heroAnimation();
     };
-    
+
     // Start loading the background image
     img.src = bgImageUrl;
   }
@@ -1078,13 +1469,14 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Initializing other animations");
     gsap.registerPlugin(ScrollTrigger);
     gsap.registerPlugin(SplitText);
-    
+
     // Initialize all animations except hero (already done)
     wordSwitcherAnimation();
     popInAnimation();
     fadeAnimation();
     fadeInAnimation();
     fadeLeftAnimation();
+    scaleInAnimation();
     fadeRightAnimation();
     parallaxAnimation();
     animateHowCardsImages();
@@ -1095,5 +1487,68 @@ document.addEventListener("DOMContentLoaded", () => {
     animateChangesMobileCards();
     animateBigGridMobileCards();
     initVideoPlayButtons();
+    initDmGrayTyping();
+    portraitScrollScale();
+    initConfettiButtons();
   }, 100);
 });
+
+/* ========================================
+    MOUSE GRADIENT FOLLOWER
+    ======================================== */
+function initMouseGradientFollower() {
+  const follower = document.querySelector(".mouse-gradient-follower");
+  const heroContainer = document.querySelector(".hero-container");
+  const gradientMask = document.querySelector(".hero-gradient-mask");
+
+  if (!follower || !heroContainer || !gradientMask) return;
+
+  let mouseX = 0;
+  let mouseY = 0;
+  let currentX = 0;
+  let currentY = 0;
+  let isInside = false;
+
+  // Smooth lerp function for catch-up effect
+  const lerp = (start, end, factor) => start + (end - start) * factor;
+
+  // Track mouse movement on the hero-container
+  heroContainer.addEventListener("mousemove", (e) => {
+    const rect = gradientMask.getBoundingClientRect();
+    mouseX = e.clientX - rect.left;
+    mouseY = e.clientY - rect.top;
+
+    if (!isInside) {
+      isInside = true;
+      follower.style.opacity = "1";
+    }
+  });
+
+  // Hide when mouse leaves
+  heroContainer.addEventListener("mouseleave", () => {
+    isInside = false;
+    follower.style.opacity = "0";
+  });
+
+  // Animate with smooth catch-up effect
+  function animate() {
+    if (isInside) {
+      // Lerp factor controls the catch-up speed (lower = slower/smoother)
+      currentX = lerp(currentX, mouseX, 0.1);
+      currentY = lerp(currentY, mouseY, 0.1);
+
+      follower.style.transform = `translate(${currentX}px, ${currentY}px) translate(-50%, -50%)`;
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+}
+
+// Initialize when DOM is ready
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initMouseGradientFollower);
+} else {
+  initMouseGradientFollower();
+}
