@@ -1738,7 +1738,6 @@ img {
         align-items: center;
         justify-content: center;
         padding: 0 48px 20px 48px;
-        border: 1px solid green;
 
         @media (max-width: 768px) {
           padding: 0 24px 20px 24px;
@@ -3006,11 +3005,38 @@ img {
     rgba(244, 134, 30, 0.98) 100%
   );
   backdrop-filter: blur(10px);
-  padding: 1.25rem 2rem;
+  padding: 0.75rem 2rem;
   z-index: 1000;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
   transform: translateY(100%);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.banner-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  z-index: 10;
+}
+
+.banner-close:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+.banner-close:active {
+  transform: scale(0.95);
 }
 
 .fixed-bottom-banner.show {
@@ -3022,7 +3048,7 @@ img {
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 2rem;
 }
 
@@ -3033,12 +3059,13 @@ img {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-size: clamp(1.25rem, calc(1.034rem + 0.526vw), 2rem);
 }
 
 .banner-text p {
   margin: 0;
   color: rgba(255, 255, 255, 0.9);
-  font-size: clamp(0.875rem, calc(0.743rem + 0.526vw), 1.25rem);
+  font-size: 16px;
 }
 
 .banner-cta {
@@ -3049,16 +3076,44 @@ img {
   padding: 0;
   transition: transform 0.3s ease;
   height: 3.5rem;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  height: 40px;
 }
 
 .banner-cta img {
   height: 100%;
   width: auto;
   object-fit: contain;
+  position: relative;
+}
+
+.banner-cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  transform: skewX(-25deg);
+  transition: left 0.5s ease;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .banner-cta:hover {
   transform: scale(1.05);
+}
+
+.banner-cta:hover::before {
+  left: 150%;
 }
 
 .banner-cta:active {

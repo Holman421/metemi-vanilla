@@ -1558,12 +1558,16 @@ if (document.readyState === "loading") {
     ======================================== */
 function initFixedBottomBanner() {
   const banner = document.querySelector('.fixed-bottom-banner');
+  const closeButton = document.querySelector('.banner-close');
   if (!banner) return;
 
   let lastScrollY = window.scrollY;
   let ticking = false;
+  let isDismissed = false;
 
   function updateBanner() {
+    if (isDismissed) return; // Don't update if manually dismissed
+
     const currentScrollY = window.scrollY;
     const scrollingUp = currentScrollY < lastScrollY;
     const scrollingDown = currentScrollY > lastScrollY;
@@ -1588,10 +1592,21 @@ function initFixedBottomBanner() {
   }
 
   function onScroll() {
-    if (!ticking) {
+    if (!ticking && !isDismissed) {
       window.requestAnimationFrame(updateBanner);
       ticking = true;
     }
+  }
+
+  function dismissBanner() {
+    isDismissed = true;
+    banner.classList.remove('show');
+    window.removeEventListener('scroll', onScroll);
+  }
+
+  // Close button handler
+  if (closeButton) {
+    closeButton.addEventListener('click', dismissBanner);
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
