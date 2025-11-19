@@ -571,7 +571,7 @@ function animateHowCardsImages() {
 
   const imagesArray = [
     { element: firstImage, start: `-=0px 110%`, end: "top 80%" },
-    { element: secondImage, start: `-=100px 70%`, end: "top 55%" },
+    { element: secondImage, start: `-=150px 80%`, end: "top 55%" },
     { element: thirdImage, start: `-=100px 50%`, end: "top 40%" },
   ];
 
@@ -1551,4 +1551,55 @@ if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initMouseGradientFollower);
 } else {
   initMouseGradientFollower();
+}
+
+/* ========================================
+    FIXED BOTTOM BANNER SCROLL BEHAVIOR
+    ======================================== */
+function initFixedBottomBanner() {
+  const banner = document.querySelector('.fixed-bottom-banner');
+  if (!banner) return;
+
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  function updateBanner() {
+    const currentScrollY = window.scrollY;
+    const scrollingUp = currentScrollY < lastScrollY;
+    const scrollingDown = currentScrollY > lastScrollY;
+    
+    // Show banner when scrolling up and not at the very top
+    if (scrollingUp && currentScrollY > 300) {
+      banner.classList.add('show');
+    }
+    
+    // Hide banner when scrolling down
+    if (scrollingDown) {
+      banner.classList.remove('show');
+    }
+    
+    // Hide banner when at the top of the page
+    if (currentScrollY < 100) {
+      banner.classList.remove('show');
+    }
+
+    lastScrollY = currentScrollY;
+    ticking = false;
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      window.requestAnimationFrame(updateBanner);
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
+
+// Initialize when DOM is ready
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initFixedBottomBanner);
+} else {
+  initFixedBottomBanner();
 }
