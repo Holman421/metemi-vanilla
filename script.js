@@ -7,6 +7,33 @@
 let lenis = null;
 
 /* ========================================
+    ANIMATED BUBBLE BACKGROUND
+    ======================================== */
+function initBubbleBackground() {
+  const interBubble = document.querySelector('.interactive');
+  if (!interBubble) return;
+
+  let curX = 0;
+  let curY = 0;
+  let tgX = 0;
+  let tgY = 0;
+
+  function move() {
+    curX += (tgX - curX) / 40;
+    curY += (tgY - curY) / 40;
+    interBubble.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
+    requestAnimationFrame(move);
+  }
+
+  window.addEventListener('mousemove', (event) => {
+    tgX = event.clientX;
+    tgY = event.clientY;
+  });
+
+  move();
+}
+
+/* ========================================
     LENIS SMOOTH SCROLL INITIALIZATION
     ======================================== */
 function initLenis() {
@@ -330,12 +357,14 @@ function groupFadeAnimation(selectorAttribute, initialProps, animationProps) {
   // 3. Animate Individual Elements (Fallback to original logic)
   individualElements.forEach((element) => {
     const startTrigger = element.dataset.start || "top 90%";
+    const duration = parseFloat(element.dataset.duration) || animationProps.duration;
 
     // Set initial state
     gsap.set(element, initialProps);
 
     gsap.to(element, {
       ...animationProps,
+      duration: duration,
       scrollTrigger: {
         trigger: element,
         start: startTrigger,
@@ -459,7 +488,7 @@ function heroAnimation() {
       duration: 0.9,
       ease: "power2.out",
     },
-    "-=0.4"
+    "-=0.95"
   ).from(
     titleSplit.lines,
     {
@@ -1165,7 +1194,7 @@ function initDmGrayTyping() {
       });
 
       // Wait for pop-in animation to complete (1.5s) + 1 second of typing indicator
-      gsap.delayedCall(1.5, () => {
+      gsap.delayedCall(1.0, () => {
         // Kill dot animation before removing
         if (dotAnimation) {
           dotAnimation.kill();
@@ -1494,63 +1523,56 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ========================================
-    MOUSE GRADIENT FOLLOWER
+    RANDOM SHIMMER EFFECT FOR GOOGLE PLAY BUTTONS AND HERO CTA
     ======================================== */
-function initMouseGradientFollower() {
-  const follower = document.querySelector(".mouse-gradient-follower");
-  const heroContainer = document.querySelector(".hero-container");
-  const gradientMask = document.querySelector(".hero-gradient-mask");
-
-  if (!follower || !heroContainer || !gradientMask) return;
-
-  let mouseX = 0;
-  let mouseY = 0;
-  let currentX = 0;
-  let currentY = 0;
-  let isInside = false;
-
-  // Smooth lerp function for catch-up effect
-  const lerp = (start, end, factor) => start + (end - start) * factor;
-
-  // Track mouse movement on the hero-container
-  heroContainer.addEventListener("mousemove", (e) => {
-    const rect = gradientMask.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
-
-    if (!isInside) {
-      isInside = true;
-      follower.style.opacity = "1";
-    }
-  });
-
-  // Hide when mouse leaves
-  heroContainer.addEventListener("mouseleave", () => {
-    isInside = false;
-    follower.style.opacity = "0";
-  });
-
-  // Animate with smooth catch-up effect
-  function animate() {
-    if (isInside) {
-      // Lerp factor controls the catch-up speed (lower = slower/smoother)
-      currentX = lerp(currentX, mouseX, 0.1);
-      currentY = lerp(currentY, mouseY, 0.1);
-
-      follower.style.transform = `translate(${currentX}px, ${currentY}px) translate(-50%, -50%)`;
-    }
-
-    requestAnimationFrame(animate);
+function initRandomShimmer() {
+  const googlePlayButtons = document.querySelectorAll('.google-play-btn');
+  const heroCTA = document.querySelector('.hero-cta');
+  
+  // Combine all buttons that should have shimmer effect
+  const shimmerButtons = [...googlePlayButtons];
+  if (heroCTA) {
+    shimmerButtons.push(heroCTA);
+  }
+  
+  if (shimmerButtons.length === 0) {
+    console.log('No shimmer buttons found');
+    return;
   }
 
-  animate();
-}
+  console.log(`✨ Found ${shimmerButtons.length} buttons for shimmer effect (${googlePlayButtons.length} Google Play + ${heroCTA ? 1 : 0} Hero CTA)`);
 
-// Initialize when DOM is ready
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initMouseGradientFollower);
-} else {
-  initMouseGradientFollower();
+  // Function to trigger shimmer on a random button
+  function triggerRandomShimmer() {
+    // Pick a random button
+    const randomIndex = Math.floor(Math.random() * shimmerButtons.length);
+    const button = shimmerButtons[randomIndex];
+    
+    console.log(`✨ Triggering shimmer on button ${randomIndex + 1} of ${shimmerButtons.length}`);
+    
+    // Force a reflow to ensure the animation restarts properly
+    button.classList.remove('shimmer-active');
+    void button.offsetWidth; // Force reflow
+    
+    // Add shimmer class
+    button.classList.add('shimmer-active');
+    
+    // Remove class after animation completes (800ms duration + small buffer)
+    setTimeout(() => {
+      button.classList.remove('shimmer-active');
+      console.log('✨ Shimmer completed');
+    }, 850);
+    
+    // Schedule next shimmer (random interval between 8-12 seconds)
+    const nextInterval = 2000 + Math.random() * 3000; // 8-12 seconds
+    console.log(`⏰ Next shimmer in ${Math.round(nextInterval / 1000)} seconds`);
+    setTimeout(triggerRandomShimmer, nextInterval);
+  }
+  
+  // Start the first shimmer after initial delay (2-4 seconds for testing)
+  const initialDelay = 2000 + Math.random() * 2000;
+  console.log(`⏰ Starting shimmer effect in ${Math.round(initialDelay / 1000)} seconds`);
+  setTimeout(triggerRandomShimmer, initialDelay);
 }
 
 /* ========================================
@@ -1614,7 +1636,13 @@ function initFixedBottomBanner() {
 
 // Initialize when DOM is ready
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initFixedBottomBanner);
+  document.addEventListener("DOMContentLoaded", () => {
+    initBubbleBackground();
+    initFixedBottomBanner();
+    initRandomShimmer();
+  });
 } else {
+  initBubbleBackground();
   initFixedBottomBanner();
+  initRandomShimmer();
 }

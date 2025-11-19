@@ -46,7 +46,7 @@
     <!-- Lenis Smooth Scroll -->
     <script src="https://unpkg.com/lenis@1.3.11/dist/lenis.min.js"></script>
     <!-- Confeti library -->
-     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <!-- Video Manager -->
     <script src="videoManager.js"></script>
     <!-- Main Script -->
@@ -63,9 +63,25 @@
       <!-- Hero Container Section -->
       <div class="hero-wrapper">
         <div class="hero-container">
-          <!-- Hero Gradient Mask - contains the cursor effect -->
-          <div class="hero-gradient-mask">
-            <div class="mouse-gradient-follower"></div>
+          <!-- Animated Bubble Background -->
+          <div class="gradient-bg">
+            <svg xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <filter id="goo">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                  <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="goo" />
+                  <feBlend in="SourceGraphic" in2="goo" />
+                </filter>
+              </defs>
+            </svg>
+            <div class="gradients-container">
+              <div class="g1"></div>
+              <div class="g2"></div>
+              <div class="g3"></div>
+              <div class="g4"></div>
+              <div class="g5"></div>
+              <div class="interactive"></div>
+            </div>
           </div>
           <!-- Hero Content Wrapper - allows overflow -->
           <div class="hero-content-wrapper">
@@ -75,7 +91,7 @@
               <p class="main-title-insisible">Metemi</p>
               <div class="hero-content">
                 <h2 class="title-big">
-                  Meet The <span class="word-switcher">people</span> <br />
+                  Meet <span class="word-switcher">people</span> <br />
                   around you. <br />
                   Instantly.
                 </h2>
@@ -101,7 +117,7 @@
                   <button class="text-description-medium hero-cta">
                     How it works
                   </button>
-                  <button class="hero-google-play">
+                  <button class="google-play-btn hero-google-play">
                     <img
                       src="assets/images/google-play.png"
                       alt="Google Play Badge"
@@ -140,15 +156,15 @@
 
             <section class="what-differently">
               <h2 class="titles text-white">
-                <span text-appear class="title-big-big first-title"
-                  >What we do differently?</span
-                >
-                <span text-appear class="title-big-big second-title"
-                  >We help people meet</span
-                >
-                <span text-appear class="title-big-big third-title"
-                  >at your café</span
-                >
+                <span text-appear class="title-big-big first-title">
+                  What we do differently?
+                </span>
+                <span text-appear class="title-big-big second-title">
+                  We help you to meet people
+                </span>
+                <span text-appear class="title-big-big third-title">
+                  at your café
+                </span>
               </h2>
               <div class="video-container" anim-fade>
                 <video
@@ -182,7 +198,7 @@
               </div>
 
               <div class="google-container">
-                <button class="google-play">
+                <button class="google-play-btn google-play">
                   <img
                     src="assets/images/google-play.png"
                     alt="Google Play Badge"
@@ -402,7 +418,8 @@
 
             <!-- Statistics Mobile Right Section -->
             <section class="statistic-mobile-right">
-              <div class="statistic-content" anim-fade-left>
+              <div class="statistic-hover-wrapper">
+                <div class="statistic-content" anim-fade-left>
                 <p class="text-gradient text-description-medium-big">
                   <span
                     class="animated-number title-big"
@@ -418,6 +435,7 @@
                   každý.
                 </p>
               </div>
+              </div>
               <div class="statistic-phone-wrapper">
                 <img
                   src="assets/images/phone-flat.png"
@@ -425,6 +443,7 @@
                   class="statistic-phone"
                   loading="lazy"
                   anim-fade-right
+                  data-duration="1.5"
                 />
               </div>
             </section>
@@ -441,8 +460,8 @@
                 />
               </div>
               <h2 text-appear class="title-big main-title text-white">
-                How Metemi changes <br />
-                meeting of
+                How Metemi changes <br class="mobile-hidden" />
+                meeting of <br class="desktop-hidden" />
                 <span class="word-switcher-people-groups">people</span>
                 <br />
                 in the real world?
@@ -756,7 +775,7 @@
             <span class="text-gradient font-bold">místo nebo téma</span> a jít
             ven.
           </p>
-          <button class="google-play-badge">
+          <button class="google-play-btn google-play-badge">
             <img
               src="assets/images/google-play.png"
               alt="Google Play Badge"
@@ -917,7 +936,7 @@
                   <div class="how-img-wrapper" why-card-image-3>
                     <img
                       class="how-img-3"
-                      src="assets/images/how-card-3.jpg"
+                      src="assets/images/how-card-3.png"
                       alt="phone"
                       loading="lazy"
                     />
@@ -943,11 +962,13 @@
           </h2>
         </div>
 
-        <div class="stats-block" anim-fade-in>
-          <p class="text-description-medium-big text-gradient font-bold">
-            <span class="title-big">57%</span> lidí se cítí osaměle. V kavárně,
-            v tramvaji, mezi lidmi, přesto izolovaně.
-          </p>
+        <div class="stats-block-hover-wrapper">
+          <div class="stats-block" anim-fade-in>
+            <p class="text-description-medium-big text-gradient font-bold">
+              <span class="title-big">57%</span> lidí se cítí osaměle. V kavárně,
+              v tramvaji, mezi lidmi, přesto izolovaně.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -1063,7 +1084,7 @@
             <span class="text-gradient font-bold">najdeš</span> hned v aplikaci
             <span class="text-gradient font-bold">odměnu</span>.
           </p>
-          <button class="google-play-badge">
+          <button class="google-play-btn google-play-badge">
             <img
               src="assets/images/google-play.png"
               alt="Map Image"
@@ -1126,7 +1147,7 @@
             v parku, společný běh nebo jen krátký rozhovor.
             <span class="text-gradient font-bold"></span>
           </p>
-          <button class="google-play-badge">
+          <button class="google-play-btn google-play-badge">
             <img
               src="assets/images/google-play.png"
               alt="Map Image"
@@ -1223,7 +1244,7 @@
             němu <span class="font-bold">přiblíží.</span>
           </p>
 
-          <button class="google-play-badge">
+          <button class="google-play-btn google-play-badge">
             <img
               src="assets/images/google-play.png"
               alt="Map Image"
@@ -1247,7 +1268,7 @@
           Ne za týden. Ne zítra.
           <span class="text-gradient font-bold">Klidně hned.</span>
         </p>
-        <button class="google-play-badge">
+        <button class="google-play-btn google-play-badge">
           <img
             src="assets/images/google-play.png"
             alt="Map Image"
@@ -1261,10 +1282,8 @@
       <div class="links-container text-description-medium">
         <p>
           <a href="#">O nás</a> • <a href="#">Podmínky použití</a> •
-          <a href="#">Kontakt</a> • <a href="#">Blog</a> • <a
-            href="#"
-            class="social-link"
-          >
+          <a href="#">Kontakt</a> • <a href="#">Blog</a> •
+          <a href="#" class="social-link">
             <!-- <svg
               class="social-icon"
               viewBox="0 0 24 24"
@@ -1309,7 +1328,7 @@
           </a>
         </p>
       </div>
-      <button class="google-play-badge">
+      <button class="google-play-btn google-play-badge">
         <img
           src="assets/images/google-play.png"
           alt="Map Image"
@@ -1336,16 +1355,32 @@
     <!-- Fixed Bottom Banner -->
     <div class="fixed-bottom-banner">
       <button class="banner-close" aria-label="Close banner">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M18 6L6 18M6 6L18 18"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </svg>
       </button>
       <div class="banner-content">
         <div class="banner-text">
-          <h4 class="text-description-big text-gradient font-bold">Ready to meet people around you?</h4>
-          <p class="text-description-medium">Start connecting in real life today</p>
+          <h4 class="text-description-big text-gradient font-bold">
+            Ready to meet people around you?
+          </h4>
+          <p class="text-description-medium">
+            Start connecting in real life today
+          </p>
         </div>
-        <button class="banner-cta">
+        <button class="google-play-btn banner-cta">
           <img
             src="assets/images/google-play.png"
             alt="Download our app"

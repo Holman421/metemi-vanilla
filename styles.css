@@ -22,6 +22,18 @@
   --background: #ffffff;
   --foreground: #000000;
 
+  /* Bubble Background Colors - from banner palette */
+  --color-bg1: rgb(32, 48, 79);
+  --color-bg2: rgb(226, 55, 62);
+  --color1: 226, 55, 62;
+  --color2: 244, 134, 30;
+  --color3: 32, 48, 79;
+  --color4: 200, 80, 90;
+  --color5: 240, 160, 80;
+  --color-interactive: 226, 55, 62;
+  --circle-size: 80%;
+  --blending: hard-light;
+
   /* Breakpoints (for reference in media queries) */
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
@@ -73,6 +85,183 @@ img {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+/* ========================================
+   ANIMATED BUBBLE BACKGROUND
+   ======================================== */
+@keyframes moveInCircle {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes moveVertical {
+  0% {
+    transform: translateY(-50%);
+  }
+  50% {
+    transform: translateY(50%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes moveHorizontal {
+  0% {
+    transform: translateX(-50%) translateY(-10%);
+  }
+  50% {
+    transform: translateX(50%) translateY(10%);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-10%);
+  }
+}
+
+.gradient-bg {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  overflow: hidden;
+  background: linear-gradient(
+    80deg,
+    rgba(32, 48, 79, 0.98) 10%,
+    rgba(226, 55, 62, 0.98) 150%
+  );
+  /* background: linear-gradient(rgb(32, 48, 79)); */
+  top: 0;
+  left: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gradient-bg svg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.gradients-container {
+  filter: url(#goo) blur(40px);
+  width: 100%;
+  height: 100%;
+}
+
+.gradient-bg .g1 {
+  position: absolute;
+  background: radial-gradient(
+      circle at center,
+      rgba(var(--color1), 0.8) 0,
+      rgba(var(--color1), 0) 50%
+    )
+    no-repeat;
+  mix-blend-mode: var(--blending);
+  width: var(--circle-size);
+  height: var(--circle-size);
+  top: calc(50% - var(--circle-size) / 2);
+  left: calc(50% - var(--circle-size) / 2);
+  transform-origin: center center;
+  animation: moveVertical 30s ease infinite;
+  opacity: 1;
+}
+
+.gradient-bg .g2 {
+  position: absolute;
+  background: radial-gradient(
+      circle at center,
+      rgba(var(--color2), 0.8) 0,
+      rgba(var(--color2), 0) 50%
+    )
+    no-repeat;
+  mix-blend-mode: var(--blending);
+  width: var(--circle-size);
+  height: var(--circle-size);
+  top: calc(50% - var(--circle-size) / 2);
+  left: calc(50% - var(--circle-size) / 2);
+  transform-origin: calc(50% - 400px);
+  animation: moveInCircle 20s reverse infinite;
+  opacity: 1;
+}
+
+.gradient-bg .g3 {
+  position: absolute;
+  background: radial-gradient(
+      circle at center,
+      rgba(var(--color3), 0.8) 0,
+      rgba(var(--color3), 0) 50%
+    )
+    no-repeat;
+  mix-blend-mode: var(--blending);
+  width: var(--circle-size);
+  height: var(--circle-size);
+  top: calc(50% - var(--circle-size) / 2 + 200px);
+  left: calc(50% - var(--circle-size) / 2 - 500px);
+  transform-origin: calc(50% + 400px);
+  animation: moveInCircle 40s linear infinite;
+  opacity: 1;
+}
+
+.gradient-bg .g4 {
+  position: absolute;
+  background: radial-gradient(
+      circle at center,
+      rgba(var(--color4), 0.8) 0,
+      rgba(var(--color4), 0) 50%
+    )
+    no-repeat;
+  mix-blend-mode: var(--blending);
+  width: var(--circle-size);
+  height: var(--circle-size);
+  top: calc(50% - var(--circle-size) / 2);
+  left: calc(50% - var(--circle-size) / 2);
+  transform-origin: calc(50% - 200px);
+  animation: moveHorizontal 40s ease infinite;
+  opacity: 0.7;
+}
+
+.gradient-bg .g5 {
+  position: absolute;
+  background: radial-gradient(
+      circle at center,
+      rgba(var(--color5), 0.8) 0,
+      rgba(var(--color5), 0) 50%
+    )
+    no-repeat;
+  mix-blend-mode: var(--blending);
+  width: calc(var(--circle-size) * 2);
+  height: calc(var(--circle-size) * 2);
+  top: calc(50% - var(--circle-size));
+  left: calc(50% - var(--circle-size));
+  transform-origin: calc(50% - 800px) calc(50% + 200px);
+  animation: moveInCircle 20s ease infinite;
+  opacity: 1;
+}
+
+.gradient-bg .interactive {
+  position: absolute;
+  background: radial-gradient(
+      circle at center,
+      rgba(var(--color-interactive), 0.8) 0,
+      rgba(var(--color-interactive), 0) 50%
+    )
+    no-repeat;
+  mix-blend-mode: var(--blending);
+  width: 100%;
+  height: 100%;
+  top: -50%;
+  left: -50%;
+  opacity: 0.7;
+  pointer-events: all;
 }
 
 /* ========================================
@@ -218,6 +407,78 @@ img {
   font-weight: 900;
 }
 
+/* ========================================
+   GOOGLE PLAY BUTTON BASE STYLING
+   ======================================== */
+.google-play-btn {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  height: 45px;
+  transition: transform 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.google-play-btn:hover {
+  transform: scale(1.05);
+}
+
+.google-play-btn img {
+  display: block;
+  width: auto;
+  height: 45px;
+  object-fit: contain;
+  position: relative;
+}
+
+.google-play-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+  transform: skewX(-25deg);
+  transition: left 0.5s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.google-play-btn:hover::before {
+  left: 150%;
+}
+
+/* Automatic shimmer animation class */
+.google-play-btn.shimmer-active::before {
+  animation: shimmer-sweep 0.8s ease-in-out forwards;
+}
+
+@keyframes shimmer-sweep {
+  0% {
+    left: -150%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    left: 150%;
+    opacity: 0;
+  }
+}
+
 .text-description-big {
   font-size: clamp(
     1.5rem,
@@ -307,9 +568,6 @@ img {
 }
 
 .hero-container {
-  background-image: url("assets/images/hero-bg.jpg");
-  background-size: cover;
-  background-position: center;
   max-width: calc(1920px - 128px);
   position: relative;
   display: flex;
@@ -326,45 +584,39 @@ img {
   ); /* min: 16px, max: 96px */
 }
 
+/* Clip mask wrapper for gradient background */
+.hero-container .gradient-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-bottom-left-radius: clamp(1rem, calc(-0.316rem + 5.263vw), 6rem);
+  border-bottom-right-radius: clamp(1rem, calc(-0.316rem + 5.263vw), 6rem);
+  clip-path: inset(
+    0 0 0 0 round 0 0 clamp(1rem, calc(-0.316rem + 5.263vw), 6rem)
+      clamp(1rem, calc(-0.316rem + 5.263vw), 6rem)
+  );
+  pointer-events: none;
+}
+
+.hero-container .gradient-bg .gradients-container {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
 /* Hero Content Wrapper - allows content to overflow */
 .hero-content-wrapper {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-}
-
-/* Hero Gradient Mask - clips the gradient follower */
-.hero-gradient-mask {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  pointer-events: none;
-  border-bottom-left-radius: clamp(1rem, calc(-0.316rem + 5.263vw), 6rem);
-  border-bottom-right-radius: clamp(1rem, calc(-0.316rem + 5.263vw), 6rem);
-}
-
-/* Mouse Gradient Follower */
-.mouse-gradient-follower {
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(226, 55, 62, 0.3) 0%,
-    rgba(226, 55, 62, 0.1) 40%,
-    transparent 70%
-  );
-  pointer-events: all;
-  z-index: 0;
-  transform: translate(-50%, -50%);
-  transition: opacity 0.3s ease;
-  opacity: 0;
-  will-change: transform;
 }
 
 /* ========================================
@@ -499,48 +751,25 @@ img {
         cursor: pointer;
         border-radius: 20px;
         transition: background-color 0.25s ease;
+        position: relative;
+        overflow: hidden;
 
         &:hover {
           background-color: rgba(255, 255, 255, 0.1);
         }
       }
-      .hero-google-play {
-        background-color: transparent;
-        border: none;
-        padding: 0;
-        cursor: pointer;
-        height: 45px;
-        transition: transform 0.25s ease;
-        position: relative;
-        overflow: hidden;
-        display: inline-block;
 
-        &:hover {
-          transform: scale(1.05);
-        }
-
-        img {
-          display: block;
-          /* Safari fix: auto width maintains aspect ratio */
-          width: auto;
-          height: 45px;
-          /* Safari fix: prevent distortion */
-          object-fit: contain;
-          position: relative;
-        }
-      }
-      
-      .hero-google-play::before {
-        content: '';
+      .hero-cta::before {
+        content: "";
         position: absolute;
         top: 0;
         left: -150%;
-        width: 80%;
+        width: 100%;
         height: 100%;
         background: linear-gradient(
           90deg,
           transparent,
-          rgba(255, 255, 255, 0.6),
+          rgba(255, 255, 255, 0.8),
           transparent
         );
         transform: skewX(-25deg);
@@ -548,9 +777,17 @@ img {
         pointer-events: none;
         z-index: 2;
       }
-      
-      .hero-google-play:hover::before {
+
+      .hero-cta:hover::before {
         left: 150%;
+      }
+
+      /* Automatic shimmer animation class */
+      .hero-cta.shimmer-active::before {
+        animation: shimmer-sweep 0.8s ease-in-out forwards;
+      }
+      .hero-google-play {
+        /* Inherits from .google-play-btn base class */
       }
     }
 
@@ -616,11 +853,7 @@ img {
       color: rgba(255, 255, 255, 0.26);
       margin-top: 3px;
 
-      margin-bottom: clamp(
-        -1.25rem,
-        calc(-2.072rem + 3.289vw),
-        1.875rem
-      ); /* min: -20px, max: 30px */
+      margin-bottom: 3px;
 
       @media screen and (max-width: 768px) {
         text-align: center;
@@ -634,6 +867,7 @@ img {
       left: 2.5%;
       display: inline-block !important;
       overflow: visible;
+      text-align: center;
 
       @media screen and (max-width: 768px) {
         text-align: center;
@@ -710,59 +944,18 @@ img {
     justify-content: center;
 
     .google-play {
-      background-color: transparent;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      height: 45px;
-      transition: transform 0.25s ease;
+      /* Inherits from .google-play-btn base class */
       margin-top: clamp(
         1.875rem,
         calc(1.382rem + 1.974vw),
         3.75rem
       ); /* min: 30px, max: 60px */
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-
-      &:hover {
-        transform: scale(1.05);
-      }
-
-      img {
-        display: block;
-        /* Safari fix: auto width maintains aspect ratio */
-        width: auto;
-        height: 45px;
-        /* Safari fix: prevent distortion */
-        object-fit: contain;
-        position: relative;
-      }
-    }
-    
-    .google-play::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -150%;
-      width: 80%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.6),
-        transparent
-      );
-      transform: skewX(-25deg);
-      transition: left 0.5s ease;
-      pointer-events: none;
-      z-index: 2;
-    }
-    
-    .google-play:hover::before {
-      left: 150%;
     }
   }
+}
+
+.word-switcher-people-groups {
+  text-transform: uppercase;
 }
 
 /* ========================================
@@ -1003,6 +1196,15 @@ img {
   margin-top: 10vw;
 }
 
+.statistic-hover-wrapper {
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.statistic-hover-wrapper:hover {
+  transform: scale(1.05);
+}
+
 .statistic-content {
   max-width: 35%;
   background-color: var(--color-card-white-dark);
@@ -1048,6 +1250,18 @@ img {
   }
 }
 
+.desktop-hidden {
+  @media (min-width: 769px) {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-hidden {
+    display: none;
+  }
+}
+
 /* ========================================
    HOW IT CHANGES SECTION
    ======================================== */
@@ -1061,9 +1275,14 @@ img {
   padding-left: 7.5%;
   position: relative;
 
+  @media (max-width: 768px) {
+    padding-right: 5%;
+    padding-left: 5%;
+  }
+
   .mobile-phone {
     position: absolute;
-    top: 220px;
+    top: 320px;
     right: -180px;
     width: 350px;
     height: auto;
@@ -1514,52 +1733,12 @@ img {
     }
 
     .google-play-badge {
-      width: 200px;
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-      cursor: pointer;
-      transition: transform 0.25s ease;
-      background-color: transparent;
-      border: none;
-      padding: 0;
-      font-family: inherit;
-      
-      &:hover {
-        transform: scale(1.05);
+      /* Inherits from .google-play-btn base class */
+      align-self: flex-start;
+
+      @media (max-width: 768px) {
+        align-self: center;
       }
-      
-      /* Safari fix: ensure proper image rendering */
-      img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-        position: relative;
-        display: block;
-      }
-    }
-    
-    .google-play-badge::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -150%;
-      width: 80%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.6),
-        transparent
-      );
-      transform: skewX(-25deg);
-      transition: left 0.5s ease;
-      pointer-events: none;
-      z-index: 2;
-    }
-    
-    .google-play-badge:hover::before {
-      left: 150%;
     }
   }
 }
@@ -1804,14 +1983,20 @@ img {
             text-align: center;
           }
 
+          .how-img-wrapper {
+            display: flex;
+            justify-content: center;
+          }
+
           .how-img-1 {
             position: absolute;
             top: 200px;
+            width: 90%;
           }
 
           .how-img-2 {
             margin-top: 40px;
-            object-fit: cover;
+            object-fit: contain;
             object-position: top;
             width: 80%;
             border-radius: 20px 20px 0 0;
@@ -1819,9 +2004,9 @@ img {
           }
 
           .how-img-3 {
-            margin-top: 40px;
+            margin-top: 80px;
             width: 85%;
-            object-fit: cover;
+            object-fit: contain;
             object-position: top;
             border-radius: 20px 20px 0 0;
             overflow: hidden;
@@ -1862,26 +2047,38 @@ img {
     }
   }
 
-  .stats-block {
-    box-shadow: 20px 10px 40px 0 rgba(0, 0, 0, 0.25);
-    padding: 40px 64px 30px 64px;
-    max-width: 650px;
-    border-radius: 36px;
+  .stats-block-hover-wrapper {
+    transition: transform 0.3s ease;
+    align-self: flex-start;
     margin-top: -25px;
     margin-left: clamp(
       1.563rem,
       calc(-1.316rem + 11.513vw),
       12.5rem
     ); /* min: 25px, max: 200px */
-    position: relative;
-    z-index: 2;
-    background-color: white;
-    align-self: flex-start;
 
     @media (max-width: 768px) {
       transform: translateX(50px);
       margin-top: 25px;
     }
+  }
+
+  .stats-block-hover-wrapper:hover {
+    transform: scale(1.05);
+
+    @media (max-width: 768px) {
+      transform: translateX(50px) scale(1.05);
+    }
+  }
+
+  .stats-block {
+    box-shadow: 20px 10px 40px 0 rgba(0, 0, 0, 0.25);
+    padding: 40px 64px 30px 64px;
+    max-width: 650px;
+    border-radius: 36px;
+    position: relative;
+    z-index: 2;
+    background-color: white;
   }
 }
 
@@ -2002,14 +2199,7 @@ img {
     }
 
     .google-play-badge {
-      max-width: 200px;
-      cursor: pointer;
-      /* Safari fix: ensure proper image rendering */
-      img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-      }
+      /* Inherits from .google-play-btn base class */
     }
   }
 }
@@ -2112,6 +2302,7 @@ img {
       align-items: center;
       gap: 24px;
       text-align: center;
+      margin: 64px 0;
     }
 
     .title {
@@ -2123,50 +2314,7 @@ img {
     }
 
     .google-play-badge {
-      max-width: 200px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-      background-color: transparent;
-      border: none;
-      padding: 0;
-      transition: transform 0.25s ease;
-      
-      &:hover {
-        transform: scale(1.05);
-      }
-      
-      /* Safari fix: ensure proper image rendering */
-      img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-        position: relative;
-      }
-    }
-    
-    .google-play-badge::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -150%;
-      width: 80%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.6),
-        transparent
-      );
-      transform: skewX(-25deg);
-      transition: left 0.5s ease;
-      pointer-events: none;
-      z-index: 2;
-    }
-    
-    .google-play-badge:hover::before {
-      left: 150%;
+      /* Inherits from .google-play-btn base class */
     }
   }
 }
@@ -2275,52 +2423,7 @@ img {
     }
 
     .google-play-badge {
-      background-color: transparent;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      height: 45px;
-      transition: transform 0.25s ease;
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-
-      &:hover {
-        transform: scale(1.05);
-      }
-
-      img {
-        display: block;
-        /* Safari fix: auto width maintains aspect ratio */
-        width: auto;
-        height: 45px;
-        /* Safari fix: prevent distortion */
-        object-fit: contain;
-        position: relative;
-      }
-    }
-    
-    .google-play-badge::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -150%;
-      width: 80%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.6),
-        transparent
-      );
-      transform: skewX(-25deg);
-      transition: left 0.5s ease;
-      pointer-events: none;
-      z-index: 2;
-    }
-    
-    .google-play-badge:hover::before {
-      left: 150%;
+      /* Inherits from .google-play-btn base class */
     }
   }
 }
@@ -2500,29 +2603,7 @@ img {
     }
 
     .google-play-badge {
-      background-color: transparent;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      height: 45px;
-      transition: transform 0.25s ease;
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-
-      &:hover {
-        transform: scale(1.05);
-      }
-
-      img {
-        display: block;
-        /* Safari fix: auto width maintains aspect ratio */
-        width: auto;
-        height: 45px;
-        /* Safari fix: prevent distortion */
-        object-fit: contain;
-        position: relative;
-      }
+      /* Inherits from .google-play-btn base class */
 
       @media (max-width: 768px) {
         margin-top: clamp(
@@ -2531,29 +2612,6 @@ img {
           4.375rem
         ); /* min: 50px, max: 70px */
       }
-    }
-    
-    .google-play-badge::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -150%;
-      width: 80%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.6),
-        transparent
-      );
-      transform: skewX(-25deg);
-      transition: left 0.5s ease;
-      pointer-events: none;
-      z-index: 2;
-    }
-    
-    .google-play-badge:hover::before {
-      left: 150%;
     }
   }
 }
@@ -2572,57 +2630,12 @@ img {
   align-items: center;
 
   .google-play-badge {
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    height: 45px;
-    transition: transform 0.25s ease;
+    /* Inherits from .google-play-btn base class */
     margin-top: 24px;
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-
-    &:hover {
-      transform: scale(1.05);
-    }
-
-    img {
-      display: block;
-      /* Safari fix: auto width maintains aspect ratio */
-      width: auto;
-      height: 45px;
-      /* Safari fix: prevent distortion */
-      object-fit: contain;
-      position: relative;
-    }
 
     @media (min-width: 768px) {
       display: none;
     }
-  }
-  
-  .google-play-badge::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -150%;
-    width: 80%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.6),
-      transparent
-    );
-    transform: skewX(-25deg);
-    transition: left 0.5s ease;
-    pointer-events: none;
-    z-index: 2;
-  }
-  
-  .google-play-badge:hover::before {
-    left: 150%;
   }
 
   .footer-title {
@@ -2648,58 +2661,13 @@ img {
     }
 
     .google-play-badge {
-      background-color: transparent;
-      position: relative;
+      /* Inherits from .google-play-btn base class */
       z-index: 2;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      height: 45px;
-      transition: transform 0.25s ease;
-      position: relative;
-      overflow: hidden;
       display: inline-block;
-
-      &:hover {
-        transform: scale(1.05);
-      }
-
-      img {
-        display: block;
-        /* Safari fix: auto width maintains aspect ratio */
-        width: auto;
-        height: 45px;
-        /* Safari fix: prevent distortion */
-        object-fit: contain;
-        position: relative;
-      }
 
       @media (max-width: 768px) {
         display: none;
       }
-    }
-    
-    .google-play-badge::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -150%;
-      width: 80%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.6),
-        transparent
-      );
-      transform: skewX(-25deg);
-      transition: left 0.5s ease;
-      pointer-events: none;
-      z-index: 2;
-    }
-    
-    .google-play-badge:hover::before {
-      left: 150%;
     }
   }
 
@@ -2896,7 +2864,7 @@ img {
   line-height: normal;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   isolation: isolate;
-  
+
   /* Hover effect - scale up the inner element */
   &:hover {
     transform: scale(1.05);
@@ -3069,51 +3037,8 @@ img {
 }
 
 .banner-cta {
+  /* Inherits from .google-play-btn base class */
   flex-shrink: 0;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  transition: transform 0.3s ease;
-  height: 3.5rem;
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-  height: 40px;
-}
-
-.banner-cta img {
-  height: 100%;
-  width: auto;
-  object-fit: contain;
-  position: relative;
-}
-
-.banner-cta::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 80%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.6),
-    transparent
-  );
-  transform: skewX(-25deg);
-  transition: left 0.5s ease;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.banner-cta:hover {
-  transform: scale(1.05);
-}
-
-.banner-cta:hover::before {
-  left: 150%;
 }
 
 .banner-cta:active {
