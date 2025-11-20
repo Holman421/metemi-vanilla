@@ -1251,9 +1251,20 @@ img {
 }
 
 .desktop-hidden {
-  @media (min-width: 769px) {
+  /* Default: visible (br is inline by default). Keep mobile-first behavior. */
+  display: initial;
+}
+
+@media (min-width: 769px) {
+  /* Hide on desktop and larger */
+  .desktop-hidden {
     display: none;
   }
+}
+
+/* Default: visible on larger screens; keep mobile-first behavior explicit */
+.mobile-hidden {
+  display: initial;
 }
 
 @media (max-width: 768px) {
