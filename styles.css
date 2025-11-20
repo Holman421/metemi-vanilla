@@ -1773,12 +1773,13 @@ img {
   }
 
   .container {
+    position: relative; /* Ensure positioning context for absolute children */
     border-radius: clamp(
       3rem,
       calc(1.857rem + 1.786vw),
       4rem
     ); /* min: 48px, max: 64px */
-    background-image: url(/assets/images/how-bg.png);
+    /* background-image: url(/assets/images/how-bg.png); */ /* Removed to show gradient */
     background-position: top;
     display: flex;
     flex-direction: column;
@@ -1792,6 +1793,12 @@ img {
     @media (max-width: 768px) {
       border-radius: 0;
       display: none;
+    }
+
+    /* Ensure content is above the gradient */
+    & > *:not(.gradient-bg) {
+      position: relative;
+      z-index: 1;
     }
 
     .main-title {
@@ -1888,6 +1895,31 @@ img {
     .metemi-text {
       margin-bottom: -6vw;
     }
+  }
+
+  /* Clip mask wrapper for gradient background in How It Works */
+  .container .gradient-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+    border-radius: clamp(3rem, calc(1.857rem + 1.786vw), 4rem);
+    clip-path: inset(
+      0 0 0 0 round clamp(3rem, calc(1.857rem + 1.786vw), 4rem)
+    );
+    pointer-events: none;
+  }
+
+  .container .gradient-bg .gradients-container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
 
   .contrainer-mobile-bg {
@@ -2519,19 +2551,30 @@ img {
     padding-bottom: 50px;
   }
 
-  .bg {
-    background-image: url(/assets//images//how-bg.png);
+  .gradient-bg {
     position: absolute;
     width: 100%;
     height: 80%;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 10%; /* Centered vertically (100% - 80%) / 2 */
     left: 0;
     z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    clip-path: inset(0 0 0 0);
 
     @media (max-width: 1024px) {
       height: 100%;
+      top: 0;
     }
+  }
+
+  .gradient-bg .gradients-container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
 
   .image-container {
@@ -2648,6 +2691,8 @@ img {
       display: none;
     }
   }
+
+ 
 
   .footer-title {
     -webkit-text-fill-color: white;
@@ -3074,19 +3119,5 @@ img {
 
   .banner-cta {
     height: 3rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .fixed-bottom-banner {
-    padding: 0.875rem 1rem;
-  }
-
-  .banner-content {
-    gap: 0.75rem;
-  }
-
-  .banner-cta {
-    height: 2.5rem;
   }
 }
