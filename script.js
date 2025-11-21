@@ -10,7 +10,7 @@ let lenis = null;
     ANIMATED BUBBLE BACKGROUND
     ======================================== */
 function initBubbleBackground() {
-  const interBubble = document.querySelector('.interactive');
+  const interBubble = document.querySelector(".interactive");
   if (!interBubble) return;
 
   let curX = 0;
@@ -21,11 +21,13 @@ function initBubbleBackground() {
   function move() {
     curX += (tgX - curX) / 40;
     curY += (tgY - curY) / 40;
-    interBubble.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
+    interBubble.style.transform = `translate(${Math.round(
+      curX
+    )}px, ${Math.round(curY)}px)`;
     requestAnimationFrame(move);
   }
 
-  window.addEventListener('mousemove', (event) => {
+  window.addEventListener("mousemove", (event) => {
     tgX = event.clientX;
     tgY = event.clientY;
   });
@@ -225,7 +227,7 @@ function popInAnimation() {
   elements.forEach((element) => {
     // Check if this is a dm-wrapper with a dm-gray or dm-red child
     const dmElement = element.querySelector(".dm-gray, .dm-red");
-    
+
     // Set initial state
     gsap.set(element, {
       scale: 0,
@@ -357,7 +359,8 @@ function groupFadeAnimation(selectorAttribute, initialProps, animationProps) {
   // 3. Animate Individual Elements (Fallback to original logic)
   individualElements.forEach((element) => {
     const startTrigger = element.dataset.start || "top 90%";
-    const duration = parseFloat(element.dataset.duration) || animationProps.duration;
+    const duration =
+      parseFloat(element.dataset.duration) || animationProps.duration;
 
     // Set initial state
     gsap.set(element, initialProps);
@@ -599,9 +602,9 @@ function animateHowCardsImages() {
   const offset = 0;
 
   const imagesArray = [
-    { element: firstImage, start: `-=0px 110%`, end: "top 80%" },
-    { element: secondImage, start: `-=150px 80%`, end: "top 55%" },
-    { element: thirdImage, start: `-=100px 50%`, end: "top 40%" },
+    { element: firstImage, start: `-=75% 100%`, end: "-=50% 80%" },
+    { element: secondImage, start: `-=75% 90%`, end: "-=50% 65%" },
+    { element: thirdImage, start: `-=75% 65%`, end: "-=50% 50%" },
   ];
 
   imagesArray.forEach(({ element, start, end }) => {
@@ -1424,6 +1427,44 @@ function initConfettiButtons() {
 }
 
 /* ========================================
+    DYNAMIC BREAK LINE FOR WORD SWITCHER
+    ======================================== */
+function initDynamicBreakLine() {
+  const targetElement = document.querySelector(".word-switcher-people-groups");
+  if (!targetElement) return;
+
+  const handleResize = () => {
+    const isMobile = window.innerWidth <= 768;
+    const previousSibling = targetElement.previousSibling;
+    const isBreakLine =
+      previousSibling &&
+      previousSibling.nodeType === Node.ELEMENT_NODE &&
+      previousSibling.tagName === "BR" &&
+      previousSibling.classList.contains("dynamic-br");
+
+    if (isMobile) {
+      // If mobile and no break line exists, add it
+      if (!isBreakLine) {
+        const br = document.createElement("br");
+        br.classList.add("dynamic-br");
+        targetElement.parentNode.insertBefore(br, targetElement);
+      }
+    } else {
+      // If desktop and break line exists, remove it
+      if (isBreakLine) {
+        previousSibling.remove();
+      }
+    }
+  };
+
+  // Initial check
+  handleResize();
+
+  // Add event listener
+  window.addEventListener("resize", handleResize);
+}
+
+/* ========================================
     MASTER INITIALIZATION
     ======================================== */
 function initAnimations() {
@@ -1452,6 +1493,7 @@ function initAnimations() {
   initDmGrayTyping();
   portraitScrollScale();
   initConfettiButtons();
+  initDynamicBreakLine();
 }
 
 /* ========================================
@@ -1526,52 +1568,64 @@ document.addEventListener("DOMContentLoaded", () => {
     RANDOM SHIMMER EFFECT FOR GOOGLE PLAY BUTTONS AND HERO CTA
     ======================================== */
 function initRandomShimmer() {
-  const googlePlayButtons = document.querySelectorAll('.google-play-btn');
-  const heroCTA = document.querySelector('.hero-cta');
-  
+  const googlePlayButtons = document.querySelectorAll(".google-play-btn");
+  const heroCTA = document.querySelector(".hero-cta");
+
   // Combine all buttons that should have shimmer effect
   const shimmerButtons = [...googlePlayButtons];
   if (heroCTA) {
     shimmerButtons.push(heroCTA);
   }
-  
+
   if (shimmerButtons.length === 0) {
-    console.log('No shimmer buttons found');
+    console.log("No shimmer buttons found");
     return;
   }
 
-  console.log(`✨ Found ${shimmerButtons.length} buttons for shimmer effect (${googlePlayButtons.length} Google Play + ${heroCTA ? 1 : 0} Hero CTA)`);
+  console.log(
+    `✨ Found ${shimmerButtons.length} buttons for shimmer effect (${
+      googlePlayButtons.length
+    } Google Play + ${heroCTA ? 1 : 0} Hero CTA)`
+  );
 
   // Function to trigger shimmer on a random button
   function triggerRandomShimmer() {
     // Pick a random button
     const randomIndex = Math.floor(Math.random() * shimmerButtons.length);
     const button = shimmerButtons[randomIndex];
-    
-    console.log(`✨ Triggering shimmer on button ${randomIndex + 1} of ${shimmerButtons.length}`);
-    
+
+    console.log(
+      `✨ Triggering shimmer on button ${randomIndex + 1} of ${
+        shimmerButtons.length
+      }`
+    );
+
     // Force a reflow to ensure the animation restarts properly
-    button.classList.remove('shimmer-active');
+    button.classList.remove("shimmer-active");
     void button.offsetWidth; // Force reflow
-    
+
     // Add shimmer class
-    button.classList.add('shimmer-active');
-    
+    button.classList.add("shimmer-active");
+
     // Remove class after animation completes (800ms duration + small buffer)
     setTimeout(() => {
-      button.classList.remove('shimmer-active');
-      console.log('✨ Shimmer completed');
+      button.classList.remove("shimmer-active");
+      console.log("✨ Shimmer completed");
     }, 850);
-    
+
     // Schedule next shimmer (random interval between 8-12 seconds)
     const nextInterval = 2000 + Math.random() * 3000; // 8-12 seconds
-    console.log(`⏰ Next shimmer in ${Math.round(nextInterval / 1000)} seconds`);
+    console.log(
+      `⏰ Next shimmer in ${Math.round(nextInterval / 1000)} seconds`
+    );
     setTimeout(triggerRandomShimmer, nextInterval);
   }
-  
+
   // Start the first shimmer after initial delay (2-4 seconds for testing)
   const initialDelay = 2000 + Math.random() * 2000;
-  console.log(`⏰ Starting shimmer effect in ${Math.round(initialDelay / 1000)} seconds`);
+  console.log(
+    `⏰ Starting shimmer effect in ${Math.round(initialDelay / 1000)} seconds`
+  );
   setTimeout(triggerRandomShimmer, initialDelay);
 }
 
@@ -1579,8 +1633,8 @@ function initRandomShimmer() {
     FIXED BOTTOM BANNER SCROLL BEHAVIOR
     ======================================== */
 function initFixedBottomBanner() {
-  const banner = document.querySelector('.fixed-bottom-banner');
-  const closeButton = document.querySelector('.banner-close');
+  const banner = document.querySelector(".fixed-bottom-banner");
+  const closeButton = document.querySelector(".banner-close");
   if (!banner) return;
 
   let lastScrollY = window.scrollY;
@@ -1593,20 +1647,20 @@ function initFixedBottomBanner() {
     const currentScrollY = window.scrollY;
     const scrollingUp = currentScrollY < lastScrollY;
     const scrollingDown = currentScrollY > lastScrollY;
-    
+
     // Show banner when scrolling up and not at the very top
     if (scrollingUp && currentScrollY > 300) {
-      banner.classList.add('show');
+      banner.classList.add("show");
     }
-    
+
     // Hide banner when scrolling down
     if (scrollingDown) {
-      banner.classList.remove('show');
+      banner.classList.remove("show");
     }
-    
+
     // Hide banner when at the top of the page
     if (currentScrollY < 100) {
-      banner.classList.remove('show');
+      banner.classList.remove("show");
     }
 
     lastScrollY = currentScrollY;
@@ -1622,16 +1676,16 @@ function initFixedBottomBanner() {
 
   function dismissBanner() {
     isDismissed = true;
-    banner.classList.remove('show');
-    window.removeEventListener('scroll', onScroll);
+    banner.classList.remove("show");
+    window.removeEventListener("scroll", onScroll);
   }
 
   // Close button handler
   if (closeButton) {
-    closeButton.addEventListener('click', dismissBanner);
+    closeButton.addEventListener("click", dismissBanner);
   }
 
-  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener("scroll", onScroll, { passive: true });
 }
 
 // Initialize when DOM is ready
