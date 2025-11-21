@@ -20,6 +20,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="radar.css" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -49,6 +50,8 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <!-- Video Manager -->
     <script src="videoManager.js"></script>
+    <!-- Radar Script -->
+    <script src="radar.js" defer></script>
     <!-- Main Script -->
     <script src="script.js" defer></script>
   </head>
@@ -105,23 +108,19 @@
                   around you. <br />
                   Instantly.
                 </h2>
-                <div class="video-container-mobile hero-media-container">
-                  <video
-                    data-src="assets/videos/hero.mov#t=0.5"
-                    preload="metadata"
-                    playsinline
-                    autoplay
-                    muted
-                    loop
-                    class="what-differently-video hero-video"
-                  ></video>
-                  <img
-                    src="assets/images/logo.png"
-                    alt="Metemi Logo"
-                    class="hero-fallback-logo"
-                    loading="lazy"
-                    style="display: none"
-                  />
+                <div class="video-container-mobile hero-media-container radar-instance">
+                  <div class="radar-scene" style="width: 100%; height: 100%;">
+                      <div class="radar-plane">
+                          <div class="radar-ring radar-ring-bg"></div>
+                          <div class="radar-ring radar-ring-1"></div>
+                          <div class="radar-ring radar-ring-2"></div>
+                          <div class="radar-ring radar-ring-3"></div>
+                          <div class="radar-ring radar-ring-4"></div>
+                          <div class="radar-ring radar-ring-5"></div>
+                          <div class="radar-sweep"></div>
+                          <div class="bubbles-container"></div>
+                      </div>
+                  </div>
                 </div>
                 <div class="button-container">
                   <button class="text-description-medium hero-cta">
@@ -135,31 +134,19 @@
                     />
                   </button>
                 </div>
-                <div class="video-container hero-media-container">
-                  <video
-                    preload="metadata"
-                    playsinline
-                    autoplay
-                    muted
-                    loop
-                    class="what-differently-video hero-video"
-                  >
-                    <source
-                      data-src="assets/videos/test_5.webm#t=0.5"
-                      type="video/webm"
-                    />
-                    <source
-                      data-src="assets/videos/safari-test-2.mp4#t=0.5"
-                      type="video/mp4"
-                    />
-                  </video>
-                  <img
-                    src="assets/images/logo.png"
-                    alt="Metemi Logo"
-                    class="hero-fallback-logo"
-                    loading="lazy"
-                    style="display: none"
-                  />
+                <div class="video-container hero-media-container radar-instance">
+                  <div class="radar-scene" style="width: 100%; height: 100%;">
+                      <div class="radar-plane">
+                          <div class="radar-ring radar-ring-bg"></div>
+                          <div class="radar-ring radar-ring-1"></div>
+                          <div class="radar-ring radar-ring-2"></div>
+                          <div class="radar-ring radar-ring-3"></div>
+                          <div class="radar-ring radar-ring-4"></div>
+                          <div class="radar-ring radar-ring-5"></div>
+                          <div class="radar-sweep"></div>
+                          <div class="bubbles-container"></div>
+                      </div>
+                  </div>
                 </div>
               </div>
             </section>

@@ -625,7 +625,7 @@ img {
    HERO SECTION
    ======================================== */
 .hero-section {
-  min-height: 100vh;
+  min-height: 87.5vh;
   position: relative;
   z-index: 1;
 
@@ -679,11 +679,7 @@ img {
   .hero-content {
     padding-left: 5%;
     padding-right: 5%;
-    padding-top: clamp(
-      2.063rem,
-      calc(1.372rem + 2.763vw),
-      4.688rem
-    ); /* min: 33px, max: 75px */
+    padding-top: 5%;
     position: relative;
 
     .title-big {
@@ -692,9 +688,11 @@ img {
       opacity: 0; /* Prevent flash of content before animation */
       position: relative;
       z-index: 2;
+      width: fit-content;
 
       @media (max-width: 767px) {
         text-align: center;
+        width: 100%;
       }
     }
 
@@ -795,9 +793,9 @@ img {
 
     .video-container {
       position: absolute;
-      top: 5%;
-      right: 5%;
-      width: 40vw;
+      top: 10%;
+      right: 10%;
+      width: 32.5vw;
       aspect-ratio: 1 / 1;
 
       @media (max-width: 768px) {

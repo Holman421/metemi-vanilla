@@ -444,7 +444,7 @@ function heroAnimation() {
   const buttonContainer = document.querySelector(
     ".hero-content .button-container"
   );
-  const heroVideos = document.querySelectorAll(".hero-video");
+  const heroVideos = document.querySelectorAll(".hero-video, .radar-instance");
 
   if (!heroLogo || !heroTitle) return;
 
