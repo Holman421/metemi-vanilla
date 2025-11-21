@@ -67,7 +67,7 @@
           <div class="gradient-bg">
             <svg xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <filter id="goo">
+                <filter id="goo" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
                   <feGaussianBlur
                     in="SourceGraphic"
                     stdDeviation="10"
@@ -79,7 +79,8 @@
                     values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
                     result="goo"
                   />
-                  <feBlend in="SourceGraphic" in2="goo" />
+                  <feBlend in="SourceGraphic" in2="goo" result="blended" />
+                  <feGaussianBlur in="blended" stdDeviation="40" />
                 </filter>
               </defs>
             </svg>
@@ -806,7 +807,7 @@
           <div class="gradient-bg">
             <svg xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <filter id="goo">
+                <filter id="goo" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
                   <feGaussianBlur
                     in="SourceGraphic"
                     stdDeviation="10"
@@ -818,7 +819,8 @@
                     values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
                     result="goo"
                   />
-                  <feBlend in="SourceGraphic" in2="goo" />
+                  <feBlend in="SourceGraphic" in2="goo" result="blended" />
+                  <feGaussianBlur in="blended" stdDeviation="40" />
                 </filter>
               </defs>
             </svg>
@@ -1243,7 +1245,7 @@
         <div class="gradient-bg">
           <svg xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <filter id="goo">
+              <filter id="goo" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
                 <feGaussianBlur
                   in="SourceGraphic"
                   stdDeviation="10"
@@ -1255,7 +1257,8 @@
                   values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
                   result="goo"
                 />
-                <feBlend in="SourceGraphic" in2="goo" />
+                <feBlend in="SourceGraphic" in2="goo" result="blended" />
+                <feGaussianBlur in="blended" stdDeviation="40" />
               </filter>
             </defs>
           </svg>
