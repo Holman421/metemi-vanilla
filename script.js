@@ -21,9 +21,9 @@ function initBubbleBackground() {
   function move() {
     curX += (tgX - curX) / 40;
     curY += (tgY - curY) / 40;
-    interBubble.style.transform = `translate(${Math.round(
+    interBubble.style.transform = `translate3d(${Math.round(
       curX
-    )}px, ${Math.round(curY)}px)`;
+    )}px, ${Math.round(curY)}px, 0)`;
     requestAnimationFrame(move);
   }
 
