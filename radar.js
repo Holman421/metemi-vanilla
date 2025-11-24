@@ -22,13 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
         bubblesData.forEach((item, index) => {
             const anchor = document.createElement('div');
             anchor.className = 'bubble-anchor';
+            anchor.dataset.index = index;
             anchor.style.top = item.top;
             anchor.style.left = item.left;
             anchor.style.width = item.size + 'px';
             anchor.style.height = item.size + 'px';
             
-            // Start after radar rings (approx 1.2s) and stagger
-            const delay = 1.2 + (index * 0.15); 
+            // Start after radar rings (approx 0.5s) and stagger
+            const delay = 0.5 + (index * 0.1); 
             
             anchor.innerHTML = `
                 <div class="anim-entry" style="animation-delay: ${delay}s; opacity: 0; animation: emerge 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards ${delay}s;">
@@ -88,25 +89,69 @@ document.addEventListener('DOMContentLoaded', () => {
     animateTilt();
 
     // Spotlight Logic
-    let spotlightTimeout;
-    function randomSpotlight() {
-        anchors.forEach(a => a.classList.remove('is-spotlight'));
-        const isHovering = Array.from(anchors).some(a => a.matches(':hover'));
-        if (!isHovering) {
-            const randomIndex = Math.floor(Math.random() * anchors.length);
-            anchors[randomIndex].classList.add('is-spotlight');
-        }
-        spotlightTimeout = setTimeout(randomSpotlight, 3500);
+    let cycleInterval;
+    let restartTimeout;
+    let lastIndex = -1;
+
+    function startSpotlightCycle() {
+        console.log('Radar: Starting spotlight cycle');
+        if (cycleInterval) clearInterval(cycleInterval);
+        
+        const next = () => {
+            console.log('Radar: Cycle tick');
+            anchors.forEach(a => a.classList.remove('is-spotlight'));
+            
+            let randomIndex;
+            let attempts = 0;
+            const maxIndex = bubblesData.length;
+
+            do {
+                randomIndex = Math.floor(Math.random() * maxIndex);
+                attempts++;
+            } while (randomIndex === lastIndex && maxIndex > 1 && attempts < 10);
+            
+            lastIndex = randomIndex;
+            console.log('Radar: Selected index', randomIndex);
+            
+            // Activate the bubble with this index in ALL instances (mobile & desktop)
+            const targets = document.querySelectorAll(`.bubble-anchor[data-index="${randomIndex}"]`);
+            targets.forEach(t => t.classList.add('is-spotlight'));
+        };
+
+        next();
+        // 1000ms stay + transition time approx -> 1400ms total
+        cycleInterval = setInterval(next, 1400);
     }
 
-    anchors.forEach(a => {
+    function stopSpotlightCycle() {
+        console.log('Radar: Stopping spotlight cycle');
+        if (cycleInterval) {
+            clearInterval(cycleInterval);
+            cycleInterval = null;
+        }
+        anchors.forEach(a => a.classList.remove('is-spotlight'));
+    }
+
+    anchors.forEach((a, index) => {
         a.addEventListener('mouseenter', () => {
-            anchors.forEach(el => el.classList.remove('is-spotlight'));
-            clearTimeout(spotlightTimeout);
+            console.log('Radar: Mouse enter on bubble', index);
+            clearTimeout(restartTimeout);
+            stopSpotlightCycle();
         });
         a.addEventListener('mouseleave', () => {
-            spotlightTimeout = setTimeout(randomSpotlight, 2000);
+            console.log('Radar: Mouse leave on bubble', index);
+            clearTimeout(restartTimeout);
+            restartTimeout = setTimeout(() => {
+                console.log('Radar: Restart timeout fired');
+                startSpotlightCycle();
+            }, 2000);
         });
     });
-    setTimeout(randomSpotlight, 1500);
+
+    // Initial start after 2 seconds
+    console.log('Radar: Scheduling initial start');
+    restartTimeout = setTimeout(() => {
+        console.log('Radar: Initial start fired');
+        startSpotlightCycle();
+    }, 2000);
 });

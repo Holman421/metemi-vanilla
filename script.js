@@ -1465,6 +1465,27 @@ function initDynamicBreakLine() {
 }
 
 /* ========================================
+    HERO CTA SCROLL
+    ======================================== */
+function initHeroCtaScroll() {
+  const heroCta = document.querySelector(".hero-cta");
+  if (!heroCta) return;
+
+  heroCta.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    if (lenis) {
+      lenis.scrollTo("#how-it-works");
+    } else {
+      const target = document.querySelector("#how-it-works");
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  });
+}
+
+/* ========================================
     MASTER INITIALIZATION
     ======================================== */
 function initAnimations() {
@@ -1472,6 +1493,7 @@ function initAnimations() {
   gsap.registerPlugin(SplitText);
 
   // Initialize all animations
+  initHeroCtaScroll();
   wordSwitcherAnimation();
   popInAnimation();
   fadeAnimation();
@@ -1485,7 +1507,7 @@ function initAnimations() {
   animateTitleXScrub();
   heroAnimation();
   animateTextsLetterSpacingScrub();
-  // initAnimatedNumbers();
+  initAnimatedNumbers();
   animateHowMobileCards();
   animateChangesMobileCards();
   animateBigGridMobileCards();
@@ -1542,6 +1564,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gsap.registerPlugin(SplitText);
 
     // Initialize all animations except hero (already done)
+    initHeroCtaScroll();
     wordSwitcherAnimation();
     popInAnimation();
     fadeAnimation();
@@ -1554,6 +1577,7 @@ document.addEventListener("DOMContentLoaded", () => {
     animateTextsAppear();
     animateTitleXScrub();
     animateTextsLetterSpacingScrub();
+    initAnimatedNumbers();
     animateHowMobileCards();
     animateChangesMobileCards();
     animateBigGridMobileCards();
@@ -1578,27 +1602,14 @@ function initRandomShimmer() {
   }
 
   if (shimmerButtons.length === 0) {
-    console.log("No shimmer buttons found");
     return;
   }
-
-  console.log(
-    `✨ Found ${shimmerButtons.length} buttons for shimmer effect (${
-      googlePlayButtons.length
-    } Google Play + ${heroCTA ? 1 : 0} Hero CTA)`
-  );
 
   // Function to trigger shimmer on a random button
   function triggerRandomShimmer() {
     // Pick a random button
     const randomIndex = Math.floor(Math.random() * shimmerButtons.length);
     const button = shimmerButtons[randomIndex];
-
-    console.log(
-      `✨ Triggering shimmer on button ${randomIndex + 1} of ${
-        shimmerButtons.length
-      }`
-    );
 
     // Force a reflow to ensure the animation restarts properly
     button.classList.remove("shimmer-active");
@@ -1610,14 +1621,10 @@ function initRandomShimmer() {
     // Remove class after animation completes (800ms duration + small buffer)
     setTimeout(() => {
       button.classList.remove("shimmer-active");
-      console.log("✨ Shimmer completed");
     }, 850);
 
     // Schedule next shimmer (random interval between 8-12 seconds)
     const nextInterval = 2000 + Math.random() * 3000; // 8-12 seconds
-    console.log(
-      `⏰ Next shimmer in ${Math.round(nextInterval / 1000)} seconds`
-    );
     setTimeout(triggerRandomShimmer, nextInterval);
   }
 

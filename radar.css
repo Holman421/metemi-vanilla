@@ -1,12 +1,12 @@
 /* Radar Component Styles */
 
 :root {
-  --radar-hover-scale: 1.15;
+  --radar-hover-scale: 1.25;
 }
 
 @media (max-width: 1424px) {
   :root {
-    --radar-hover-scale: 0.6;
+    --radar-hover-scale: 0.8;
   }
 }
 
@@ -20,12 +20,14 @@
   /* Dimensions from Tailwind classes */
   width: 350px;
   height: 350px;
+  margin-top: 64px;
 }
 
 @media (min-width: 1024px) {
   .radar-scene {
     width: 600px;
     height: 600px;
+    margin-top: 0px;
   }
 }
 
