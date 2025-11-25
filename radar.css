@@ -1,7 +1,7 @@
 /* Radar Component Styles */
 
 :root {
-  --radar-hover-scale: 1.25;
+  --radar-hover-scale: 1.05;
 }
 
 @media (max-width: 1424px) {
@@ -153,7 +153,7 @@
     transparent 0deg,
     transparent 200deg,
     rgba(255, 255, 255, 0.02) 280deg,
-    #20304f 360deg
+    #9b3333 360deg
   );
   border-radius: 50%;
   filter: blur(8px);
