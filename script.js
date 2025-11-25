@@ -1332,8 +1332,6 @@ function portraitScrollScale() {
     return;
   }
 
-  console.log("Found", portraitWrappers.length, "portrait wrappers to animate");
-
   // Animate each portrait wrapper
   portraitWrappers.forEach((wrapper) => {
     gsap.fromTo(
@@ -1522,9 +1520,6 @@ function initAnimations() {
     DOM READY - MAIN ENTRY POINT
     ======================================== */
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Metemi initialized");
-
-  // Initialize video lazy loading
   if (typeof initVideoOptimization === "function") {
     initVideoOptimization();
   }
@@ -1559,7 +1554,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize all other animations once DOM is interactive (don't wait for videos)
   // Use a small timeout to ensure GSAP plugins are loaded
   setTimeout(() => {
-    console.log("Initializing other animations");
     gsap.registerPlugin(ScrollTrigger);
     gsap.registerPlugin(SplitText);
 
@@ -1630,9 +1624,6 @@ function initRandomShimmer() {
 
   // Start the first shimmer after initial delay (2-4 seconds for testing)
   const initialDelay = 2000 + Math.random() * 2000;
-  console.log(
-    `⏰ Starting shimmer effect in ${Math.round(initialDelay / 1000)} seconds`
-  );
   setTimeout(triggerRandomShimmer, initialDelay);
 }
 

@@ -94,11 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastIndex = -1;
 
     function startSpotlightCycle() {
-        console.log('Radar: Starting spotlight cycle');
         if (cycleInterval) clearInterval(cycleInterval);
         
         const next = () => {
-            console.log('Radar: Cycle tick');
             anchors.forEach(a => a.classList.remove('is-spotlight'));
             
             let randomIndex;
@@ -111,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
             } while (randomIndex === lastIndex && maxIndex > 1 && attempts < 10);
             
             lastIndex = randomIndex;
-            console.log('Radar: Selected index', randomIndex);
             
             // Activate the bubble with this index in ALL instances (mobile & desktop)
             const targets = document.querySelectorAll(`.bubble-anchor[data-index="${randomIndex}"]`);
@@ -124,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function stopSpotlightCycle() {
-        console.log('Radar: Stopping spotlight cycle');
         if (cycleInterval) {
             clearInterval(cycleInterval);
             cycleInterval = null;
@@ -134,24 +130,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     anchors.forEach((a, index) => {
         a.addEventListener('mouseenter', () => {
-            console.log('Radar: Mouse enter on bubble', index);
             clearTimeout(restartTimeout);
             stopSpotlightCycle();
         });
         a.addEventListener('mouseleave', () => {
-            console.log('Radar: Mouse leave on bubble', index);
             clearTimeout(restartTimeout);
             restartTimeout = setTimeout(() => {
-                console.log('Radar: Restart timeout fired');
                 startSpotlightCycle();
             }, 2000);
         });
     });
 
-    // Initial start after 2 seconds
-    console.log('Radar: Scheduling initial start');
     restartTimeout = setTimeout(() => {
-        console.log('Radar: Initial start fired');
         startSpotlightCycle();
     }, 2000);
 });

@@ -701,6 +701,10 @@ img {
     padding-top: 5%;
     position: relative;
 
+    @media (max-width: 767px) {
+      padding-top: 15%;
+    }
+
     .title-big {
       color: white;
       text-shadow: 0 8.456px 24.098px rgba(0, 0, 0, 0.41);
@@ -754,6 +758,7 @@ img {
 
       @media (max-width: 768px) {
         justify-content: center;
+        margin-top: 120px;
       }
 
       .hero-cta {
@@ -3154,16 +3159,16 @@ img {
 }
 
 ::-webkit-scrollbar-track {
-  background: #EDEDED;
+  background: #ededed;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #F33B60 0%, #EB934F 100%);
+  background: linear-gradient(180deg, #f33b60 0%, #eb934f 100%);
   border-radius: 23.836px;
-  border: 4px solid #EDEDED;
+  border: 4px solid #ededed;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #d62f50 0%, #d68242 100%);
-  border: 4px solid #EDEDED;
+  border: 4px solid #ededed;
 }
