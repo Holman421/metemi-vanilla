@@ -603,8 +603,8 @@ function animateHowCardsImages() {
 
   const imagesArray = [
     { element: firstImage, start: `-=75% 100%`, end: "-=50% 80%" },
-    { element: secondImage, start: `-=75% 90%`, end: "-=50% 65%" },
-    { element: thirdImage, start: `-=75% 65%`, end: "-=50% 50%" },
+    { element: secondImage, start: `-=75% 95%`, end: "-=50% 70%" },
+    { element: thirdImage, start: `-=75% 75%`, end: "-=50% 60%" },
   ];
 
   imagesArray.forEach(({ element, start, end }) => {
