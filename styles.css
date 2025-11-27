@@ -529,7 +529,6 @@ img {
   -webkit-text-fill-color: transparent;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-  /* Safari fix: prevent layout calculation issues */
   position: relative;
 }
 
@@ -684,10 +683,37 @@ img {
     visibility: hidden;
   }
 
+  .word-switcher-container {
+    display: inline;
+
+    @media (max-width: 767px) {
+      display: inline-block;
+      position: relative;
+    }
+  }
+
+  .word-switcher-placeholder {
+    display: none;
+    text-transform: uppercase;
+
+    @media (max-width: 767px) {
+      display: inline;
+      visibility: hidden;
+    }
+  }
+
   .word-switcher {
     display: inline-block;
     position: relative;
     text-transform: uppercase;
+
+    @media (max-width: 767px) {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
   }
 
   .word-switcher .letter {
@@ -722,7 +748,7 @@ img {
     .video-container-mobile {
       width: 80%;
       aspect-ratio: 1/1;
-      margin: 24px auto;
+      margin: auto;
 
       @media (min-width: 769px) {
         display: none;
@@ -758,7 +784,7 @@ img {
 
       @media (max-width: 768px) {
         justify-content: center;
-        margin-top: 120px;
+        margin-top: 50px;
       }
 
       .hero-cta {
@@ -881,7 +907,9 @@ img {
 
       @media screen and (max-width: 768px) {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        font-size: 2rem !important;
       }
     }
 
@@ -895,7 +923,7 @@ img {
 
       @media screen and (max-width: 768px) {
         text-align: center;
-        font-size: 1.75rem !important;
+        font-size: 2rem !important;
         left: 0;
         white-space: normal;
       }
@@ -1245,7 +1273,7 @@ img {
 .statistic-content {
   max-width: 50%;
   background-color: var(--color-card-white-dark);
-  padding: 2rem 5%; /* py-29 px-90 - adjusted proportionally */
+  padding: 2rem 1% 2rem 5%; /* py-29 px-90 - adjusted proportionally */
   border-top-right-radius: 1.5rem;
   border-bottom-right-radius: 1.5rem;
   box-shadow: 20px 10px 40px 0 rgba(0, 0, 0, 0.25);

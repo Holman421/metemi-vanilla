@@ -53,6 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const radarPlanes = document.querySelectorAll('.radar-plane');
     const anchors = document.querySelectorAll('.bubble-anchor');
 
+    // Fade in radar scene to prevent flash of unwanted content
+    const radarScenes = document.querySelectorAll('.radar-scene');
+    radarScenes.forEach(scene => {
+        scene.style.transition = 'opacity 0.5s ease-out';
+        scene.style.opacity = '1';
+    });
+
     // Smooth Tilt Logic
     let targetX = 0;
     let targetY = 0;

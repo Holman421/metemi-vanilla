@@ -467,7 +467,7 @@ function heroAnimation() {
     heroLogo,
     { opacity: 0 },
     {
-      opacity: 0.5,
+      opacity: 1.0,
       duration: 1.5,
       ease: "power4.inOut",
     },
@@ -604,7 +604,7 @@ function animateHowCardsImages() {
   const imagesArray = [
     { element: firstImage, start: `-=75% 100%`, end: "-=50% 80%" },
     { element: secondImage, start: `-=75% 95%`, end: "-=50% 70%" },
-    { element: thirdImage, start: `-=75% 75%`, end: "-=50% 60%" },
+    { element: thirdImage, start: `-=75% 80%`, end: "-=50% 65%" },
   ];
 
   imagesArray.forEach(({ element, start, end }) => {
